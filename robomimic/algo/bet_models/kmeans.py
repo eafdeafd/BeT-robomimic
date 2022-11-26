@@ -1,0 +1,79 @@
+import torch
+import numpy as np
+import tqdm
+from typing import Optional, Tuple, Union
+import einops
+
+class KmeansDiscretizer():
+    """
+    Need own implementation of K-means for residual action correction
+    TODO: switch to einops operations
+    """
+
+    def __init__(self, action_dim : int, device: Union[str, torch.device] = "cpu") -> None:
+        self.action_dim = action_dim
+        self.device = device
+        self.all_actions = None
+
+    def load(self, train_loader):
+        all_actions = []
+        for d in train_loader:
+            action = d["actions"]
+            all_actions.append(action.view(-1, action.shape[-1]))
+        all_actions = torch.cat(all_actions, dim=0)
+        self.all_actions = all_actions
+
+    def fit(self, niter: int = 50, ncluster: int = 512) -> any:
+        assert self.all_actions is not None
+        actions = self.all_actions
+        self.action_dim = actions.shape[-1]
+        x = actions.view(-1, self.action_dim)
+        self.nbins = ncluster
+        """
+        Simple k-means clustering algorithm adapted from Karpathy's minGPT libary
+        https://github.com/karpathy/minGPT/blob/master/play_image.ipynb
+        """
+        N, D = x.size()
+        c = x[torch.randperm(N)[:ncluster]]  # init clusters at random
+
+        pbar = tqdm.trange(niter)
+        pbar.set_description("K-means clustering")
+        for i in pbar:
+            # assign all pixels to the closest codebook element
+            a = ((x[:, None, :] - c[None, :, :]) ** 2).sum(-1).argmin(1)
+            # move each codebook element to be the mean of the pixels that assigned to it
+            c = torch.stack([x[a == k].mean(0) for k in range(ncluster)])
+            # re-assign any poorly positioned codebook elements
+            nanix = torch.any(torch.isnan(c), dim=1)
+            ndead = nanix.sum().item()
+            if ndead:
+                tqdm.tqdm.write(
+                    "done step %d/%d, re-initialized %d dead clusters"
+                    % (i + 1, niter, ndead)
+                )
+            c[nanix] = x[torch.randperm(N)[:ndead]]  # re-init dead clusters
+        self.bins = c.to(self.device)
+        return c
+
+    def discretize(self, actions: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
+        """
+        Given the input action, discretize it using the k-Means clustering algorithm.
+
+        Inputs:
+        input_action (shape: ... x action_dim): The input action to discretize. This can be in a batch,
+        and is generally assumed that the last dimnesion is the action dimension.
+
+        Outputs:
+        discretized_action (shape: ... x num_tokens): The discretized action.
+        If self.predict_offsets is True, then the offsets are also returned.
+        """
+        flattened_actions = actions.view(-1, actions.shape[-1])
+        closest_clusters = torch.argmin(torch.sum((flattened_actions[:, None, :] - self.bins[None, :, :]) ** 2, dim=2), dim=1)
+        discrete_actions = closest_clusters.view(actions.shape[:-1] + (1,))
+        
+        offsets = None
+        reconstructed_actions = closest_clusters.view(actions.shape[:-1] + (self.action_dim,))
+        offsets = actions - reconstructed_actions
+        return (discrete_actions, offsets)
+
+    

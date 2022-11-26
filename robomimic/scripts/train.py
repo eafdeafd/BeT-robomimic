@@ -67,6 +67,7 @@ def train(config, device):
 
     # make sure the dataset exists
     dataset_path = os.path.expanduser(config.train.data)
+    print(os.getcwd())
     if not os.path.exists(dataset_path):
         raise Exception("Dataset at provided path {} not found!".format(dataset_path))
 
@@ -174,6 +175,11 @@ def train(config, device):
     # number of learning steps per epoch (defaults to a full dataset pass)
     train_num_steps = config.experiment.epoch_every_n_steps
     valid_num_steps = config.experiment.validation_epoch_every_n_steps
+
+    # this is for BET
+    if config.algo_name == "bet":
+        model.create_and_seed_discretizer(train_loader)
+        
 
     for epoch in range(1, config.train.num_epochs + 1): # epoch numbers start at 1
         step_log = TrainUtils.run_epoch(model=model, data_loader=train_loader, epoch=epoch, num_steps=train_num_steps)

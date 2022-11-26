@@ -580,6 +580,7 @@ class MIMO_MLP(Module):
                 to @self.output_shapes
         """
         enc_outputs = self.nets["encoder"](**inputs)
+        print(enc_outputs.size())
         mlp_out = self.nets["mlp"](enc_outputs)
         return self.nets["decoder"](mlp_out)
 

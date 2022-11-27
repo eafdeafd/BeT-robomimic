@@ -197,3 +197,6 @@ class MinGPT(Module):
 
     def output_shape(self, input_shape=None):
         return self.vocab_size
+    
+    def get_optim(self):
+        return self.trainer

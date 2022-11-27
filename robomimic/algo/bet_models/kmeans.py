@@ -76,4 +76,27 @@ class KmeansDiscretizer():
         offsets = actions - reconstructed_actions
         return (discrete_actions, offsets)
 
-    
+    def decode_actions(self, latent_action_batch):
+        """
+        Given the latent action, reconstruct the original action.
+
+        Inputs:
+        latent_action (shape: ... x 1): The latent action to reconstruct. This can be in a batch,
+        and is generally assumed that the last dimension is the action dimension. If the latent_action_batch
+        is a tuple, then it is assumed to be (discretized_action, offsets).
+
+        Outputs:
+        reconstructed_action (shape: ... x action_dim): The reconstructed action.
+        """
+        offsets = None
+        if type(latent_action_batch) == tuple:
+            latent_action_batch, offsets = latent_action_batch
+        # get the closest cluster center
+        closest_cluster_center = self.bin_centers[latent_action_batch]
+        # Reshape to the original shape
+        reconstructed_action = closest_cluster_center.view(
+            latent_action_batch.shape[:-1] + (self.action_dim,)
+        )
+        if offsets is not None:
+            reconstructed_action += offsets
+        return reconstructed_action

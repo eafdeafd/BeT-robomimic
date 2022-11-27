@@ -33,7 +33,6 @@ def algo_config_to_class(algo_config):
         algo_class: subclass of Algo
         algo_kwargs (dict): dictionary of additional kwargs to pass to algorithm
     """
-
     return BET, {}
 
 
@@ -41,7 +40,6 @@ class BET(PolicyAlgo):
     """
     Normal BET training.
     """
-
     def __init__(
             self,
             algo_config,
@@ -55,10 +53,18 @@ class BET(PolicyAlgo):
         self.slices = None
         self.window_size = None
 
+
     def create_and_seed_discretizer(self, train_loader):
         self.discretizer = KmeansDiscretizer(self.ac_dim)
         self.discretizer.load(train_loader)
         self.discretizer.fit(ncluster=self.algo_config.ae_bins)
+
+    def get_seq_length(self, idx, input):
+        count = 0
+        for a in input[idx]:
+            if 1 >= a >= -1:
+                count += 1
+        return count
 
     def _create_networks(self):
         """
@@ -119,16 +125,11 @@ class BET(PolicyAlgo):
             lr=self.optim_params.lr,
             betas=self.optim_params.betas,
         )
+        self.optim = self.nets["policy"].get_optim()
         self.nets = self.nets.float().to(self.device)
         self.action_encoder = torch.nn.Identity(self.ac_dim)
         print(self.nets["policy"])
 
-    def get_seq_length(self, idx, input):
-        count = 0
-        for a in input[idx]:
-            if 1 >= a >= -1:
-                count += 1
-        return count
     def process_batch_for_training(self, batch):
         """
         Processes input batch from a data loader to filter out
@@ -148,7 +149,7 @@ class BET(PolicyAlgo):
         input_batch["obs"] = {k: batch["obs"][k][:, 0, :] for k in batch["obs"]}
         input_batch["goal_obs"] = batch.get("goal_obs", None) # goals may not be present
         input_batch["actions"] = batch["actions"][:, 0, :]
-
+        print(batch)
         self.window_size = self.algo_config.window_size
         self.slices = []
         min_seq_length = np.inf
@@ -168,26 +169,8 @@ class BET(PolicyAlgo):
                     f"Ignored short sequences. To include all, set window <= {min_seq_length}."
                 )
         input_batch["slices"] = self.slices
+
         """
-        
-        self.window_size = self.algo_config.window_size
-        self.slices = []
-        min_seq_length = np.inf
-        for i in range(len(batch)):  # type: ignore
-            T = self._get_seq_length(i)  # avoid reading actual seq (slow)
-            min_seq_length = min(T, min_seq_length)
-            if T - window < 0:
-                print(f"Ignored short sequence #{i}: len={T}, window={window}")
-            else:
-                self.slices += [
-                    (i, start, start + window) for start in range(T - window)
-                ]  # slice indices follow convention [start, end)
-
-            if min_seq_length < window:
-                print(
-                    f"Ignored short sequences. To include all, set window <= {min_seq_length}."
-                )
-
         self.obs_shapes = obs_shapes
         self.ac_dim = ac_dim
 
@@ -236,46 +219,24 @@ class BET(PolicyAlgo):
                 that might be relevant for logging
         TODO: Port GPT training code over here
         """
-        for window in self.window:
+        self.nets["policy"].train()
+        with TorchUtils.maybe_no_grad(no_grad=validate), TorchUtils.eval_mode(self.action_encoder, self.discretizer):
+            #for window in self.window:
+            info = super(BET, self).train_on_batch(batch, epoch, validate=validate)
 
-            with TorchUtils.maybe_no_grad(no_grad=validate):
-                info = super(BET, self).train_on_batch(batch, epoch, validate=validate)
-                predictions = self._forward_training(batch)
-                losses = self._compute_losses(predictions, batch)
+            losses = self._compute_losses(batch)
+            info["losses"] = TensorUtils.detach(losses)
 
-                info["predictions"] = TensorUtils.detach(predictions)
-                info["losses"] = TensorUtils.detach(losses)
+            if not validate:
+                step_info = self._train_step(losses)
+                info.update(step_info)
 
-                if not validate:
-                    step_info = self._train_step(losses)
-                    info.update(step_info)
+            return info
 
-        return info
 
-    def _forward_training(self, batch):
+    def _compute_losses(self, batch):
         """
-        Internal helper function for BC algo class. Compute forward pass
-        and return network outputs in @predictions dict.
-
         Args:
-            batch (dict): dictionary with torch.Tensors sampled
-                from a data loader and filtered by @process_batch_for_training
-
-        Returns:
-            predictions (dict): dictionary containing network outputs
-        """
-        predictions = OrderedDict()
-        actions = self.nets["policy"](obs_dict=batch["obs"], goal_dict=batch["goal_obs"])
-        predictions["actions"] = actions
-        return predictions
-
-    def _compute_losses(self, predictions, batch):
-        """
-        Internal helper function for BC algo class. Compute losses based on
-        network outputs in @predictions dict, using reference labels in @batch.
-
-        Args:
-            predictions (dict): dictionary containing network outputs, from @_forward_training
             batch (dict): dictionary with torch.Tensors sampled
                 from a data loader and filtered by @process_batch_for_training
 
@@ -283,20 +244,14 @@ class BET(PolicyAlgo):
             losses (dict): dictionary of losses computed over the batch
         """
         losses = OrderedDict()
-        a_target = batch["actions"]
-        actions = predictions["actions"]
-        losses["l2_loss"] = nn.MSELoss()(actions, a_target)
-        losses["l1_loss"] = nn.SmoothL1Loss()(actions, a_target)
-        # cosine direction loss on eef delta position
-        losses["cos_loss"] = LossUtils.cosine_loss(actions[..., :3], a_target[..., :3])
 
-        action_losses = [
-            self.algo_config.loss.l2_weight * losses["l2_loss"],
-            self.algo_config.loss.l1_weight * losses["l1_loss"],
-            self.algo_config.loss.cos_weight * losses["cos_loss"],
-        ]
-        action_loss = sum(action_losses)
-        losses["action_loss"] = action_loss
+        enc_outputs = self.nets["encoder"](batch["obs"])
+        # optional encoding here
+        #self.action_encoder(enc_outputs)
+        latent, _ = self.discretizer.discretize(batch["actions"])
+        _, loss, loss_comp = self.nets["policy"].get_latent_and_loss(obs_rep=enc_outputs, target_latents=latent, return_loss_components=True)
+
+        losses["action_loss"] = loss
         return losses
 
     def _train_step(self, losses):
@@ -310,11 +265,14 @@ class BET(PolicyAlgo):
 
         # gradient step
         info = OrderedDict()
+
         policy_grad_norms = TorchUtils.backprop_for_loss(
             net=self.nets["policy"],
-            optim=self.optimizers["policy"],
+            optim=self.optim,
             loss=losses["action_loss"],
+            max_grad_norm=self.optim_params.grad_norm_clip,
         )
+
         info["policy_grad_norms"] = policy_grad_norms
         return info
 
@@ -344,14 +302,12 @@ class BET(PolicyAlgo):
     def get_action(self, obs_dict, goal_dict=None):
         """
         Get policy action outputs.
-
         Args:
             obs_dict (dict): current observation
             goal_dict (dict): (optional) goal
 
         Returns:
             action (torch.Tensor): action tensor
-        TODO: how is this done?
         """
         assert not self.nets.training
         return self.nets["policy"](obs_dict, goal_dict=goal_dict)

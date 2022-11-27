@@ -25,7 +25,7 @@ class BETConfig(BaseConfig):
         self.algo.optim_params.lr = 1e-4
         self.algo.optim_params.wd = .1
         self.algo.optim_params.betas = (.9, .95)
-        self.algo.optim_params.gradient_norm_clip = 1
+        self.algo.optim_params.grad_norm_clip = 1
         self.algo.optim_params.seed = 42
 
         # Architecture details
@@ -37,3 +37,5 @@ class BETConfig(BaseConfig):
         self.algo.predict_offsets = True
         self.algo.offset_loss_scale = 1000.0
         self.algo.focal_loss_gamma = 2.0
+
+        self.train.seq_length = self.algo.window_size

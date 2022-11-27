@@ -196,3 +196,25 @@ def maybe_no_grad(no_grad):
             it will be a dummy context
     """
     return torch.no_grad() if no_grad else dummy_context_mgr()
+
+
+class eval_mode:
+    def __init__(self, *models, no_grad=False):
+        self.models = models
+        self.no_grad = no_grad
+        self.no_grad_context = torch.no_grad()
+
+    def __enter__(self):
+        self.prev_states = []
+        for model in self.models:
+            self.prev_states.append(model.training)
+            model.train(False)
+        if self.no_grad:
+            self.no_grad_context.__enter__()
+
+    def __exit__(self, *args):
+        if self.no_grad:
+            self.no_grad_context.__exit__(*args)
+        for model, state in zip(self.models, self.prev_states):
+            model.train(state)
+        return False

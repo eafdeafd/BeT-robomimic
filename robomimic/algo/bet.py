@@ -33,6 +33,7 @@ def algo_config_to_class(algo_config):
         algo_class: subclass of Algo
         algo_kwargs (dict): dictionary of additional kwargs to pass to algorithm
     """
+
     return BET, {}
 
 
@@ -40,6 +41,20 @@ class BET(PolicyAlgo):
     """
     Normal BET training.
     """
+
+    def __init__(
+            self,
+            algo_config,
+            obs_config,
+            global_config,
+            obs_key_shapes,
+            ac_dim,
+            device
+    ):
+        super().__init__(algo_config, obs_config, global_config, obs_key_shapes, ac_dim, device)
+        self.slices = None
+        self.window_size = None
+
     def create_and_seed_discretizer(self, train_loader):
         self.discretizer = KmeansDiscretizer(self.ac_dim)
         self.discretizer.load(train_loader)
@@ -108,6 +123,12 @@ class BET(PolicyAlgo):
         self.action_encoder = torch.nn.Identity(self.ac_dim)
         print(self.nets["policy"])
 
+    def get_seq_length(self, idx, input):
+        count = 0
+        for a in input[idx]:
+            if 1 >= a >= -1:
+                count += 1
+        return count
     def process_batch_for_training(self, batch):
         """
         Processes input batch from a data loader to filter out
@@ -127,7 +148,45 @@ class BET(PolicyAlgo):
         input_batch["obs"] = {k: batch["obs"][k][:, 0, :] for k in batch["obs"]}
         input_batch["goal_obs"] = batch.get("goal_obs", None) # goals may not be present
         input_batch["actions"] = batch["actions"][:, 0, :]
+
+        self.window_size = self.algo_config.window_size
+        self.slices = []
+        min_seq_length = np.inf
+        for i in range(len(input_batch["actions"])):
+            # type: ignore
+            T = self.get_seq_length(i, input_batch["actions"])  # avoid reading actual seq (slow)
+            min_seq_length = min(T, min_seq_length)
+            if T - self.window_size < 0:
+                print(f"Ignored short sequence #{i}: len={T}, window={self.window_size}")
+            else:
+                self.slices += [
+                    (i, start, start + self.window_size) for start in range(T - self.window_size)
+                ]  # slice indices follow convention [start, end)
+
+            if min_seq_length < self.window_size:
+                print(
+                    f"Ignored short sequences. To include all, set window <= {min_seq_length}."
+                )
+        input_batch["slices"] = self.slices
         """
+        
+        self.window_size = self.algo_config.window_size
+        self.slices = []
+        min_seq_length = np.inf
+        for i in range(len(batch)):  # type: ignore
+            T = self._get_seq_length(i)  # avoid reading actual seq (slow)
+            min_seq_length = min(T, min_seq_length)
+            if T - window < 0:
+                print(f"Ignored short sequence #{i}: len={T}, window={window}")
+            else:
+                self.slices += [
+                    (i, start, start + window) for start in range(T - window)
+                ]  # slice indices follow convention [start, end)
+
+            if min_seq_length < window:
+                print(
+                    f"Ignored short sequences. To include all, set window <= {min_seq_length}."
+                )
 
         self.obs_shapes = obs_shapes
         self.ac_dim = ac_dim

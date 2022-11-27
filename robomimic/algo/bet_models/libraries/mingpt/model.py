@@ -24,7 +24,7 @@ class GPTConfig:
     resid_pdrop = 0.1
     attn_pdrop = 0.1
     discrete_input = False
-    input_size = 10
+    input_size = 19
     n_embd = 768
     n_layer = 12
 

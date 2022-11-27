@@ -107,8 +107,7 @@ class BC(PolicyAlgo):
                 that might be relevant for logging
         """
         #print(batch)
-        print(batch["actions"].size())
-        print(batch["obs"])
+   
         with TorchUtils.maybe_no_grad(no_grad=validate):
             info = super(BC, self).train_on_batch(batch, epoch, validate=validate)
             predictions = self._forward_training(batch)
@@ -224,7 +223,9 @@ class BC(PolicyAlgo):
             action (torch.Tensor): action tensor
         """
         assert not self.nets.training
-        return self.nets["policy"](obs_dict, goal_dict=goal_dict)
+        action = self.nets["policy"](obs_dict, goal_dict=goal_dict)
+        print("GAOIFJASIOFJ", action)
+        return action
 
 
 class BC_Gaussian(BC):

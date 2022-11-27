@@ -140,7 +140,6 @@ class HBC(HierarchicalAlgo):
                 will be used for training 
         """
         input_batch = dict()
-
         input_batch["planner"] = self.planner.process_batch_for_training(batch)
         input_batch["actor"] = self.actor.process_batch_for_training(batch)
 

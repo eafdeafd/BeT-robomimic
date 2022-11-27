@@ -10,7 +10,7 @@ class KmeansDiscretizer():
     TODO: switch to einops operations
     """
 
-    def __init__(self, action_dim : int, device: Union[str, torch.device] = "cpu") -> None:
+    def __init__(self, action_dim : int, device: Union[str, torch.device] = "cuda") -> None:
         self.action_dim = action_dim
         self.device = device
         self.all_actions = None
@@ -67,13 +67,15 @@ class KmeansDiscretizer():
         discretized_action (shape: ... x num_tokens): The discretized action.
         If self.predict_offsets is True, then the offsets are also returned.
         """
-        flattened_actions = actions.view(-1, actions.shape[-1])
+        assert (
+                    actions.shape[-1] == self.action_dim
+                )        
+        flattened_actions = actions.view(-1, self.action_dim)
         closest_clusters = torch.argmin(torch.sum((flattened_actions[:, None, :] - self.bins[None, :, :]) ** 2, dim=2), dim=1)
         discrete_actions = closest_clusters.view(actions.shape[:-1] + (1,))
         
-        offsets = None
-        reconstructed_actions = closest_clusters.view(actions.shape[:-1] + (self.action_dim,))
-        offsets = actions - reconstructed_actions
+        reconstructed_action = self.decode_actions(discrete_actions)
+        offsets = actions - reconstructed_action
         return (discrete_actions, offsets)
 
     def decode_actions(self, latent_action_batch):
@@ -92,7 +94,7 @@ class KmeansDiscretizer():
         if type(latent_action_batch) == tuple:
             latent_action_batch, offsets = latent_action_batch
         # get the closest cluster center
-        closest_cluster_center = self.bin_centers[latent_action_batch]
+        closest_cluster_center = self.bins[latent_action_batch]
         # Reshape to the original shape
         reconstructed_action = closest_cluster_center.view(
             latent_action_batch.shape[:-1] + (self.action_dim,)

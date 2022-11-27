@@ -87,6 +87,7 @@ class MinGPT(Module):
         # While this has been trained autoregressively,
         # there is no reason why it needs to be so.
         # We can just use the observation as the input and the next latent as the target.
+
         if self.predict_offsets:
             target_latents, target_offsets = target_latents
         is_soft_target = (target_latents.shape[-1] == self.vocab_size) and (
@@ -105,6 +106,7 @@ class MinGPT(Module):
             output, _ = self.model(obs_rep)
             logits = output[:, :, : self.vocab_size]
             offsets = output[:, :, self.vocab_size :]
+
             batch = logits.shape[0]
             seq = logits.shape[1]
             offsets = einops.rearrange(

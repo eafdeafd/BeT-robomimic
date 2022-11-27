@@ -20,6 +20,8 @@ import robomimic.utils.obs_utils as ObsUtils
 from robomimic.algo import register_algo_factory_func, PolicyAlgo
 from robomimic.algo.bet_models.kmeans import KmeansDiscretizer
 from robomimic.algo.bet_models.generators import MinGPT
+from robomimic.config import config_factory
+import einops
 
 @register_algo_factory_func("bet")
 def algo_config_to_class(algo_config):
@@ -91,9 +93,14 @@ class BET(PolicyAlgo):
         encoder_kwargs = ObsUtils.obs_encoder_kwargs_from_config(self.obs_config.encoder)
         # Encoder for all observation groups.
         # For low_dim, does nothing.
-        self.nets["encoder"] = ObsNets.ObservationGroupEncoder(
+        self.nets["encoder"] = ObsNets.ObservationBETGroupEncoder(
             observation_group_shapes=input_obs_group_shapes,
             encoder_kwargs=encoder_kwargs,
+        )
+
+        self.nets["ac_encoder"] = ObsNets.ObservationGroupEncoder(
+            observation_group_shapes=input_obs_group_shapes,
+            encoder_kwargs=encoder_kwargs   
         )
 
         # flat encoder output dimension
@@ -124,10 +131,19 @@ class BET(PolicyAlgo):
             wd=self.optim_params.wd,
             lr=self.optim_params.lr,
             betas=self.optim_params.betas,
+            n_embd = self.algo_config.n_embd,
+            predict_offsets=self.algo_config.predict_offsets,
+            n_layer=self.algo_config.n_layer,
+            n_head=self.algo_config.n_head,
+            offset_loss_scale=self.algo_config.offset_loss_scale,
+            focal_loss_gamma=self.algo_config.focal_loss_gamma,
+            action_dim=self.ac_dim
+    
         )
         self.optim = self.nets["policy"].get_optim()
         self.nets = self.nets.float().to(self.device)
         self.action_encoder = torch.nn.Identity(self.ac_dim)
+        self.history = []
 
     def process_batch_for_training(self, batch):
         """
@@ -144,12 +160,16 @@ class BET(PolicyAlgo):
             input_batch (dict): processed and filtered batch that
                 will be used for training 
         """
-        input_batch = dict()
-        input_batch["obs"] = {k: batch["obs"][k][:, 0, :] for k in batch["obs"]}
-        input_batch["goal_obs"] = batch.get("goal_obs", None) # goals may not be present
-        input_batch["actions"] = batch["actions"][:, 0, :]
-        print(batch)
+        input_batch = batch
+
+        
+        #input_batch["obs"] = {k: batch["obs"][k][:, 0, :] for k in batch["obs"]}
+        #input_batch["goal_obs"] = batch.get("goal_obs", None) # goals may not be present
+        #input_batch["actions"] = batch["actions"][:, 0, :]
+        
+
         self.window_size = self.algo_config.window_size
+        """
         self.slices = []
         min_seq_length = np.inf
         for i in range(len(input_batch["actions"])):
@@ -168,35 +188,6 @@ class BET(PolicyAlgo):
                     f"Ignored short sequences. To include all, set window <= {min_seq_length}."
                 )
         input_batch["slices"] = self.slices
-
-        """
-        self.obs_shapes = obs_shapes
-        self.ac_dim = ac_dim
-
-        # set up different observation groups for @MIMO_MLP
-        observation_group_shapes = OrderedDict()
-        observation_group_shapes["obs"] = OrderedDict(self.obs_shapes)
-
-        self._is_goal_conditioned = False
-        if goal_shapes is not None and len(goal_shapes) > 0:
-            assert isinstance(goal_shapes, OrderedDict)
-            self._is_goal_conditioned = True
-            self.goal_shapes = OrderedDict(goal_shapes)
-            observation_group_shapes["goal"] = OrderedDict(self.goal_shapes)
-        else:
-            self.goal_shapes = OrderedDict()
-
-        output_shapes = self._get_output_shapes()
-        super(ActorNetwork, self).__init__(
-            input_obs_group_shapes=observation_group_shapes,
-            output_shapes=output_shapes,
-            layer_dims=mlp_layer_dims,
-            encoder_kwargs=encoder_kwargs,
-        )
-
-        window_length = 10
-        self.window_
-        for i in range(len(input_batch["actions"])):
         """
         return TensorUtils.to_device(TensorUtils.to_float(input_batch), self.device)
 
@@ -219,7 +210,7 @@ class BET(PolicyAlgo):
         TODO: Port GPT training code over here
         """
         self.nets["policy"].train()
-        with TorchUtils.maybe_no_grad(no_grad=validate), TorchUtils.eval_mode(self.action_encoder, self.discretizer):
+        with TorchUtils.maybe_no_grad(no_grad=validate), TorchUtils.eval_mode(self.action_encoder):
             #for window in self.window:
             info = super(BET, self).train_on_batch(batch, epoch, validate=validate)
             
@@ -243,11 +234,11 @@ class BET(PolicyAlgo):
             losses (dict): dictionary of losses computed over the batch
         """      
         losses = OrderedDict()
-
-        enc_outputs = self.nets["encoder"](batch["obs"])
+        enc_outputs = self.nets["encoder"](self.algo_config.window_size, **{"obs":batch["obs"]})
         # optional encoding here
         #self.action_encoder(enc_outputs)
-        latent, _ = self.discretizer.discretize(batch["actions"])
+        latent = self.discretizer.discretize(batch["actions"])
+
         _, loss, loss_comp = self.nets["policy"].get_latent_and_loss(obs_rep=enc_outputs, target_latents=latent, return_loss_components=True)
 
         losses["action_loss"] = loss
@@ -255,9 +246,6 @@ class BET(PolicyAlgo):
 
     def _train_step(self, losses):
         """
-        Internal helper function for BC algo class. Perform backpropagation on the
-        loss tensors in @losses to update networks.
-
         Args:
             losses (dict): dictionary of losses computed over the batch, from @_compute_losses
         """
@@ -299,6 +287,7 @@ class BET(PolicyAlgo):
         return log
 
     def get_action(self, obs_dict, goal_dict=None):
+
         """
         Get policy action outputs.
         Args:
@@ -308,6 +297,29 @@ class BET(PolicyAlgo):
         Returns:
             action (torch.Tensor): action tensor
         """
-        assert not self.nets.training
-        return self.nets["policy"](obs_dict, goal_dict=goal_dict)
 
+        """
+        if self._current_subgoal is None or self._subgoal_step_count % self._subgoal_update_interval == 0:
+            # update current subgoal
+            self.current_subgoal = self.get_subgoal_predictions(obs_dict=obs_dict, goal_dict=goal_dict)
+
+        # action = self.actor.get_action(obs_dict=obs_dict, goal_dict=self.current_subgoal)
+        self._subgoal_step_count += 1
+        return action
+        # assert not self.nets.training
+        # # return self.nets["policy"](obs_dict, goal_dict=goal_dict)
+        # return self.nets["policy"](obs_dict)
+        """
+        with TorchUtils.eval_mode(self.action_encoder, self.nets["policy"], no_grad=True):
+            enc_obs = self.nets["ac_encoder"](**{"obs":obs_dict})
+            enc_obs = einops.repeat(enc_obs[0], "obs -> batch obs", batch=self.algo_config.batch_size)
+            self.history.append(enc_obs)
+            enc_obs_seq = torch.stack(tuple(self.history), dim=0)
+            latents, offsets = self.nets["policy"].generate_latents(enc_obs_seq, torch.ones_like(enc_obs_seq).mean(dim=-1))
+            action_latents = (latents[:, -1:, :], offsets[:, -1:, :])
+            actions = self.discretizer.decode_actions(latent_action_batch=action_latents)
+            sampled_action = np.random.randint(len(actions))
+            actions = actions[sampled_action]
+            actions = einops.rearrange(actions, "1 action_dim -> action_dim")
+            actions = torch.tanh(actions) # todo: how do we get this loss inside the model?
+            return [actions]

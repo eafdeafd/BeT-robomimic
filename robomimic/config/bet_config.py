@@ -9,6 +9,10 @@ from robomimic.config.bc_config import BCConfig
 class BETConfig(BaseConfig):
     ALGO_NAME = "bet"
 
+    def train_config(self):
+        super(BETConfig, self).train_config()
+        self.train.seq_length = 10# length of experience sequence to fetch from the buffer
+        self.train.batch_size = 100
     def algo_config(self):
         """
         This function populates the `config.algo` attribute of the config, and is given to the 
@@ -19,7 +23,8 @@ class BETConfig(BaseConfig):
         # Kmeans 
         self.algo.ae_bins = 32
         self.algo.ae_latent_dim = 1
-        self.algo.ae_num_latents = self.algo.ae_bins  # num latents and bins are the same.
+        self.algo.ae_num_latents = self.algo.ae_bins 
+        # self.algo.vocab_size = 1000 # num latents and bins are the same.
 
         # Optimizer
         self.algo.optim_params.lr = 1e-4
@@ -37,5 +42,4 @@ class BETConfig(BaseConfig):
         self.algo.predict_offsets = True
         self.algo.offset_loss_scale = 1000.0
         self.algo.focal_loss_gamma = 2.0
-
-        self.train.seq_length = self.algo.window_size
+        self.algo.batch_size = 100

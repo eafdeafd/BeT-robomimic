@@ -142,14 +142,18 @@ def train(config, device):
         obs_normalization_stats = trainset.get_obs_normalization_stats()
 
     # initialize data loaders
+    betshuffle = True
+    if config.algo_name == "bet":
+        betshuffle = False
     train_loader = DataLoader(
         dataset=trainset,
         sampler=train_sampler,
         batch_size=config.train.batch_size,
-        shuffle=(train_sampler is None),
+        shuffle=(train_sampler is None or betshuffle),
         num_workers=config.train.num_data_workers,
         drop_last=True
     )
+
 
     if config.experiment.validate:
         # cap num workers for validation dataset at 1
@@ -159,7 +163,7 @@ def train(config, device):
             dataset=validset,
             sampler=valid_sampler,
             batch_size=config.train.batch_size,
-            shuffle=(valid_sampler is None),
+            shuffle=(valid_sampler is None or betshuffle),
             num_workers=num_workers,
             drop_last=True
         )

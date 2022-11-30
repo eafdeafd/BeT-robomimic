@@ -17,7 +17,7 @@
             "on_best_rollout_success_rate": true
         },
         "epoch_every_n_steps": 100,
-        "validation_epoch_every_n_steps": 20,
+        "validation_epoch_every_n_steps": 10,
         "env": null,
         "additional_envs": null,
         "render": false,
@@ -34,7 +34,7 @@
         }
     },
     "train": {
-        "data": null,
+        "data": "datasets/lift/ph/low_dim.hdf5",
         "output_dir": "../bet_trained_models",
         "num_data_workers": 0,
         "hdf5_cache_mode": "all",
@@ -49,8 +49,8 @@
         ],
         "goal_mode": null,
         "cuda": true,
-        "batch_size": 100,
-        "num_epochs": 500,
+        "batch_size": 1,
+        "num_epochs": 100000,
         "seed": 1
     },
     "algo": {
@@ -67,20 +67,16 @@
             "grad_norm_clip": 1,
             "seed": 42
         },
-        "loss": {
-            "l2_weight": 1.0,
-            "l1_weight": 0.0,
-            "cos_weight": 0.0
-        },
-        "n_layer": 6,
-        "n_head": 6,
-        "n_embd": 120,
+        "n_layer": 4,
+        "n_head": 4,
+        "n_embd": 72,
         "window_size": 5,
         "predict_offsets": true,
         "offset_loss_scale": 10000.0,
         "focal_loss_gamma": 2.0,
-        "history_size" : 5,
-        "discrete_input" : false
+        "batch_size": 100,
+        "history_size": 5,
+        "discrete_input": false
     },
     "observation": {
         "modalities": {

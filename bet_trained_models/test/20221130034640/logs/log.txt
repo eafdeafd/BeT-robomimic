@@ -1,0 +1,2709 @@
+
+============= Initialized Observation Utils with Obs Spec =============
+
+using obs modality: low_dim with keys: ['object', 'robot0_eef_quat', 'robot0_gripper_qpos', 'robot0_eef_pos']
+using obs modality: rgb with keys: []
+using obs modality: depth with keys: []
+using obs modality: scan with keys: []
+/home/andrew/Desktop/robo_sims/robomimic
+
+============= Loaded Environment Metadata =============
+obs key object with shape (10,)
+obs key robot0_eef_pos with shape (3,)
+obs key robot0_eef_quat with shape (4,)
+obs key robot0_gripper_qpos with shape (2,)
+Created environment with name Lift
+Action size is 7
+Lift
+{
+    "camera_depths": false,
+    "camera_heights": 84,
+    "camera_widths": 84,
+    "control_freq": 20,
+    "controller_configs": {
+        "control_delta": true,
+        "damping": 1,
+        "damping_limits": [
+            0,
+            10
+        ],
+        "impedance_mode": "fixed",
+        "input_max": 1,
+        "input_min": -1,
+        "interpolation": null,
+        "kp": 150,
+        "kp_limits": [
+            0,
+            300
+        ],
+        "orientation_limits": null,
+        "output_max": [
+            0.05,
+            0.05,
+            0.05,
+            0.5,
+            0.5,
+            0.5
+        ],
+        "output_min": [
+            -0.05,
+            -0.05,
+            -0.05,
+            -0.5,
+            -0.5,
+            -0.5
+        ],
+        "position_limits": null,
+        "ramp_ratio": 0.2,
+        "type": "OSC_POSE",
+        "uncouple_pos_ori": true
+    },
+    "has_offscreen_renderer": true,
+    "has_renderer": false,
+    "ignore_done": true,
+    "render_gpu_device_id": 0,
+    "reward_shaping": false,
+    "robots": [
+        "Panda"
+    ],
+    "use_camera_obs": false,
+    "use_object_obs": true
+}
+
+
+============= Model Summary =============
+ObservationKeyToModalityDict: action not found, adding action to mapping with assumed low_dim modality!
+BET (
+  ModuleDict(
+    (encoder): ObservationBETGroupEncoder(
+        group=obs
+        ObservationEncoder(
+            Key(
+                name=object
+                shape=[10]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_eef_pos
+                shape=[3]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_eef_quat
+                shape=[4]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_gripper_qpos
+                shape=[2]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            output_shape=[19]
+        )
+    )
+    (ac_encoder): ObservationGroupEncoder(
+        group=obs
+        ObservationEncoder(
+            Key(
+                name=object
+                shape=[10]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_eef_pos
+                shape=[3]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_eef_quat
+                shape=[4]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_gripper_qpos
+                shape=[2]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            output_shape=[19]
+        )
+    )
+    (mlp): MLP(
+        input_dim=19
+        output_dim=400
+        layer_dims=(300,)
+        layer_func=Linear
+        dropout=None
+        act=Mish
+        output_act=Mish
+    )
+    (decoder): ObservationDecoder(
+        Key(
+            name=action
+            shape=(7,)
+            modality=low_dim
+            net=(Linear(in_features=400, out_features=7, bias=True))
+        )
+    )
+    (policy): MinGPT(
+      (model): GPT(
+        (tok_emb): Linear(in_features=19, out_features=72, bias=True)
+        (drop): Dropout(p=0.1, inplace=False)
+        (blocks): Sequential(
+          (0): Block(
+            (ln1): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=72, out_features=72, bias=True)
+              (query): Linear(in_features=72, out_features=72, bias=True)
+              (value): Linear(in_features=72, out_features=72, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=72, out_features=72, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=72, out_features=288, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=288, out_features=72, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (1): Block(
+            (ln1): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=72, out_features=72, bias=True)
+              (query): Linear(in_features=72, out_features=72, bias=True)
+              (value): Linear(in_features=72, out_features=72, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=72, out_features=72, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=72, out_features=288, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=288, out_features=72, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (2): Block(
+            (ln1): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=72, out_features=72, bias=True)
+              (query): Linear(in_features=72, out_features=72, bias=True)
+              (value): Linear(in_features=72, out_features=72, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=72, out_features=72, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=72, out_features=288, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=288, out_features=72, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (3): Block(
+            (ln1): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=72, out_features=72, bias=True)
+              (query): Linear(in_features=72, out_features=72, bias=True)
+              (value): Linear(in_features=72, out_features=72, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=72, out_features=72, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=72, out_features=288, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=288, out_features=72, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+        )
+        (ln_f): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+        (head): Linear(in_features=72, out_features=256, bias=False)
+      )
+    )
+  )
+)
+
+SequenceDataset: loading dataset into memory...
+  0%|          | 0/180 [00:00<?, ?it/s] 47%|####7     | 85/180 [00:00<00:00, 846.79it/s] 94%|#########4| 170/180 [00:00<00:00, 848.37it/s]100%|##########| 180/180 [00:00<00:00, 847.90it/s]
+SequenceDataset: caching get_item calls...
+  0%|          | 0/8640 [00:00<?, ?it/s] 16%|#5        | 1362/8640 [00:00<00:00, 13616.51it/s] 32%|###1      | 2747/8640 [00:00<00:00, 13748.86it/s] 48%|####7     | 4132/8640 [00:00<00:00, 13792.45it/s] 64%|######3   | 5518/8640 [00:00<00:00, 13817.86it/s] 80%|#######9  | 6909/8640 [00:00<00:00, 13850.21it/s] 96%|#########6| 8303/8640 [00:00<00:00, 13878.44it/s]100%|##########| 8640/8640 [00:00<00:00, 13834.22it/s]
+SequenceDataset: loading dataset into memory...
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 876.31it/s]
+SequenceDataset: caching get_item calls...
+  0%|          | 0/1026 [00:00<?, ?it/s]100%|##########| 1026/1026 [00:00<00:00, 13809.14it/s]
+
+============= Training Dataset =============
+SequenceDataset (
+	path=datasets/lift/ph/low_dim.hdf5
+	obs_keys=('object', 'robot0_eef_pos', 'robot0_eef_quat', 'robot0_gripper_qpos')
+	seq_length=5
+	filter_key=train
+	frame_stack=1
+	pad_seq_length=True
+	pad_frame_stack=True
+	goal_mode=none
+	cache_mode=all
+	num_demos=180
+	num_sequences=8640
+)
+
+  0%|          | 0/50 [00:00<?, ?it/s]K-means clustering:   0%|          | 0/50 [00:00<?, ?it/s]K-means clustering:  14%|#4        | 7/50 [00:00<00:00, 60.20it/s]K-means clustering:  28%|##8       | 14/50 [00:00<00:00, 60.37it/s]K-means clustering:  42%|####2     | 21/50 [00:00<00:00, 60.33it/s]K-means clustering:  56%|#####6    | 28/50 [00:00<00:00, 60.57it/s]K-means clustering:  70%|#######   | 35/50 [00:00<00:00, 60.37it/s]K-means clustering:  84%|########4 | 42/50 [00:00<00:00, 60.46it/s]K-means clustering:  98%|#########8| 49/50 [00:00<00:00, 60.35it/s]K-means clustering: 100%|##########| 50/50 [00:00<00:00, 60.37it/s]
+  0%|          | 0/100 [00:00<?, ?it/s]  1%|1         | 1/100 [00:00<00:17,  5.54it/s] 10%|#         | 10/100 [00:00<00:02, 41.78it/s] 19%|#9        | 19/100 [00:00<00:01, 59.36it/s] 28%|##8       | 28/100 [00:00<00:01, 69.03it/s] 37%|###7      | 37/100 [00:00<00:00, 74.40it/s] 46%|####6     | 46/100 [00:00<00:00, 78.02it/s] 55%|#####5    | 55/100 [00:00<00:00, 80.80it/s] 64%|######4   | 64/100 [00:00<00:00, 82.35it/s] 73%|#######3  | 73/100 [00:01<00:00, 82.74it/s] 82%|########2 | 82/100 [00:01<00:00, 83.59it/s] 91%|#########1| 91/100 [00:01<00:00, 82.48it/s]100%|##########| 100/100 [00:01<00:00, 82.08it/s]100%|##########| 100/100 [00:01<00:00, 74.04it/s]
+Train Epoch 1
+{
+    "Loss": 71.29583770751952,
+    "Policy_Grad_Norms": 1.0000000099431703,
+    "Time_Data_Loading": 0.002747197945912679,
+    "Time_Epoch": 0.022517351309458415,
+    "Time_Log_Info": 3.182093302408854e-05,
+    "Time_Process_Batch": 0.00026272932688395183,
+    "Time_Train_Batch": 0.019431010882059733
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 254.82it/s]
+Validation Epoch 1
+{
+    "Loss": 42.395728302001956,
+    "Time_Data_Loading": 0.00027608474095662435,
+    "Time_Epoch": 0.0006670117378234863,
+    "Time_Log_Info": 3.588199615478516e-06,
+    "Time_Process_Batch": 3.8806597391764326e-05,
+    "Time_Train_Batch": 0.0003345012664794922
+}
+
+Epoch 1 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 82.42it/s] 18%|#8        | 18/100 [00:00<00:00, 83.85it/s] 27%|##7       | 27/100 [00:00<00:00, 84.46it/s] 36%|###6      | 36/100 [00:00<00:00, 84.72it/s] 45%|####5     | 45/100 [00:00<00:00, 85.46it/s] 54%|#####4    | 54/100 [00:00<00:00, 85.47it/s] 63%|######3   | 63/100 [00:00<00:00, 85.59it/s] 72%|#######2  | 72/100 [00:00<00:00, 85.33it/s] 81%|########1 | 81/100 [00:00<00:00, 85.36it/s] 90%|######### | 90/100 [00:01<00:00, 85.71it/s] 99%|#########9| 99/100 [00:01<00:00, 85.78it/s]100%|##########| 100/100 [00:01<00:00, 85.30it/s]
+Train Epoch 2
+{
+    "Loss": 43.36690006256104,
+    "Policy_Grad_Norms": 0.9999999902349072,
+    "Time_Data_Loading": 0.0027404228846232095,
+    "Time_Epoch": 0.019547080993652342,
+    "Time_Log_Info": 3.063281377156575e-05,
+    "Time_Process_Batch": 0.00026209751764933267,
+    "Time_Train_Batch": 0.016471699873606364
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 261.38it/s]
+Validation Epoch 2
+{
+    "Loss": 43.12183532714844,
+    "Time_Data_Loading": 0.0002658804257710775,
+    "Time_Epoch": 0.0006519714991251627,
+    "Time_Log_Info": 2.602736155192057e-06,
+    "Time_Process_Batch": 2.7358531951904297e-05,
+    "Time_Train_Batch": 0.0003407557805379232
+}
+
+Epoch 2 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 84.78it/s] 18%|#8        | 18/100 [00:00<00:00, 85.45it/s] 27%|##7       | 27/100 [00:00<00:00, 85.68it/s] 36%|###6      | 36/100 [00:00<00:00, 85.65it/s] 45%|####5     | 45/100 [00:00<00:00, 86.05it/s] 54%|#####4    | 54/100 [00:00<00:00, 85.53it/s] 63%|######3   | 63/100 [00:00<00:00, 85.57it/s] 72%|#######2  | 72/100 [00:00<00:00, 85.76it/s] 81%|########1 | 81/100 [00:00<00:00, 86.19it/s] 90%|######### | 90/100 [00:01<00:00, 86.41it/s] 99%|#########9| 99/100 [00:01<00:00, 86.52it/s]100%|##########| 100/100 [00:01<00:00, 86.02it/s]
+Train Epoch 3
+{
+    "Loss": 42.50752628326416,
+    "Policy_Grad_Norms": 0.9999999858048443,
+    "Time_Data_Loading": 0.002707497278849284,
+    "Time_Epoch": 0.01938388744990031,
+    "Time_Log_Info": 3.0187765757242837e-05,
+    "Time_Process_Batch": 0.0002541065216064453,
+    "Time_Train_Batch": 0.016350034872690836
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 269.09it/s]
+Validation Epoch 3
+{
+    "Loss": 40.31759757995606,
+    "Time_Data_Loading": 0.000259852409362793,
+    "Time_Epoch": 0.0006342450777689616,
+    "Time_Log_Info": 2.578894297281901e-06,
+    "Time_Process_Batch": 2.484718958536784e-05,
+    "Time_Train_Batch": 0.00033107598622639976
+}
+
+Epoch 3 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 85.69it/s] 18%|#8        | 18/100 [00:00<00:00, 85.64it/s] 27%|##7       | 27/100 [00:00<00:00, 86.30it/s] 36%|###6      | 36/100 [00:00<00:00, 86.67it/s] 45%|####5     | 45/100 [00:00<00:00, 86.85it/s] 54%|#####4    | 54/100 [00:00<00:00, 86.94it/s] 63%|######3   | 63/100 [00:00<00:00, 86.85it/s] 72%|#######2  | 72/100 [00:00<00:00, 86.51it/s] 81%|########1 | 81/100 [00:00<00:00, 86.37it/s] 90%|######### | 90/100 [00:01<00:00, 85.99it/s] 99%|#########9| 99/100 [00:01<00:00, 85.69it/s]100%|##########| 100/100 [00:01<00:00, 86.23it/s]
+Train Epoch 4
+{
+    "Loss": 41.83758785247803,
+    "Policy_Grad_Norms": 1.000000004101413,
+    "Time_Data_Loading": 0.002699577808380127,
+    "Time_Epoch": 0.019337662061055503,
+    "Time_Log_Info": 2.9710928599039712e-05,
+    "Time_Process_Batch": 0.0002559741338094076,
+    "Time_Train_Batch": 0.01630991299947103
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 253.15it/s]
+Validation Epoch 4
+{
+    "Loss": 40.5672248840332,
+    "Time_Data_Loading": 0.0002838134765625,
+    "Time_Epoch": 0.0006707310676574707,
+    "Time_Log_Info": 2.7020772298177085e-06,
+    "Time_Process_Batch": 3.9970874786376954e-05,
+    "Time_Train_Batch": 0.00033082167307535806
+}
+
+Epoch 4 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 83.99it/s] 18%|#8        | 18/100 [00:00<00:00, 84.30it/s] 27%|##7       | 27/100 [00:00<00:00, 84.66it/s] 36%|###6      | 36/100 [00:00<00:00, 84.56it/s] 45%|####5     | 45/100 [00:00<00:00, 84.35it/s] 54%|#####4    | 54/100 [00:00<00:00, 85.00it/s] 63%|######3   | 63/100 [00:00<00:00, 85.45it/s] 72%|#######2  | 72/100 [00:00<00:00, 85.35it/s] 81%|########1 | 81/100 [00:00<00:00, 85.21it/s] 90%|######### | 90/100 [00:01<00:00, 85.50it/s] 99%|#########9| 99/100 [00:01<00:00, 85.69it/s]100%|##########| 100/100 [00:01<00:00, 85.19it/s]
+Train Epoch 5
+{
+    "Loss": 41.450609550476074,
+    "Policy_Grad_Norms": 1.0000000054641056,
+    "Time_Data_Loading": 0.0027287801106770835,
+    "Time_Epoch": 0.01957187255223592,
+    "Time_Log_Info": 3.120104471842448e-05,
+    "Time_Process_Batch": 0.0002599040667215983,
+    "Time_Train_Batch": 0.016509580612182616
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 260.98it/s]
+Validation Epoch 5
+{
+    "Loss": 40.62660293579101,
+    "Time_Data_Loading": 0.00026764869689941404,
+    "Time_Epoch": 0.0006514469782511394,
+    "Time_Log_Info": 2.642472585042318e-06,
+    "Time_Process_Batch": 3.04261843363444e-05,
+    "Time_Train_Batch": 0.00033684968948364256
+}
+
+Epoch 5 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 84.70it/s] 18%|#8        | 18/100 [00:00<00:00, 85.68it/s] 27%|##7       | 27/100 [00:00<00:00, 85.75it/s] 36%|###6      | 36/100 [00:00<00:00, 86.27it/s] 45%|####5     | 45/100 [00:00<00:00, 86.49it/s] 54%|#####4    | 54/100 [00:00<00:00, 86.49it/s] 63%|######3   | 63/100 [00:00<00:00, 86.51it/s] 72%|#######2  | 72/100 [00:00<00:00, 86.03it/s] 81%|########1 | 81/100 [00:00<00:00, 86.36it/s] 90%|######### | 90/100 [00:01<00:00, 86.42it/s] 99%|#########9| 99/100 [00:01<00:00, 86.65it/s]100%|##########| 100/100 [00:01<00:00, 86.33it/s]
+Train Epoch 6
+{
+    "Loss": 40.95139995574951,
+    "Policy_Grad_Norms": 0.9999999934430917,
+    "Time_Data_Loading": 0.002677806218465169,
+    "Time_Epoch": 0.01931318442026774,
+    "Time_Log_Info": 3.036657969156901e-05,
+    "Time_Process_Batch": 0.0002563317616780599,
+    "Time_Train_Batch": 0.01630746523539225
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 267.43it/s]
+Validation Epoch 6
+{
+    "Loss": 40.62062797546387,
+    "Time_Data_Loading": 0.00025787353515625,
+    "Time_Epoch": 0.0006395777066548666,
+    "Time_Log_Info": 2.6265780131022137e-06,
+    "Time_Process_Batch": 2.4127960205078126e-05,
+    "Time_Train_Batch": 0.0003376007080078125
+}
+
+Epoch 6 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 86.46it/s] 18%|#8        | 18/100 [00:00<00:00, 85.50it/s] 27%|##7       | 27/100 [00:00<00:00, 85.78it/s] 36%|###6      | 36/100 [00:00<00:00, 86.51it/s] 45%|####5     | 45/100 [00:00<00:00, 86.73it/s] 54%|#####4    | 54/100 [00:00<00:00, 86.97it/s] 63%|######3   | 63/100 [00:00<00:00, 86.61it/s] 72%|#######2  | 72/100 [00:00<00:00, 86.56it/s] 81%|########1 | 81/100 [00:00<00:00, 86.56it/s] 90%|######### | 90/100 [00:01<00:00, 86.46it/s] 99%|#########9| 99/100 [00:01<00:00, 86.37it/s]100%|##########| 100/100 [00:01<00:00, 86.44it/s]
+Train Epoch 7
+{
+    "Loss": 40.55459083557129,
+    "Policy_Grad_Norms": 1.000000009706669,
+    "Time_Data_Loading": 0.0026780406634012857,
+    "Time_Epoch": 0.019288686911265056,
+    "Time_Log_Info": 3.0203660329182944e-05,
+    "Time_Process_Batch": 0.00025461514790852866,
+    "Time_Train_Batch": 0.01628397305806478
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 268.26it/s]
+Validation Epoch 7
+{
+    "Loss": 40.426457214355466,
+    "Time_Data_Loading": 0.0002581318219502767,
+    "Time_Epoch": 0.0006376941998799642,
+    "Time_Log_Info": 2.6305516560872396e-06,
+    "Time_Process_Batch": 2.9087066650390625e-05,
+    "Time_Train_Batch": 0.0003304282824198405
+}
+
+Epoch 7 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 86.30it/s] 18%|#8        | 18/100 [00:00<00:00, 86.50it/s] 27%|##7       | 27/100 [00:00<00:00, 86.51it/s] 36%|###6      | 36/100 [00:00<00:00, 86.31it/s] 45%|####5     | 45/100 [00:00<00:00, 86.15it/s] 54%|#####4    | 54/100 [00:00<00:00, 86.03it/s] 63%|######3   | 63/100 [00:00<00:00, 86.18it/s] 72%|#######2  | 72/100 [00:00<00:00, 86.13it/s] 81%|########1 | 81/100 [00:00<00:00, 85.93it/s] 90%|######### | 90/100 [00:01<00:00, 85.41it/s] 99%|#########9| 99/100 [00:01<00:00, 85.53it/s]100%|##########| 100/100 [00:01<00:00, 85.91it/s]
+Train Epoch 8
+{
+    "Loss": 40.407640838623045,
+    "Policy_Grad_Norms": 1.0000000185583648,
+    "Time_Data_Loading": 0.0027027448018391927,
+    "Time_Epoch": 0.019409692287445067,
+    "Time_Log_Info": 3.0144055684407553e-05,
+    "Time_Process_Batch": 0.0002536932627360026,
+    "Time_Train_Batch": 0.016380016009012857
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 261.83it/s]
+Validation Epoch 8
+{
+    "Loss": 39.611240768432616,
+    "Time_Data_Loading": 0.00026913086573282876,
+    "Time_Epoch": 0.0006539344787597657,
+    "Time_Log_Info": 2.8053919474283856e-06,
+    "Time_Process_Batch": 2.761681874593099e-05,
+    "Time_Train_Batch": 0.00033592780431111654
+}
+
+Epoch 8 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 84.90it/s] 18%|#8        | 18/100 [00:00<00:00, 85.99it/s] 27%|##7       | 27/100 [00:00<00:00, 86.21it/s] 36%|###6      | 36/100 [00:00<00:00, 84.69it/s] 45%|####5     | 45/100 [00:00<00:00, 85.25it/s] 54%|#####4    | 54/100 [00:00<00:00, 85.30it/s] 63%|######3   | 63/100 [00:00<00:00, 85.19it/s] 72%|#######2  | 72/100 [00:00<00:00, 85.66it/s] 81%|########1 | 81/100 [00:00<00:00, 85.82it/s] 90%|######### | 90/100 [00:01<00:00, 85.70it/s] 99%|#########9| 99/100 [00:01<00:00, 85.90it/s]100%|##########| 100/100 [00:01<00:00, 85.62it/s]
+Train Epoch 9
+{
+    "Loss": 39.83245685577393,
+    "Policy_Grad_Norms": 0.9999999842726243,
+    "Time_Data_Loading": 0.0027132749557495115,
+    "Time_Epoch": 0.01947470506032308,
+    "Time_Log_Info": 3.06089719136556e-05,
+    "Time_Process_Batch": 0.0002581874529520671,
+    "Time_Train_Batch": 0.01643062432607015
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 267.59it/s]
+Validation Epoch 9
+{
+    "Loss": 40.76744194030762,
+    "Time_Data_Loading": 0.0002634723981221517,
+    "Time_Epoch": 0.0006364782651265463,
+    "Time_Log_Info": 2.5590260823567706e-06,
+    "Time_Process_Batch": 2.5824705759684244e-05,
+    "Time_Train_Batch": 0.0003299713134765625
+}
+
+Epoch 9 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 85.89it/s] 18%|#8        | 18/100 [00:00<00:00, 85.48it/s] 27%|##7       | 27/100 [00:00<00:00, 85.85it/s] 36%|###6      | 36/100 [00:00<00:00, 85.39it/s] 45%|####5     | 45/100 [00:00<00:00, 85.31it/s] 54%|#####4    | 54/100 [00:00<00:00, 85.53it/s] 63%|######3   | 63/100 [00:00<00:00, 85.74it/s] 72%|#######2  | 72/100 [00:00<00:00, 85.58it/s] 81%|########1 | 81/100 [00:00<00:00, 85.13it/s] 90%|######### | 90/100 [00:01<00:00, 85.09it/s] 99%|#########9| 99/100 [00:01<00:00, 85.61it/s]100%|##########| 100/100 [00:01<00:00, 85.51it/s]
+Train Epoch 10
+{
+    "Loss": 39.453643264770506,
+    "Policy_Grad_Norms": 1.0000000053433162,
+    "Time_Data_Loading": 0.0027301271756490072,
+    "Time_Epoch": 0.019498976071675618,
+    "Time_Log_Info": 3.0056635538736978e-05,
+    "Time_Process_Batch": 0.000258787473042806,
+    "Time_Train_Batch": 0.016437780857086182
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 266.98it/s]
+Validation Epoch 10
+{
+    "Loss": 39.05569000244141,
+    "Time_Data_Loading": 0.00026170810063680014,
+    "Time_Epoch": 0.0006379286448160807,
+    "Time_Log_Info": 6.079673767089844e-06,
+    "Time_Process_Batch": 2.4759769439697264e-05,
+    "Time_Train_Batch": 0.00033065478006998695
+}
+
+Epoch 10 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 85.04it/s] 18%|#8        | 18/100 [00:00<00:00, 85.02it/s] 27%|##7       | 27/100 [00:00<00:00, 84.65it/s] 36%|###6      | 36/100 [00:00<00:00, 84.00it/s] 45%|####5     | 45/100 [00:00<00:00, 84.14it/s] 54%|#####4    | 54/100 [00:00<00:00, 84.43it/s] 63%|######3   | 63/100 [00:00<00:00, 75.57it/s] 71%|#######1  | 71/100 [00:00<00:00, 71.00it/s] 79%|#######9  | 79/100 [00:01<00:00, 72.54it/s] 87%|########7 | 87/100 [00:01<00:00, 74.02it/s] 95%|#########5| 95/100 [00:01<00:00, 75.37it/s]100%|##########| 100/100 [00:01<00:00, 77.81it/s]
+Train Epoch 11
+{
+    "Loss": 38.986784019470214,
+    "Policy_Grad_Norms": 0.9999999939702735,
+    "Time_Data_Loading": 0.0029544512430826823,
+    "Time_Epoch": 0.02142989238103231,
+    "Time_Log_Info": 5.8579444885253904e-05,
+    "Time_Process_Batch": 0.00031412442525227864,
+    "Time_Train_Batch": 0.018054401874542235
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 247.98it/s]
+Validation Epoch 11
+{
+    "Loss": 39.02031211853027,
+    "Time_Data_Loading": 0.0002723256746927897,
+    "Time_Epoch": 0.0006864468256632487,
+    "Time_Log_Info": 3.0994415283203125e-06,
+    "Time_Process_Batch": 3.461440404256185e-05,
+    "Time_Train_Batch": 0.0003609021504720052
+}
+
+Epoch 11 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 74.75it/s] 16%|#6        | 16/100 [00:00<00:01, 73.29it/s] 24%|##4       | 24/100 [00:00<00:01, 72.65it/s] 32%|###2      | 32/100 [00:00<00:00, 72.81it/s] 40%|####      | 40/100 [00:00<00:00, 74.17it/s] 48%|####8     | 48/100 [00:00<00:00, 73.55it/s] 56%|#####6    | 56/100 [00:00<00:00, 73.14it/s] 64%|######4   | 64/100 [00:00<00:00, 73.65it/s] 73%|#######3  | 73/100 [00:00<00:00, 76.87it/s] 82%|########2 | 82/100 [00:01<00:00, 78.59it/s] 90%|######### | 90/100 [00:01<00:00, 77.82it/s] 98%|#########8| 98/100 [00:01<00:00, 75.65it/s]100%|##########| 100/100 [00:01<00:00, 74.98it/s]
+Train Epoch 12
+{
+    "Loss": 38.62807815551758,
+    "Policy_Grad_Norms": 1.0000000080287572,
+    "Time_Data_Loading": 0.0029431819915771485,
+    "Time_Epoch": 0.0222365140914917,
+    "Time_Log_Info": 5.697011947631836e-05,
+    "Time_Process_Batch": 0.00045076211293538414,
+    "Time_Train_Batch": 0.018732345104217528
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 216.57it/s]
+Validation Epoch 12
+{
+    "Loss": 39.045824432373045,
+    "Time_Data_Loading": 0.0003037254015604655,
+    "Time_Epoch": 0.0007865349451700846,
+    "Time_Log_Info": 4.414717356363932e-06,
+    "Time_Process_Batch": 4.442532857259115e-05,
+    "Time_Train_Batch": 0.00041567087173461915
+}
+
+Epoch 12 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 72.21it/s] 17%|#7        | 17/100 [00:00<00:01, 79.83it/s] 26%|##6       | 26/100 [00:00<00:00, 82.68it/s] 35%|###5      | 35/100 [00:00<00:00, 84.12it/s] 44%|####4     | 44/100 [00:00<00:00, 83.57it/s] 53%|#####3    | 53/100 [00:00<00:00, 84.11it/s] 62%|######2   | 62/100 [00:00<00:00, 82.25it/s] 71%|#######1  | 71/100 [00:00<00:00, 82.62it/s] 80%|########  | 80/100 [00:00<00:00, 83.11it/s] 89%|########9 | 89/100 [00:01<00:00, 82.56it/s] 98%|#########8| 98/100 [00:01<00:00, 82.11it/s]100%|##########| 100/100 [00:01<00:00, 82.34it/s]
+Train Epoch 13
+{
+    "Loss": 38.06379009246826,
+    "Policy_Grad_Norms": 0.9999999958304525,
+    "Time_Data_Loading": 0.0028138279914855955,
+    "Time_Epoch": 0.020252768198649088,
+    "Time_Log_Info": 3.511110941569011e-05,
+    "Time_Process_Batch": 0.00027762254079182944,
+    "Time_Train_Batch": 0.01707983414332072
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 248.00it/s]
+Validation Epoch 13
+{
+    "Loss": 37.94183578491211,
+    "Time_Data_Loading": 0.0002948562304178874,
+    "Time_Epoch": 0.0006896177927652995,
+    "Time_Log_Info": 2.8332074483235676e-06,
+    "Time_Process_Batch": 2.760489781697591e-05,
+    "Time_Train_Batch": 0.00034565130869547526
+}
+
+Epoch 13 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 80.77it/s] 18%|#8        | 18/100 [00:00<00:00, 82.08it/s] 27%|##7       | 27/100 [00:00<00:00, 80.07it/s] 36%|###6      | 36/100 [00:00<00:00, 81.85it/s] 45%|####5     | 45/100 [00:00<00:00, 79.09it/s] 53%|#####3    | 53/100 [00:00<00:00, 67.26it/s] 60%|######    | 60/100 [00:00<00:00, 64.91it/s] 68%|######8   | 68/100 [00:00<00:00, 66.68it/s] 76%|#######6  | 76/100 [00:01<00:00, 68.64it/s] 84%|########4 | 84/100 [00:01<00:00, 69.22it/s] 91%|#########1| 91/100 [00:01<00:00, 68.82it/s] 99%|#########9| 99/100 [00:01<00:00, 69.39it/s]100%|##########| 100/100 [00:01<00:00, 71.29it/s]
+Train Epoch 14
+{
+    "Loss": 37.684141635894775,
+    "Policy_Grad_Norms": 0.9999999785887371,
+    "Time_Data_Loading": 0.0031605958938598633,
+    "Time_Epoch": 0.023390420277913413,
+    "Time_Log_Info": 6.0669581095377605e-05,
+    "Time_Process_Batch": 0.00043027003606160483,
+    "Time_Train_Batch": 0.01968171993891398
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 229.56it/s]
+Validation Epoch 14
+{
+    "Loss": 37.12043800354004,
+    "Time_Data_Loading": 0.0002787987391153971,
+    "Time_Epoch": 0.0007412950197855632,
+    "Time_Log_Info": 3.3259391784667967e-06,
+    "Time_Process_Batch": 3.737211227416992e-05,
+    "Time_Train_Batch": 0.00040523211161295575
+}
+
+Epoch 14 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 73.24it/s] 16%|#6        | 16/100 [00:00<00:01, 73.99it/s] 24%|##4       | 24/100 [00:00<00:01, 71.55it/s] 32%|###2      | 32/100 [00:00<00:00, 71.52it/s] 41%|####1     | 41/100 [00:00<00:00, 75.20it/s] 50%|#####     | 50/100 [00:00<00:00, 77.47it/s] 58%|#####8    | 58/100 [00:00<00:00, 72.54it/s] 66%|######6   | 66/100 [00:00<00:00, 68.21it/s] 73%|#######3  | 73/100 [00:01<00:00, 67.27it/s] 81%|########1 | 81/100 [00:01<00:00, 69.07it/s] 88%|########8 | 88/100 [00:01<00:00, 68.19it/s] 95%|#########5| 95/100 [00:01<00:00, 68.38it/s]100%|##########| 100/100 [00:01<00:00, 70.49it/s]
+Train Epoch 15
+{
+    "Loss": 36.78790065765381,
+    "Policy_Grad_Norms": 0.9999999967598379,
+    "Time_Data_Loading": 0.0030975500742594403,
+    "Time_Epoch": 0.02365378141403198,
+    "Time_Log_Info": 6.165901819864909e-05,
+    "Time_Process_Batch": 0.0004778146743774414,
+    "Time_Train_Batch": 0.019958889484405516
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 220.01it/s]
+Validation Epoch 15
+{
+    "Loss": 37.01034698486328,
+    "Time_Data_Loading": 0.0002849698066711426,
+    "Time_Epoch": 0.0007741530736287435,
+    "Time_Log_Info": 3.5802523295084637e-06,
+    "Time_Process_Batch": 4.957119623819987e-05,
+    "Time_Train_Batch": 0.0004179517428080241
+}
+
+Epoch 15 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 72.92it/s] 16%|#6        | 16/100 [00:00<00:01, 74.90it/s] 24%|##4       | 24/100 [00:00<00:01, 75.71it/s] 32%|###2      | 32/100 [00:00<00:00, 76.40it/s] 40%|####      | 40/100 [00:00<00:00, 76.32it/s] 49%|####9     | 49/100 [00:00<00:00, 79.56it/s] 58%|#####8    | 58/100 [00:00<00:00, 82.01it/s] 67%|######7   | 67/100 [00:00<00:00, 83.47it/s] 76%|#######6  | 76/100 [00:00<00:00, 84.94it/s] 85%|########5 | 85/100 [00:01<00:00, 85.71it/s] 94%|#########3| 94/100 [00:01<00:00, 86.09it/s]100%|##########| 100/100 [00:01<00:00, 82.05it/s]
+Train Epoch 16
+{
+    "Loss": 36.68439567565918,
+    "Policy_Grad_Norms": 1.0000000074577824,
+    "Time_Data_Loading": 0.0027608990669250487,
+    "Time_Epoch": 0.020322358608245848,
+    "Time_Log_Info": 4.264116287231445e-05,
+    "Time_Process_Batch": 0.00036478837331136067,
+    "Time_Train_Batch": 0.017107673486073813
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 175.33it/s]
+Validation Epoch 16
+{
+    "Loss": 36.1323184967041,
+    "Time_Data_Loading": 0.0003590504328409831,
+    "Time_Epoch": 0.000969847043355306,
+    "Time_Log_Info": 4.15643056233724e-06,
+    "Time_Process_Batch": 5.861520767211914e-05,
+    "Time_Train_Batch": 0.0005271752675374349
+}
+
+Epoch 16 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 55.34it/s] 12%|#2        | 12/100 [00:00<00:01, 56.79it/s] 18%|#8        | 18/100 [00:00<00:01, 58.08it/s] 24%|##4       | 24/100 [00:00<00:01, 56.59it/s] 30%|###       | 30/100 [00:00<00:01, 55.11it/s] 37%|###7      | 37/100 [00:00<00:01, 59.16it/s] 44%|####4     | 44/100 [00:00<00:00, 61.86it/s] 51%|#####1    | 51/100 [00:00<00:00, 63.85it/s] 58%|#####8    | 58/100 [00:00<00:00, 64.89it/s] 65%|######5   | 65/100 [00:01<00:00, 63.51it/s] 73%|#######3  | 73/100 [00:01<00:00, 66.13it/s] 81%|########1 | 81/100 [00:01<00:00, 68.58it/s] 89%|########9 | 89/100 [00:01<00:00, 71.32it/s] 98%|#########8| 98/100 [00:01<00:00, 75.74it/s]100%|##########| 100/100 [00:01<00:00, 65.99it/s]
+Train Epoch 17
+{
+    "Loss": 36.22828176498413,
+    "Policy_Grad_Norms": 1.000000006354207,
+    "Time_Data_Loading": 0.003282308578491211,
+    "Time_Epoch": 0.02526848316192627,
+    "Time_Log_Info": 7.098118464152018e-05,
+    "Time_Process_Batch": 0.0005136211713155111,
+    "Time_Train_Batch": 0.0213315486907959
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 262.20it/s]
+Validation Epoch 17
+{
+    "Loss": 35.007310676574704,
+    "Time_Data_Loading": 0.0002650181452433268,
+    "Time_Epoch": 0.000651709238688151,
+    "Time_Log_Info": 2.7418136596679688e-06,
+    "Time_Process_Batch": 4.10000483194987e-05,
+    "Time_Train_Batch": 0.0003258466720581055
+}
+
+Epoch 17 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 82.08it/s] 18%|#8        | 18/100 [00:00<00:01, 81.10it/s] 27%|##7       | 27/100 [00:00<00:00, 83.42it/s] 36%|###6      | 36/100 [00:00<00:00, 84.55it/s] 45%|####5     | 45/100 [00:00<00:00, 85.20it/s] 54%|#####4    | 54/100 [00:00<00:00, 85.54it/s] 63%|######3   | 63/100 [00:00<00:00, 85.09it/s] 72%|#######2  | 72/100 [00:00<00:00, 84.21it/s] 81%|########1 | 81/100 [00:00<00:00, 84.86it/s] 90%|######### | 90/100 [00:01<00:00, 85.22it/s] 99%|#########9| 99/100 [00:01<00:00, 85.72it/s]100%|##########| 100/100 [00:01<00:00, 84.83it/s]
+Train Epoch 18
+{
+    "Loss": 35.90468458175659,
+    "Policy_Grad_Norms": 1.0000000228775767,
+    "Time_Data_Loading": 0.002713926633199056,
+    "Time_Epoch": 0.01965566078821818,
+    "Time_Log_Info": 3.37680180867513e-05,
+    "Time_Process_Batch": 0.0002774675687154134,
+    "Time_Train_Batch": 0.016586784521738687
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 258.94it/s]
+Validation Epoch 18
+{
+    "Loss": 35.31745643615723,
+    "Time_Data_Loading": 0.0002673784891764323,
+    "Time_Epoch": 0.000657963752746582,
+    "Time_Log_Info": 2.7378400166829425e-06,
+    "Time_Process_Batch": 3.7880738576253253e-05,
+    "Time_Train_Batch": 0.0003345608711242676
+}
+
+Epoch 18 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 85.20it/s] 18%|#8        | 18/100 [00:00<00:00, 85.75it/s] 27%|##7       | 27/100 [00:00<00:00, 85.99it/s] 36%|###6      | 36/100 [00:00<00:00, 86.03it/s] 45%|####5     | 45/100 [00:00<00:00, 85.07it/s] 54%|#####4    | 54/100 [00:00<00:00, 85.28it/s] 63%|######3   | 63/100 [00:00<00:00, 85.60it/s] 72%|#######2  | 72/100 [00:00<00:00, 85.35it/s] 81%|########1 | 81/100 [00:00<00:00, 85.46it/s] 90%|######### | 90/100 [00:01<00:00, 85.48it/s] 99%|#########9| 99/100 [00:01<00:00, 85.57it/s]100%|##########| 100/100 [00:01<00:00, 85.54it/s]
+Train Epoch 19
+{
+    "Loss": 35.48085386276245,
+    "Policy_Grad_Norms": 0.9999999982189739,
+    "Time_Data_Loading": 0.0027090827624003094,
+    "Time_Epoch": 0.019493099053700766,
+    "Time_Log_Info": 2.9989083607991536e-05,
+    "Time_Process_Batch": 0.00025769869486490883,
+    "Time_Train_Batch": 0.016454195976257323
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 265.66it/s]
+Validation Epoch 19
+{
+    "Loss": 35.9188835144043,
+    "Time_Data_Loading": 0.00026480754216512046,
+    "Time_Epoch": 0.0006375948588053386,
+    "Time_Log_Info": 2.6265780131022137e-06,
+    "Time_Process_Batch": 2.824068069458008e-05,
+    "Time_Train_Batch": 0.0003306229909261068
+}
+
+Epoch 19 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 86.73it/s] 18%|#8        | 18/100 [00:00<00:00, 86.15it/s] 27%|##7       | 27/100 [00:00<00:00, 85.73it/s] 36%|###6      | 36/100 [00:00<00:00, 85.63it/s] 45%|####5     | 45/100 [00:00<00:00, 85.70it/s] 54%|#####4    | 54/100 [00:00<00:00, 85.96it/s] 63%|######3   | 63/100 [00:00<00:00, 86.25it/s] 72%|#######2  | 72/100 [00:00<00:00, 86.44it/s] 81%|########1 | 81/100 [00:00<00:00, 86.41it/s] 90%|######### | 90/100 [00:01<00:00, 86.21it/s] 99%|#########9| 99/100 [00:01<00:00, 85.94it/s]100%|##########| 100/100 [00:01<00:00, 86.05it/s]
+Train Epoch 20
+{
+    "Loss": 35.44669815063477,
+    "Policy_Grad_Norms": 1.0000000167239402,
+    "Time_Data_Loading": 0.002704735596974691,
+    "Time_Epoch": 0.01937727928161621,
+    "Time_Log_Info": 2.962350845336914e-05,
+    "Time_Process_Batch": 0.0002527356147766113,
+    "Time_Train_Batch": 0.01634761889775594
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 262.24it/s]
+Validation Epoch 20
+{
+    "Loss": 34.54300079345703,
+    "Time_Data_Loading": 0.00027046600977579754,
+    "Time_Epoch": 0.0006458679835001628,
+    "Time_Log_Info": 2.610683441162109e-06,
+    "Time_Process_Batch": 2.5069713592529298e-05,
+    "Time_Train_Batch": 0.0003364125887552897
+}
+
+Epoch 20 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 84.64it/s] 18%|#8        | 18/100 [00:00<00:00, 85.17it/s] 27%|##7       | 27/100 [00:00<00:00, 85.55it/s] 36%|###6      | 36/100 [00:00<00:00, 85.85it/s] 45%|####5     | 45/100 [00:00<00:00, 86.04it/s] 54%|#####4    | 54/100 [00:00<00:00, 85.62it/s] 63%|######3   | 63/100 [00:00<00:00, 85.59it/s] 72%|#######2  | 72/100 [00:00<00:00, 85.72it/s] 81%|########1 | 81/100 [00:00<00:00, 85.83it/s] 90%|######### | 90/100 [00:01<00:00, 85.54it/s] 99%|#########9| 99/100 [00:01<00:00, 84.68it/s]100%|##########| 100/100 [00:01<00:00, 85.35it/s]
+Train Epoch 21
+{
+    "Loss": 35.159878711700436,
+    "Policy_Grad_Norms": 1.0000000049057394,
+    "Time_Data_Loading": 0.002762246131896973,
+    "Time_Epoch": 0.019536427656809487,
+    "Time_Log_Info": 3.0128161112467446e-05,
+    "Time_Process_Batch": 0.0002584973971048991,
+    "Time_Train_Batch": 0.01644262472788493
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 261.28it/s]
+Validation Epoch 21
+{
+    "Loss": 35.022541999816895,
+    "Time_Data_Loading": 0.0002736210823059082,
+    "Time_Epoch": 0.0006452163060506184,
+    "Time_Log_Info": 2.6146570841471354e-06,
+    "Time_Process_Batch": 2.5633970896402995e-05,
+    "Time_Train_Batch": 0.00033497015635172527
+}
+
+Epoch 21 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 82.06it/s] 18%|#8        | 18/100 [00:00<00:01, 80.97it/s] 27%|##7       | 27/100 [00:00<00:00, 80.70it/s] 36%|###6      | 36/100 [00:00<00:00, 78.72it/s] 44%|####4     | 44/100 [00:00<00:00, 74.59it/s] 52%|#####2    | 52/100 [00:00<00:00, 74.54it/s] 60%|######    | 60/100 [00:00<00:00, 74.22it/s] 68%|######8   | 68/100 [00:00<00:00, 74.04it/s] 76%|#######6  | 76/100 [00:01<00:00, 70.89it/s] 84%|########4 | 84/100 [00:01<00:00, 68.15it/s] 91%|#########1| 91/100 [00:01<00:00, 67.46it/s] 99%|#########9| 99/100 [00:01<00:00, 69.32it/s]100%|##########| 100/100 [00:01<00:00, 72.71it/s]
+Train Epoch 22
+{
+    "Loss": 34.76912845611572,
+    "Policy_Grad_Norms": 1.0000000019010102,
+    "Time_Data_Loading": 0.0030631264050801593,
+    "Time_Epoch": 0.022931901613871257,
+    "Time_Log_Info": 5.6060155232747394e-05,
+    "Time_Process_Batch": 0.00047455231348673504,
+    "Time_Train_Batch": 0.019282925128936767
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 218.54it/s]
+Validation Epoch 22
+{
+    "Loss": 34.50241584777832,
+    "Time_Data_Loading": 0.00029856363932291666,
+    "Time_Epoch": 0.0007775584856669108,
+    "Time_Log_Info": 3.619988759358724e-06,
+    "Time_Process_Batch": 4.2621294657389326e-05,
+    "Time_Train_Batch": 0.00041625102361043297
+}
+
+Epoch 22 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  7%|7         | 7/100 [00:00<00:01, 68.61it/s] 14%|#4        | 14/100 [00:00<00:01, 67.68it/s] 21%|##1       | 21/100 [00:00<00:01, 68.11it/s] 28%|##8       | 28/100 [00:00<00:01, 67.58it/s] 36%|###6      | 36/100 [00:00<00:00, 70.77it/s] 44%|####4     | 44/100 [00:00<00:00, 72.57it/s] 52%|#####2    | 52/100 [00:00<00:00, 74.58it/s] 60%|######    | 60/100 [00:00<00:00, 76.24it/s] 69%|######9   | 69/100 [00:00<00:00, 77.83it/s] 78%|#######8  | 78/100 [00:01<00:00, 80.24it/s] 87%|########7 | 87/100 [00:01<00:00, 81.48it/s] 96%|#########6| 96/100 [00:01<00:00, 83.29it/s]100%|##########| 100/100 [00:01<00:00, 77.16it/s]
+Train Epoch 23
+{
+    "Loss": 34.77493425369263,
+    "Policy_Grad_Norms": 0.9999999748864157,
+    "Time_Data_Loading": 0.002879345417022705,
+    "Time_Epoch": 0.021613125006357828,
+    "Time_Log_Info": 5.0628185272216796e-05,
+    "Time_Process_Batch": 0.00037721792856852215,
+    "Time_Train_Batch": 0.01825369199117025
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 272.75it/s]
+Validation Epoch 23
+{
+    "Loss": 34.54150218963623,
+    "Time_Data_Loading": 0.0002594431241353353,
+    "Time_Epoch": 0.0006244778633117676,
+    "Time_Log_Info": 2.5471051534016928e-06,
+    "Time_Process_Batch": 2.4652481079101564e-05,
+    "Time_Train_Batch": 0.0003234108289082845
+}
+
+Epoch 23 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 87.07it/s] 18%|#8        | 18/100 [00:00<00:00, 87.00it/s] 27%|##7       | 27/100 [00:00<00:00, 84.91it/s] 36%|###6      | 36/100 [00:00<00:00, 84.68it/s] 45%|####5     | 45/100 [00:00<00:00, 84.26it/s] 54%|#####4    | 54/100 [00:00<00:00, 80.56it/s] 63%|######3   | 63/100 [00:00<00:00, 78.28it/s] 71%|#######1  | 71/100 [00:00<00:00, 77.69it/s] 79%|#######9  | 79/100 [00:00<00:00, 77.97it/s] 87%|########7 | 87/100 [00:01<00:00, 77.16it/s] 95%|#########5| 95/100 [00:01<00:00, 76.64it/s]100%|##########| 100/100 [00:01<00:00, 79.52it/s]
+Train Epoch 24
+{
+    "Loss": 34.64461420059204,
+    "Policy_Grad_Norms": 0.9999999905946598,
+    "Time_Data_Loading": 0.0028060436248779296,
+    "Time_Epoch": 0.020967348416646322,
+    "Time_Log_Info": 4.9384435017903644e-05,
+    "Time_Process_Batch": 0.00037491321563720703,
+    "Time_Train_Batch": 0.017688822746276856
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 240.13it/s]
+Validation Epoch 24
+{
+    "Loss": 34.10159778594971,
+    "Time_Data_Loading": 0.0002885619799296061,
+    "Time_Epoch": 0.0007078886032104492,
+    "Time_Log_Info": 3.2901763916015627e-06,
+    "Time_Process_Batch": 3.925164540608724e-05,
+    "Time_Train_Batch": 0.00036175251007080077
+}
+
+Epoch 24 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 79.51it/s] 17%|#7        | 17/100 [00:00<00:00, 83.19it/s] 26%|##6       | 26/100 [00:00<00:00, 84.37it/s] 35%|###5      | 35/100 [00:00<00:00, 82.29it/s] 44%|####4     | 44/100 [00:00<00:00, 81.10it/s] 53%|#####3    | 53/100 [00:00<00:00, 82.03it/s] 62%|######2   | 62/100 [00:00<00:00, 83.56it/s] 71%|#######1  | 71/100 [00:00<00:00, 84.81it/s] 80%|########  | 80/100 [00:00<00:00, 85.21it/s] 89%|########9 | 89/100 [00:01<00:00, 85.19it/s] 98%|#########8| 98/100 [00:01<00:00, 85.30it/s]100%|##########| 100/100 [00:01<00:00, 84.02it/s]
+Train Epoch 25
+{
+    "Loss": 34.408815155029295,
+    "Policy_Grad_Norms": 0.9999999860312343,
+    "Time_Data_Loading": 0.002740907669067383,
+    "Time_Epoch": 0.01984571615854899,
+    "Time_Log_Info": 4.556576410929362e-05,
+    "Time_Process_Batch": 0.00029788812001546225,
+    "Time_Train_Batch": 0.01671740214029948
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 264.27it/s]
+Validation Epoch 25
+{
+    "Loss": 34.62100486755371,
+    "Time_Data_Loading": 0.00026112794876098633,
+    "Time_Epoch": 0.000644691785176595,
+    "Time_Log_Info": 2.5431315104166665e-06,
+    "Time_Process_Batch": 4.1818618774414064e-05,
+    "Time_Train_Batch": 0.0003241697947184245
+}
+
+Epoch 25 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 85.60it/s] 18%|#8        | 18/100 [00:00<00:00, 85.30it/s] 27%|##7       | 27/100 [00:00<00:00, 85.44it/s] 36%|###6      | 36/100 [00:00<00:00, 85.49it/s] 45%|####5     | 45/100 [00:00<00:00, 85.33it/s] 54%|#####4    | 54/100 [00:00<00:00, 85.25it/s] 63%|######3   | 63/100 [00:00<00:00, 86.00it/s] 72%|#######2  | 72/100 [00:00<00:00, 86.11it/s] 81%|########1 | 81/100 [00:00<00:00, 85.48it/s] 90%|######### | 90/100 [00:01<00:00, 84.96it/s] 99%|#########9| 99/100 [00:01<00:00, 84.78it/s]100%|##########| 100/100 [00:01<00:00, 85.28it/s]
+Train Epoch 26
+{
+    "Loss": 34.185744819641116,
+    "Policy_Grad_Norms": 0.9999999910992952,
+    "Time_Data_Loading": 0.002767328421274821,
+    "Time_Epoch": 0.019552310307820637,
+    "Time_Log_Info": 2.9929478963216145e-05,
+    "Time_Process_Batch": 0.0002636830012003581,
+    "Time_Train_Batch": 0.0164486567179362
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 268.11it/s]
+Validation Epoch 26
+{
+    "Loss": 34.35385437011719,
+    "Time_Data_Loading": 0.00026108423868815103,
+    "Time_Epoch": 0.0006348570187886556,
+    "Time_Log_Info": 2.6265780131022137e-06,
+    "Time_Process_Batch": 2.540747324625651e-05,
+    "Time_Train_Batch": 0.0003314892450968424
+}
+
+Epoch 26 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 83.38it/s] 18%|#8        | 18/100 [00:00<00:00, 84.61it/s] 27%|##7       | 27/100 [00:00<00:00, 85.64it/s] 36%|###6      | 36/100 [00:00<00:00, 86.07it/s] 45%|####5     | 45/100 [00:00<00:00, 86.45it/s] 54%|#####4    | 54/100 [00:00<00:00, 86.06it/s] 63%|######3   | 63/100 [00:00<00:00, 85.63it/s] 72%|#######2  | 72/100 [00:00<00:00, 85.51it/s] 81%|########1 | 81/100 [00:00<00:00, 85.10it/s] 90%|######### | 90/100 [00:01<00:00, 84.91it/s] 99%|#########9| 99/100 [00:01<00:00, 85.00it/s]100%|##########| 100/100 [00:01<00:00, 85.34it/s]
+Train Epoch 27
+{
+    "Loss": 34.23267135620117,
+    "Policy_Grad_Norms": 0.9999999882983477,
+    "Time_Data_Loading": 0.0027581095695495606,
+    "Time_Epoch": 0.01953842639923096,
+    "Time_Log_Info": 3.00447146097819e-05,
+    "Time_Process_Batch": 0.00025668938954671226,
+    "Time_Train_Batch": 0.01645188331604004
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 260.20it/s]
+Validation Epoch 27
+{
+    "Loss": 32.87483959197998,
+    "Time_Data_Loading": 0.00026490290959676105,
+    "Time_Epoch": 0.000653525193532308,
+    "Time_Log_Info": 4.331270853678386e-06,
+    "Time_Process_Batch": 2.5602181752522788e-05,
+    "Time_Train_Batch": 0.000344693660736084
+}
+
+Epoch 27 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 85.43it/s] 18%|#8        | 18/100 [00:00<00:00, 85.71it/s] 27%|##7       | 27/100 [00:00<00:00, 85.54it/s] 36%|###6      | 36/100 [00:00<00:00, 85.58it/s] 45%|####5     | 45/100 [00:00<00:00, 85.88it/s] 54%|#####4    | 54/100 [00:00<00:00, 84.76it/s] 63%|######3   | 63/100 [00:00<00:00, 84.86it/s] 72%|#######2  | 72/100 [00:00<00:00, 85.15it/s] 81%|########1 | 81/100 [00:00<00:00, 85.32it/s] 90%|######### | 90/100 [00:01<00:00, 85.25it/s] 99%|#########9| 99/100 [00:01<00:00, 85.56it/s]100%|##########| 100/100 [00:01<00:00, 85.39it/s]
+Train Epoch 28
+{
+    "Loss": 34.02120416641235,
+    "Policy_Grad_Norms": 0.9999999997387493,
+    "Time_Data_Loading": 0.0027232011159261066,
+    "Time_Epoch": 0.019527939955393474,
+    "Time_Log_Info": 3.0008951822916665e-05,
+    "Time_Process_Batch": 0.00025568008422851565,
+    "Time_Train_Batch": 0.0164756973584493
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 261.75it/s]
+Validation Epoch 28
+{
+    "Loss": 34.94158821105957,
+    "Time_Data_Loading": 0.00026591221491495767,
+    "Time_Epoch": 0.0006439288457234701,
+    "Time_Log_Info": 2.634525299072266e-06,
+    "Time_Process_Batch": 2.485513687133789e-05,
+    "Time_Train_Batch": 0.0003422776858011881
+}
+
+Epoch 28 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 84.71it/s] 18%|#8        | 18/100 [00:00<00:00, 85.40it/s] 27%|##7       | 27/100 [00:00<00:00, 85.83it/s] 36%|###6      | 36/100 [00:00<00:00, 85.95it/s] 45%|####5     | 45/100 [00:00<00:00, 85.60it/s] 54%|#####4    | 54/100 [00:00<00:00, 85.37it/s] 63%|######3   | 63/100 [00:00<00:00, 85.42it/s] 72%|#######2  | 72/100 [00:00<00:00, 85.17it/s] 81%|########1 | 81/100 [00:00<00:00, 84.08it/s] 90%|######### | 90/100 [00:01<00:00, 84.10it/s] 99%|#########9| 99/100 [00:01<00:00, 84.79it/s]100%|##########| 100/100 [00:01<00:00, 85.02it/s]
+Train Epoch 29
+{
+    "Loss": 33.733221759796145,
+    "Policy_Grad_Norms": 0.9999999984341095,
+    "Time_Data_Loading": 0.00272755225499471,
+    "Time_Epoch": 0.019611263275146486,
+    "Time_Log_Info": 3.1495094299316405e-05,
+    "Time_Process_Batch": 0.0002582073211669922,
+    "Time_Train_Batch": 0.01654826800028483
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 265.14it/s]
+Validation Epoch 29
+{
+    "Loss": 32.51084613800049,
+    "Time_Data_Loading": 0.0002663532892862956,
+    "Time_Epoch": 0.0006410638491312663,
+    "Time_Log_Info": 2.642472585042318e-06,
+    "Time_Process_Batch": 2.4616718292236328e-05,
+    "Time_Train_Batch": 0.0003339727719624837
+}
+
+Epoch 29 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 85.32it/s] 18%|#8        | 18/100 [00:00<00:00, 82.74it/s] 27%|##7       | 27/100 [00:00<00:00, 81.41it/s] 36%|###6      | 36/100 [00:00<00:00, 80.48it/s] 45%|####5     | 45/100 [00:00<00:00, 82.49it/s] 54%|#####4    | 54/100 [00:00<00:00, 82.49it/s] 63%|######3   | 63/100 [00:00<00:00, 83.16it/s] 72%|#######2  | 72/100 [00:00<00:00, 82.85it/s] 81%|########1 | 81/100 [00:01<00:00, 78.34it/s] 90%|######### | 90/100 [00:01<00:00, 79.18it/s] 99%|#########9| 99/100 [00:01<00:00, 80.91it/s]100%|##########| 100/100 [00:01<00:00, 81.34it/s]
+Train Epoch 30
+{
+    "Loss": 33.56928594589233,
+    "Policy_Grad_Norms": 0.9999999965006348,
+    "Time_Data_Loading": 0.002858610947926839,
+    "Time_Epoch": 0.02049952745437622,
+    "Time_Log_Info": 3.8290023803710936e-05,
+    "Time_Process_Batch": 0.000279390811920166,
+    "Time_Train_Batch": 0.01727805534998576
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 263.79it/s]
+Validation Epoch 30
+{
+    "Loss": 33.57827911376953,
+    "Time_Data_Loading": 0.00026357173919677734,
+    "Time_Epoch": 0.0006461103757222493,
+    "Time_Log_Info": 2.658367156982422e-06,
+    "Time_Process_Batch": 2.5280316670735677e-05,
+    "Time_Train_Batch": 0.0003392179807027181
+}
+
+Epoch 30 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 85.33it/s] 18%|#8        | 18/100 [00:00<00:00, 84.41it/s] 27%|##7       | 27/100 [00:00<00:00, 79.54it/s] 35%|###5      | 35/100 [00:00<00:00, 77.15it/s] 44%|####4     | 44/100 [00:00<00:00, 80.09it/s] 53%|#####3    | 53/100 [00:00<00:00, 81.84it/s] 62%|######2   | 62/100 [00:00<00:00, 82.68it/s] 71%|#######1  | 71/100 [00:00<00:00, 83.70it/s] 80%|########  | 80/100 [00:00<00:00, 84.41it/s] 89%|########9 | 89/100 [00:01<00:00, 84.45it/s] 98%|#########8| 98/100 [00:01<00:00, 84.75it/s]100%|##########| 100/100 [00:01<00:00, 82.99it/s]
+Train Epoch 31
+{
+    "Loss": 33.33042310714722,
+    "Policy_Grad_Norms": 1.0000000091669006,
+    "Time_Data_Loading": 0.0027806878089904783,
+    "Time_Epoch": 0.020092523097991942,
+    "Time_Log_Info": 3.302892049153646e-05,
+    "Time_Process_Batch": 0.0002697984377543131,
+    "Time_Train_Batch": 0.016965293884277345
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 268.87it/s]
+Validation Epoch 31
+{
+    "Loss": 31.51971263885498,
+    "Time_Data_Loading": 0.00025945504506429037,
+    "Time_Epoch": 0.0006346344947814941,
+    "Time_Log_Info": 2.6226043701171875e-06,
+    "Time_Process_Batch": 4.0749708811442055e-05,
+    "Time_Train_Batch": 0.0003160436948140462
+}
+
+Epoch 31 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 85.95it/s] 18%|#8        | 18/100 [00:00<00:00, 85.89it/s] 27%|##7       | 27/100 [00:00<00:00, 86.19it/s] 36%|###6      | 36/100 [00:00<00:00, 86.05it/s] 45%|####5     | 45/100 [00:00<00:00, 86.41it/s] 54%|#####4    | 54/100 [00:00<00:00, 86.56it/s] 63%|######3   | 63/100 [00:00<00:00, 86.03it/s] 72%|#######2  | 72/100 [00:00<00:00, 85.91it/s] 81%|########1 | 81/100 [00:00<00:00, 85.67it/s] 90%|######### | 90/100 [00:01<00:00, 85.48it/s] 99%|#########9| 99/100 [00:01<00:00, 85.64it/s]100%|##########| 100/100 [00:01<00:00, 85.90it/s]
+Train Epoch 32
+{
+    "Loss": 33.13707208633423,
+    "Policy_Grad_Norms": 0.9999999898272723,
+    "Time_Data_Loading": 0.0026955723762512205,
+    "Time_Epoch": 0.019411663214365642,
+    "Time_Log_Info": 2.9774506886800132e-05,
+    "Time_Process_Batch": 0.00026105244954427085,
+    "Time_Train_Batch": 0.01638331413269043
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 264.56it/s]
+Validation Epoch 32
+{
+    "Loss": 32.69070110321045,
+    "Time_Data_Loading": 0.00026378234227498375,
+    "Time_Epoch": 0.0006396651268005371,
+    "Time_Log_Info": 2.6265780131022137e-06,
+    "Time_Process_Batch": 2.592007319132487e-05,
+    "Time_Train_Batch": 0.000336611270904541
+}
+
+Epoch 32 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 85.96it/s] 18%|#8        | 18/100 [00:00<00:00, 85.62it/s] 27%|##7       | 27/100 [00:00<00:00, 85.89it/s] 36%|###6      | 36/100 [00:00<00:00, 86.06it/s] 45%|####5     | 45/100 [00:00<00:00, 85.96it/s] 54%|#####4    | 54/100 [00:00<00:00, 85.49it/s] 63%|######3   | 63/100 [00:00<00:00, 85.81it/s] 72%|#######2  | 72/100 [00:00<00:00, 85.98it/s] 81%|########1 | 81/100 [00:00<00:00, 86.05it/s] 90%|######### | 90/100 [00:01<00:00, 86.18it/s] 99%|#########9| 99/100 [00:01<00:00, 86.47it/s]100%|##########| 100/100 [00:01<00:00, 86.01it/s]
+Train Epoch 33
+{
+    "Loss": 32.950043296813966,
+    "Policy_Grad_Norms": 0.9999999876066462,
+    "Time_Data_Loading": 0.0026879231135050457,
+    "Time_Epoch": 0.019385512669881186,
+    "Time_Log_Info": 2.9337406158447265e-05,
+    "Time_Process_Batch": 0.00025450785954793295,
+    "Time_Train_Batch": 0.016371409098307293
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 268.26it/s]
+Validation Epoch 33
+{
+    "Loss": 32.30069522857666,
+    "Time_Data_Loading": 0.0002592722574869792,
+    "Time_Epoch": 0.0006347497304280599,
+    "Time_Log_Info": 2.6146570841471354e-06,
+    "Time_Process_Batch": 4.0249029795328775e-05,
+    "Time_Train_Batch": 0.00031814177831014
+}
+
+Epoch 33 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 85.61it/s] 18%|#8        | 18/100 [00:00<00:00, 85.62it/s] 27%|##7       | 27/100 [00:00<00:00, 85.45it/s] 36%|###6      | 36/100 [00:00<00:00, 85.34it/s] 45%|####5     | 45/100 [00:00<00:00, 85.75it/s] 54%|#####4    | 54/100 [00:00<00:00, 86.23it/s] 63%|######3   | 63/100 [00:00<00:00, 85.90it/s] 72%|#######2  | 72/100 [00:00<00:00, 86.02it/s] 81%|########1 | 81/100 [00:00<00:00, 85.83it/s] 90%|######### | 90/100 [00:01<00:00, 85.73it/s] 99%|#########9| 99/100 [00:01<00:00, 85.66it/s]100%|##########| 100/100 [00:01<00:00, 85.75it/s]
+Train Epoch 34
+{
+    "Loss": 32.888458824157716,
+    "Policy_Grad_Norms": 0.9999999984699073,
+    "Time_Data_Loading": 0.0027224222819010415,
+    "Time_Epoch": 0.01944522460301717,
+    "Time_Log_Info": 3.0247370402018228e-05,
+    "Time_Process_Batch": 0.0002564469973246256,
+    "Time_Train_Batch": 0.01639409859975179
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 263.66it/s]
+Validation Epoch 34
+{
+    "Loss": 32.70048198699951,
+    "Time_Data_Loading": 0.00027106602986653647,
+    "Time_Epoch": 0.0006433804829915365,
+    "Time_Log_Info": 2.586841583251953e-06,
+    "Time_Process_Batch": 2.5876363118489583e-05,
+    "Time_Train_Batch": 0.0003315885861714681
+}
+
+Epoch 34 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 85.93it/s] 18%|#8        | 18/100 [00:00<00:00, 85.05it/s] 27%|##7       | 27/100 [00:00<00:00, 84.96it/s] 36%|###6      | 36/100 [00:00<00:00, 85.24it/s] 45%|####5     | 45/100 [00:00<00:00, 85.09it/s] 54%|#####4    | 54/100 [00:00<00:00, 85.28it/s] 63%|######3   | 63/100 [00:00<00:00, 85.27it/s] 72%|#######2  | 72/100 [00:00<00:00, 85.38it/s] 81%|########1 | 81/100 [00:00<00:00, 84.74it/s] 90%|######### | 90/100 [00:01<00:00, 84.56it/s] 99%|#########9| 99/100 [00:01<00:00, 84.72it/s]100%|##########| 100/100 [00:01<00:00, 84.98it/s]
+Train Epoch 35
+{
+    "Loss": 32.721463222503665,
+    "Policy_Grad_Norms": 1.000000013195994,
+    "Time_Data_Loading": 0.0027334133783976236,
+    "Time_Epoch": 0.019620180130004883,
+    "Time_Log_Info": 3.103812535603841e-05,
+    "Time_Process_Batch": 0.0002608180046081543,
+    "Time_Train_Batch": 0.01655213435490926
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 264.56it/s]
+Validation Epoch 35
+{
+    "Loss": 32.43028659820557,
+    "Time_Data_Loading": 0.00026560624440511067,
+    "Time_Epoch": 0.000643467903137207,
+    "Time_Log_Info": 2.777576446533203e-06,
+    "Time_Process_Batch": 2.563794453938802e-05,
+    "Time_Train_Batch": 0.00033492644627888997
+}
+
+Epoch 35 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 85.75it/s] 18%|#8        | 18/100 [00:00<00:00, 85.22it/s] 27%|##7       | 27/100 [00:00<00:00, 85.05it/s] 36%|###6      | 36/100 [00:00<00:00, 84.20it/s] 45%|####5     | 45/100 [00:00<00:00, 83.67it/s] 54%|#####4    | 54/100 [00:00<00:00, 83.61it/s] 63%|######3   | 63/100 [00:00<00:00, 83.55it/s] 72%|#######2  | 72/100 [00:00<00:00, 83.76it/s] 81%|########1 | 81/100 [00:00<00:00, 84.27it/s] 90%|######### | 90/100 [00:01<00:00, 84.62it/s] 99%|#########9| 99/100 [00:01<00:00, 85.04it/s]100%|##########| 100/100 [00:01<00:00, 84.46it/s]
+Train Epoch 36
+{
+    "Loss": 32.46598302841186,
+    "Policy_Grad_Norms": 0.999999993190194,
+    "Time_Data_Loading": 0.0027582724889119465,
+    "Time_Epoch": 0.019742878278096516,
+    "Time_Log_Info": 3.110965092976888e-05,
+    "Time_Process_Batch": 0.00026121934254964195,
+    "Time_Train_Batch": 0.016649635632832845
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 260.17it/s]
+Validation Epoch 36
+{
+    "Loss": 32.47536735534668,
+    "Time_Data_Loading": 0.0002699136734008789,
+    "Time_Epoch": 0.0006546457608540853,
+    "Time_Log_Info": 2.757708231608073e-06,
+    "Time_Process_Batch": 2.6917457580566408e-05,
+    "Time_Train_Batch": 0.0003397385279337565
+}
+
+Epoch 36 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 84.68it/s] 18%|#8        | 18/100 [00:00<00:00, 84.60it/s] 27%|##7       | 27/100 [00:00<00:00, 85.05it/s] 36%|###6      | 36/100 [00:00<00:00, 85.24it/s] 45%|####5     | 45/100 [00:00<00:00, 85.49it/s] 54%|#####4    | 54/100 [00:00<00:00, 85.79it/s] 63%|######3   | 63/100 [00:00<00:00, 85.80it/s] 72%|#######2  | 72/100 [00:00<00:00, 85.18it/s] 81%|########1 | 81/100 [00:00<00:00, 85.15it/s] 90%|######### | 90/100 [00:01<00:00, 85.18it/s] 99%|#########9| 99/100 [00:01<00:00, 85.49it/s]100%|##########| 100/100 [00:01<00:00, 85.34it/s]
+Train Epoch 37
+{
+    "Loss": 32.284039916992185,
+    "Policy_Grad_Norms": 0.9999999824882587,
+    "Time_Data_Loading": 0.0027317086855570476,
+    "Time_Epoch": 0.019537524382273356,
+    "Time_Log_Info": 3.064870834350586e-05,
+    "Time_Process_Batch": 0.0002590735753377279,
+    "Time_Train_Batch": 0.01647233168284098
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 265.29it/s]
+Validation Epoch 37
+{
+    "Loss": 31.77587833404541,
+    "Time_Data_Loading": 0.00026259024937947594,
+    "Time_Epoch": 0.0006441354751586914,
+    "Time_Log_Info": 2.6146570841471354e-06,
+    "Time_Process_Batch": 2.961556116739909e-05,
+    "Time_Train_Batch": 0.00033240318298339845
+}
+
+Epoch 37 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 86.54it/s] 18%|#8        | 18/100 [00:00<00:00, 85.79it/s] 27%|##7       | 27/100 [00:00<00:00, 86.10it/s] 36%|###6      | 36/100 [00:00<00:00, 86.06it/s] 45%|####5     | 45/100 [00:00<00:00, 85.95it/s] 54%|#####4    | 54/100 [00:00<00:00, 85.92it/s] 63%|######3   | 63/100 [00:00<00:00, 85.76it/s] 72%|#######2  | 72/100 [00:00<00:00, 85.61it/s] 81%|########1 | 81/100 [00:00<00:00, 85.71it/s] 90%|######### | 90/100 [00:01<00:00, 85.84it/s] 99%|#########9| 99/100 [00:01<00:00, 85.88it/s]100%|##########| 100/100 [00:01<00:00, 85.88it/s]
+Train Epoch 38
+{
+    "Loss": 32.1817805480957,
+    "Policy_Grad_Norms": 0.9999999913219978,
+    "Time_Data_Loading": 0.0027005394299825032,
+    "Time_Epoch": 0.019416189193725585,
+    "Time_Log_Info": 2.971490224202474e-05,
+    "Time_Process_Batch": 0.0002583463986714681,
+    "Time_Train_Batch": 0.01638503074645996
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 266.80it/s]
+Validation Epoch 38
+{
+    "Loss": 31.49751033782959,
+    "Time_Data_Loading": 0.00026303529739379883,
+    "Time_Epoch": 0.0006411274274190267,
+    "Time_Log_Info": 2.7378400166829425e-06,
+    "Time_Process_Batch": 2.5494893391927084e-05,
+    "Time_Train_Batch": 0.00033235947291056315
+}
+
+Epoch 38 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 85.49it/s] 18%|#8        | 18/100 [00:00<00:00, 84.85it/s] 27%|##7       | 27/100 [00:00<00:00, 84.84it/s] 36%|###6      | 36/100 [00:00<00:00, 84.71it/s] 45%|####5     | 45/100 [00:00<00:00, 84.65it/s] 54%|#####4    | 54/100 [00:00<00:00, 84.76it/s] 63%|######3   | 63/100 [00:00<00:00, 84.94it/s] 72%|#######2  | 72/100 [00:00<00:00, 85.07it/s] 81%|########1 | 81/100 [00:00<00:00, 85.24it/s] 90%|######### | 90/100 [00:01<00:00, 85.62it/s] 99%|#########9| 99/100 [00:01<00:00, 85.94it/s]100%|##########| 100/100 [00:01<00:00, 85.28it/s]
+Train Epoch 39
+{
+    "Loss": 32.112534847259525,
+    "Policy_Grad_Norms": 0.9999999960607373,
+    "Time_Data_Loading": 0.0027073423067728677,
+    "Time_Epoch": 0.019553009668986,
+    "Time_Log_Info": 3.0191739400227866e-05,
+    "Time_Process_Batch": 0.00025778611501057943,
+    "Time_Train_Batch": 0.016515167554219563
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 260.33it/s]
+Validation Epoch 39
+{
+    "Loss": 30.686145401000978,
+    "Time_Data_Loading": 0.00027315219243367514,
+    "Time_Epoch": 0.0006476044654846191,
+    "Time_Log_Info": 2.562999725341797e-06,
+    "Time_Process_Batch": 2.498626708984375e-05,
+    "Time_Train_Batch": 0.0003385066986083984
+}
+
+Epoch 39 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 85.15it/s] 18%|#8        | 18/100 [00:00<00:00, 85.67it/s] 27%|##7       | 27/100 [00:00<00:00, 85.60it/s] 36%|###6      | 36/100 [00:00<00:00, 84.85it/s] 45%|####5     | 45/100 [00:00<00:00, 85.04it/s] 54%|#####4    | 54/100 [00:00<00:00, 84.83it/s] 63%|######3   | 63/100 [00:00<00:00, 85.02it/s] 72%|#######2  | 72/100 [00:00<00:00, 84.79it/s] 81%|########1 | 81/100 [00:00<00:00, 84.39it/s] 90%|######### | 90/100 [00:01<00:00, 81.18it/s] 99%|#########9| 99/100 [00:01<00:00, 81.17it/s]100%|##########| 100/100 [00:01<00:00, 83.48it/s]
+Train Epoch 40
+{
+    "Loss": 31.77992649078369,
+    "Policy_Grad_Norms": 1.0000000091858992,
+    "Time_Data_Loading": 0.002767809232076009,
+    "Time_Epoch": 0.019972451527913413,
+    "Time_Log_Info": 3.335873285929362e-05,
+    "Time_Process_Batch": 0.00028026898701985676,
+    "Time_Train_Batch": 0.016846028963724773
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 264.72it/s]
+Validation Epoch 40
+{
+    "Loss": 32.146667671203616,
+    "Time_Data_Loading": 0.00026558240254720054,
+    "Time_Epoch": 0.0006424744923909505,
+    "Time_Log_Info": 2.642472585042318e-06,
+    "Time_Process_Batch": 2.5534629821777342e-05,
+    "Time_Train_Batch": 0.000334771474202474
+}
+
+Epoch 40 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 85.57it/s] 18%|#8        | 18/100 [00:00<00:00, 86.02it/s] 27%|##7       | 27/100 [00:00<00:00, 86.32it/s] 36%|###6      | 36/100 [00:00<00:00, 86.52it/s] 45%|####5     | 45/100 [00:00<00:00, 76.53it/s] 53%|#####3    | 53/100 [00:00<00:00, 72.26it/s] 61%|######1   | 61/100 [00:00<00:00, 73.76it/s] 69%|######9   | 69/100 [00:00<00:00, 75.04it/s] 77%|#######7  | 77/100 [00:00<00:00, 75.33it/s] 85%|########5 | 85/100 [00:01<00:00, 75.13it/s] 93%|#########3| 93/100 [00:01<00:00, 75.28it/s]100%|##########| 100/100 [00:01<00:00, 76.69it/s]
+Train Epoch 41
+{
+    "Loss": 31.800107707977293,
+    "Policy_Grad_Norms": 0.9999999986135196,
+    "Time_Data_Loading": 0.0029135783513387042,
+    "Time_Epoch": 0.021740837891896566,
+    "Time_Log_Info": 7.714430491129557e-05,
+    "Time_Process_Batch": 0.00041242837905883787,
+    "Time_Train_Batch": 0.018290400505065918
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 223.43it/s]
+Validation Epoch 41
+{
+    "Loss": 31.211226844787596,
+    "Time_Data_Loading": 0.0002860546112060547,
+    "Time_Epoch": 0.0007628877957661947,
+    "Time_Log_Info": 3.723303476969401e-06,
+    "Time_Process_Batch": 4.035631815592448e-05,
+    "Time_Train_Batch": 0.0004145463307698568
+}
+
+Epoch 41 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 73.14it/s] 16%|#6        | 16/100 [00:00<00:01, 73.66it/s] 24%|##4       | 24/100 [00:00<00:00, 76.12it/s] 32%|###2      | 32/100 [00:00<00:00, 76.75it/s] 41%|####1     | 41/100 [00:00<00:00, 79.73it/s] 50%|#####     | 50/100 [00:00<00:00, 82.00it/s] 59%|#####8    | 59/100 [00:00<00:00, 82.75it/s] 68%|######8   | 68/100 [00:00<00:00, 79.20it/s] 77%|#######7  | 77/100 [00:00<00:00, 80.65it/s] 86%|########6 | 86/100 [00:01<00:00, 73.43it/s] 94%|#########3| 94/100 [00:01<00:00, 69.88it/s]100%|##########| 100/100 [00:01<00:00, 74.87it/s]
+Train Epoch 42
+{
+    "Loss": 31.599898204803466,
+    "Policy_Grad_Norms": 1.0000000070716817,
+    "Time_Data_Loading": 0.0030117114384969074,
+    "Time_Epoch": 0.02227117617925008,
+    "Time_Log_Info": 5.279382069905599e-05,
+    "Time_Process_Batch": 0.0004071474075317383,
+    "Time_Train_Batch": 0.018750731150309244
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 199.96it/s]
+Validation Epoch 42
+{
+    "Loss": 31.01671905517578,
+    "Time_Data_Loading": 0.0003287593523661296,
+    "Time_Epoch": 0.0008531451225280762,
+    "Time_Log_Info": 3.707408905029297e-06,
+    "Time_Process_Batch": 4.740158716837565e-05,
+    "Time_Train_Batch": 0.00045223236083984374
+}
+
+Epoch 42 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  7%|7         | 7/100 [00:00<00:01, 63.82it/s] 14%|#4        | 14/100 [00:00<00:01, 59.12it/s] 21%|##1       | 21/100 [00:00<00:01, 62.57it/s] 29%|##9       | 29/100 [00:00<00:01, 66.22it/s] 37%|###7      | 37/100 [00:00<00:00, 70.09it/s] 45%|####5     | 45/100 [00:00<00:00, 69.13it/s] 53%|#####3    | 53/100 [00:00<00:00, 69.83it/s] 61%|######1   | 61/100 [00:00<00:00, 70.14it/s] 70%|#######   | 70/100 [00:01<00:00, 73.84it/s] 79%|#######9  | 79/100 [00:01<00:00, 77.08it/s] 88%|########8 | 88/100 [00:01<00:00, 79.29it/s] 97%|#########7| 97/100 [00:01<00:00, 81.19it/s]100%|##########| 100/100 [00:01<00:00, 73.57it/s]
+Train Epoch 43
+{
+    "Loss": 31.532560024261475,
+    "Policy_Grad_Norms": 1.0000000035625398,
+    "Time_Data_Loading": 0.0030507326126098635,
+    "Time_Epoch": 0.022665572166442872,
+    "Time_Log_Info": 5.340178807576497e-05,
+    "Time_Process_Batch": 0.0004235982894897461,
+    "Time_Train_Batch": 0.019082438945770264
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 265.14it/s]
+Validation Epoch 43
+{
+    "Loss": 31.543377494812013,
+    "Time_Data_Loading": 0.0002633055051167806,
+    "Time_Epoch": 0.0006420135498046875,
+    "Time_Log_Info": 2.678235371907552e-06,
+    "Time_Process_Batch": 2.534786860148112e-05,
+    "Time_Train_Batch": 0.00033619006474812824
+}
+
+Epoch 43 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 85.68it/s] 18%|#8        | 18/100 [00:00<00:00, 85.88it/s] 27%|##7       | 27/100 [00:00<00:00, 84.59it/s] 36%|###6      | 36/100 [00:00<00:00, 84.91it/s] 45%|####5     | 45/100 [00:00<00:00, 81.69it/s] 54%|#####4    | 54/100 [00:00<00:00, 82.56it/s] 63%|######3   | 63/100 [00:00<00:00, 83.18it/s] 72%|#######2  | 72/100 [00:00<00:00, 83.82it/s] 81%|########1 | 81/100 [00:00<00:00, 84.38it/s] 90%|######### | 90/100 [00:01<00:00, 84.48it/s] 99%|#########9| 99/100 [00:01<00:00, 84.81it/s]100%|##########| 100/100 [00:01<00:00, 84.17it/s]
+Train Epoch 44
+{
+    "Loss": 31.217687702178956,
+    "Policy_Grad_Norms": 0.999999993740616,
+    "Time_Data_Loading": 0.0027545889218648276,
+    "Time_Epoch": 0.019810215632120768,
+    "Time_Log_Info": 3.244479497273763e-05,
+    "Time_Process_Batch": 0.00027353763580322265,
+    "Time_Train_Batch": 0.01670530637105306
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 263.85it/s]
+Validation Epoch 44
+{
+    "Loss": 30.483554649353028,
+    "Time_Data_Loading": 0.00027254422505696617,
+    "Time_Epoch": 0.0006387472152709961,
+    "Time_Log_Info": 2.610683441162109e-06,
+    "Time_Process_Batch": 2.5320053100585938e-05,
+    "Time_Train_Batch": 0.0003301342328389486
+}
+
+Epoch 44 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 84.62it/s] 18%|#8        | 18/100 [00:00<00:00, 85.36it/s] 27%|##7       | 27/100 [00:00<00:00, 85.67it/s] 36%|###6      | 36/100 [00:00<00:00, 84.56it/s] 45%|####5     | 45/100 [00:00<00:00, 84.28it/s] 54%|#####4    | 54/100 [00:00<00:00, 84.76it/s] 63%|######3   | 63/100 [00:00<00:00, 84.32it/s] 72%|#######2  | 72/100 [00:00<00:00, 84.88it/s] 81%|########1 | 81/100 [00:00<00:00, 85.37it/s] 90%|######### | 90/100 [00:01<00:00, 85.47it/s] 99%|#########9| 99/100 [00:01<00:00, 85.63it/s]100%|##########| 100/100 [00:01<00:00, 85.14it/s]
+Train Epoch 45
+{
+    "Loss": 31.222127532958986,
+    "Policy_Grad_Norms": 1.0000000150292587,
+    "Time_Data_Loading": 0.00272980531056722,
+    "Time_Epoch": 0.0195852001508077,
+    "Time_Log_Info": 3.0187765757242837e-05,
+    "Time_Process_Batch": 0.0002606908480326335,
+    "Time_Train_Batch": 0.016520965099334716
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 264.90it/s]
+Validation Epoch 45
+{
+    "Loss": 30.623626518249512,
+    "Time_Data_Loading": 0.0002644499142964681,
+    "Time_Epoch": 0.0006397724151611328,
+    "Time_Log_Info": 2.745787302652995e-06,
+    "Time_Process_Batch": 2.5339921315511067e-05,
+    "Time_Train_Batch": 0.00033562580744425456
+}
+
+Epoch 45 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 85.49it/s] 18%|#8        | 18/100 [00:00<00:00, 85.30it/s] 27%|##7       | 27/100 [00:00<00:00, 84.39it/s] 36%|###6      | 36/100 [00:00<00:00, 77.09it/s] 45%|####5     | 45/100 [00:00<00:00, 79.13it/s] 54%|#####4    | 54/100 [00:00<00:00, 80.36it/s] 63%|######3   | 63/100 [00:00<00:00, 80.07it/s] 72%|#######2  | 72/100 [00:00<00:00, 81.42it/s] 81%|########1 | 81/100 [00:00<00:00, 82.93it/s] 90%|######### | 90/100 [00:01<00:00, 83.78it/s] 99%|#########9| 99/100 [00:01<00:00, 84.54it/s]100%|##########| 100/100 [00:01<00:00, 82.43it/s]
+Train Epoch 46
+{
+    "Loss": 31.168743324279784,
+    "Policy_Grad_Norms": 0.9999999904148734,
+    "Time_Data_Loading": 0.002838571866353353,
+    "Time_Epoch": 0.0202299435933431,
+    "Time_Log_Info": 3.529787063598633e-05,
+    "Time_Process_Batch": 0.00028668642044067384,
+    "Time_Train_Batch": 0.017024819056193033
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 264.76it/s]
+Validation Epoch 46
+{
+    "Loss": 30.943828582763672,
+    "Time_Data_Loading": 0.0002606908480326335,
+    "Time_Epoch": 0.000645589828491211,
+    "Time_Log_Info": 2.6265780131022137e-06,
+    "Time_Process_Batch": 2.510547637939453e-05,
+    "Time_Train_Batch": 0.00033996899922688804
+}
+
+Epoch 46 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 83.94it/s] 18%|#8        | 18/100 [00:00<00:00, 85.74it/s] 27%|##7       | 27/100 [00:00<00:00, 86.28it/s] 36%|###6      | 36/100 [00:00<00:00, 86.65it/s] 45%|####5     | 45/100 [00:00<00:00, 85.67it/s] 54%|#####4    | 54/100 [00:00<00:00, 85.12it/s] 63%|######3   | 63/100 [00:00<00:00, 85.25it/s] 72%|#######2  | 72/100 [00:00<00:00, 84.57it/s] 81%|########1 | 81/100 [00:00<00:00, 83.58it/s] 90%|######### | 90/100 [00:01<00:00, 82.28it/s] 99%|#########9| 99/100 [00:01<00:00, 81.99it/s]100%|##########| 100/100 [00:01<00:00, 83.92it/s]
+Train Epoch 47
+{
+    "Loss": 30.81922300338745,
+    "Policy_Grad_Norms": 1.0000000275414798,
+    "Time_Data_Loading": 0.0027382453282674152,
+    "Time_Epoch": 0.019870301087697346,
+    "Time_Log_Info": 3.432432810465495e-05,
+    "Time_Process_Batch": 0.00027358134587605795,
+    "Time_Train_Batch": 0.01677945057551066
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 254.70it/s]
+Validation Epoch 47
+{
+    "Loss": 30.871335983276367,
+    "Time_Data_Loading": 0.00027608474095662435,
+    "Time_Epoch": 0.0006685932477315267,
+    "Time_Log_Info": 3.039836883544922e-06,
+    "Time_Process_Batch": 2.855062484741211e-05,
+    "Time_Train_Batch": 0.0003455003102620443
+}
+
+Epoch 47 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 84.42it/s] 18%|#8        | 18/100 [00:00<00:01, 80.97it/s] 27%|##7       | 27/100 [00:00<00:00, 81.87it/s] 36%|###6      | 36/100 [00:00<00:00, 82.81it/s] 45%|####5     | 45/100 [00:00<00:00, 81.17it/s] 54%|#####4    | 54/100 [00:00<00:00, 80.69it/s] 63%|######3   | 63/100 [00:00<00:00, 79.57it/s] 72%|#######2  | 72/100 [00:00<00:00, 80.85it/s] 81%|########1 | 81/100 [00:01<00:00, 80.42it/s] 90%|######### | 90/100 [00:01<00:00, 79.68it/s] 98%|#########8| 98/100 [00:01<00:00, 79.68it/s]100%|##########| 100/100 [00:01<00:00, 80.64it/s]
+Train Epoch 48
+{
+    "Loss": 30.80762626647949,
+    "Policy_Grad_Norms": 0.9999999973923175,
+    "Time_Data_Loading": 0.002844882011413574,
+    "Time_Epoch": 0.02067612806955973,
+    "Time_Log_Info": 3.9633115132649736e-05,
+    "Time_Process_Batch": 0.0003010908762613932,
+    "Time_Train_Batch": 0.017441880702972413
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 263.37it/s]
+Validation Epoch 48
+{
+    "Loss": 30.4423677444458,
+    "Time_Data_Loading": 0.000261843204498291,
+    "Time_Epoch": 0.0006490270296732585,
+    "Time_Log_Info": 2.602736155192057e-06,
+    "Time_Process_Batch": 4.214048385620117e-05,
+    "Time_Train_Batch": 0.0003252347310384115
+}
+
+Epoch 48 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 84.07it/s] 18%|#8        | 18/100 [00:00<00:00, 84.54it/s] 27%|##7       | 27/100 [00:00<00:00, 84.99it/s] 36%|###6      | 36/100 [00:00<00:00, 85.09it/s] 45%|####5     | 45/100 [00:00<00:00, 84.47it/s] 54%|#####4    | 54/100 [00:00<00:00, 84.77it/s] 63%|######3   | 63/100 [00:00<00:00, 84.97it/s] 72%|#######2  | 72/100 [00:00<00:00, 84.91it/s] 81%|########1 | 81/100 [00:00<00:00, 83.97it/s] 90%|######### | 90/100 [00:01<00:00, 84.30it/s] 99%|#########9| 99/100 [00:01<00:00, 85.00it/s]100%|##########| 100/100 [00:01<00:00, 84.73it/s]
+Train Epoch 49
+{
+    "Loss": 30.65542100906372,
+    "Policy_Grad_Norms": 1.0000000129297666,
+    "Time_Data_Loading": 0.0027421911557515464,
+    "Time_Epoch": 0.01968001921971639,
+    "Time_Log_Info": 3.125667572021484e-05,
+    "Time_Process_Batch": 0.0002594431241353353,
+    "Time_Train_Batch": 0.016605075200398764
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 263.83it/s]
+Validation Epoch 49
+{
+    "Loss": 31.742643547058105,
+    "Time_Data_Loading": 0.00027077198028564454,
+    "Time_Epoch": 0.0006460229555765788,
+    "Time_Log_Info": 2.610683441162109e-06,
+    "Time_Process_Batch": 2.4938583374023436e-05,
+    "Time_Train_Batch": 0.000332335631052653
+}
+
+Epoch 49 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 85.66it/s] 18%|#8        | 18/100 [00:00<00:00, 85.78it/s] 27%|##7       | 27/100 [00:00<00:00, 85.77it/s] 36%|###6      | 36/100 [00:00<00:00, 86.11it/s] 45%|####5     | 45/100 [00:00<00:00, 85.91it/s] 54%|#####4    | 54/100 [00:00<00:00, 85.91it/s] 63%|######3   | 63/100 [00:00<00:00, 81.28it/s] 72%|#######2  | 72/100 [00:00<00:00, 79.68it/s] 81%|########1 | 81/100 [00:01<00:00, 74.92it/s] 89%|########9 | 89/100 [00:01<00:00, 70.03it/s] 97%|#########7| 97/100 [00:01<00:00, 67.55it/s]100%|##########| 100/100 [00:01<00:00, 76.81it/s]
+Train Epoch 50
+{
+    "Loss": 30.41317855834961,
+    "Policy_Grad_Norms": 1.0000000043258157,
+    "Time_Data_Loading": 0.0030735015869140627,
+    "Time_Epoch": 0.021707709630330405,
+    "Time_Log_Info": 4.644393920898438e-05,
+    "Time_Process_Batch": 0.00031514962514241535,
+    "Time_Train_Batch": 0.018223575750986733
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 268.92it/s]
+Validation Epoch 50
+{
+    "Loss": 30.574049949645996,
+    "Time_Data_Loading": 0.00026206175486246747,
+    "Time_Epoch": 0.0006345311800638834,
+    "Time_Log_Info": 2.5471051534016928e-06,
+    "Time_Process_Batch": 2.4652481079101564e-05,
+    "Time_Train_Batch": 0.0003294785817464193
+}
+video writes to /home/andrew/Desktop/robo_sims/robomimic/robomimic/../bet_trained_models/test/20221130034640/videos/Lift_epoch_50.mp4
+rollout: env=Lift, horizon=400, use_goals=False, num_episodes=10
+  0%|          | 0/10 [00:00<?, ?it/s] 10%|#         | 1/10 [00:07<01:07,  7.52s/it] 20%|##        | 2/10 [00:14<00:59,  7.46s/it] 30%|###       | 3/10 [00:22<00:51,  7.33s/it] 40%|####      | 4/10 [00:29<00:44,  7.35s/it] 50%|#####     | 5/10 [00:37<00:37,  7.51s/it] 60%|######    | 6/10 [00:45<00:30,  7.67s/it] 70%|#######   | 7/10 [00:53<00:23,  7.70s/it] 80%|########  | 8/10 [01:00<00:15,  7.71s/it] 90%|######### | 9/10 [01:08<00:07,  7.71s/it]100%|##########| 10/10 [01:16<00:00,  7.93s/it]100%|##########| 10/10 [01:16<00:00,  7.69s/it]
+
+Epoch 50 Rollouts took 7.690914058685303s (avg) with results:
+Env: Lift
+{
+    "Horizon": 400.0,
+    "Return": 0.0,
+    "Success_Rate": 0.0,
+    "Time_Episode": 1.2818190097808837,
+    "time": 7.690914058685303
+}
+save checkpoint to /home/andrew/Desktop/robo_sims/robomimic/robomimic/../bet_trained_models/test/20221130034640/models/model_epoch_50_Lift_success_0.0.pth
+
+Epoch 50 Memory Usage: 4811 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 74.69it/s] 16%|#6        | 16/100 [00:00<00:01, 77.14it/s] 24%|##4       | 24/100 [00:00<00:01, 73.50it/s] 32%|###2      | 32/100 [00:00<00:00, 70.51it/s] 40%|####      | 40/100 [00:00<00:00, 72.16it/s] 48%|####8     | 48/100 [00:00<00:00, 74.40it/s] 56%|#####6    | 56/100 [00:00<00:00, 74.86it/s] 64%|######4   | 64/100 [00:00<00:00, 76.02it/s] 73%|#######3  | 73/100 [00:00<00:00, 77.59it/s] 81%|########1 | 81/100 [00:01<00:00, 78.29it/s] 90%|######### | 90/100 [00:01<00:00, 78.98it/s] 99%|#########9| 99/100 [00:01<00:00, 79.56it/s]100%|##########| 100/100 [00:01<00:00, 76.58it/s]
+Train Epoch 51
+{
+    "Loss": 30.459084186553955,
+    "Policy_Grad_Norms": 0.9999999969690083,
+    "Time_Data_Loading": 0.002990170319875081,
+    "Time_Epoch": 0.021775766213734945,
+    "Time_Log_Info": 4.965464274088542e-05,
+    "Time_Process_Batch": 0.00034909645716349285,
+    "Time_Train_Batch": 0.018333574136098225
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 238.51it/s]
+Validation Epoch 51
+{
+    "Loss": 31.00879325866699,
+    "Time_Data_Loading": 0.0002764264742533366,
+    "Time_Epoch": 0.0007177511850992839,
+    "Time_Log_Info": 3.1868616739908855e-06,
+    "Time_Process_Batch": 4.175106684366862e-05,
+    "Time_Train_Batch": 0.00037614901860555014
+}
+
+Epoch 51 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  9%|9         | 9/100 [00:00<00:01, 78.76it/s] 17%|#7        | 17/100 [00:00<00:01, 70.36it/s] 25%|##5       | 25/100 [00:00<00:01, 69.78it/s] 32%|###2      | 32/100 [00:00<00:00, 69.76it/s] 39%|###9      | 39/100 [00:00<00:00, 68.49it/s] 47%|####6     | 47/100 [00:00<00:00, 71.68it/s] 55%|#####5    | 55/100 [00:00<00:00, 73.58it/s] 63%|######3   | 63/100 [00:00<00:00, 75.21it/s] 71%|#######1  | 71/100 [00:00<00:00, 72.91it/s] 79%|#######9  | 79/100 [00:01<00:00, 73.95it/s] 87%|########7 | 87/100 [00:01<00:00, 74.71it/s] 95%|#########5| 95/100 [00:01<00:00, 75.00it/s]100%|##########| 100/100 [00:01<00:00, 73.21it/s]
+Train Epoch 52
+{
+    "Loss": 30.25615825653076,
+    "Policy_Grad_Norms": 0.9999999843797824,
+    "Time_Data_Loading": 0.003083789348602295,
+    "Time_Epoch": 0.022776532173156738,
+    "Time_Log_Info": 5.715688069661458e-05,
+    "Time_Process_Batch": 0.00039591391881306964,
+    "Time_Train_Batch": 0.01918482780456543
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 242.64it/s]
+Validation Epoch 52
+{
+    "Loss": 30.55073356628418,
+    "Time_Data_Loading": 0.00029226144154866535,
+    "Time_Epoch": 0.0007053295771280925,
+    "Time_Log_Info": 2.940495808919271e-06,
+    "Time_Process_Batch": 4.36862309773763e-05,
+    "Time_Train_Batch": 0.00034679969151814777
+}
+
+Epoch 52 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 78.61it/s] 16%|#6        | 16/100 [00:00<00:01, 77.42it/s] 24%|##4       | 24/100 [00:00<00:01, 75.75it/s] 32%|###2      | 32/100 [00:00<00:00, 75.14it/s] 40%|####      | 40/100 [00:00<00:00, 73.97it/s] 48%|####8     | 48/100 [00:00<00:00, 73.96it/s] 56%|#####6    | 56/100 [00:00<00:00, 72.90it/s] 64%|######4   | 64/100 [00:00<00:00, 72.16it/s] 72%|#######2  | 72/100 [00:00<00:00, 72.34it/s] 80%|########  | 80/100 [00:01<00:00, 69.75it/s] 88%|########8 | 88/100 [00:01<00:00, 71.13it/s] 96%|#########6| 96/100 [00:01<00:00, 72.12it/s]100%|##########| 100/100 [00:01<00:00, 73.00it/s]
+Train Epoch 53
+{
+    "Loss": 30.24691556930542,
+    "Policy_Grad_Norms": 0.9999999948967205,
+    "Time_Data_Loading": 0.003030081590016683,
+    "Time_Epoch": 0.022841286659240723,
+    "Time_Log_Info": 5.704164505004883e-05,
+    "Time_Process_Batch": 0.0003827651341756185,
+    "Time_Train_Batch": 0.019316049416859944
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 233.51it/s]
+Validation Epoch 53
+{
+    "Loss": 30.67708339691162,
+    "Time_Data_Loading": 0.000276648998260498,
+    "Time_Epoch": 0.0007306575775146484,
+    "Time_Log_Info": 3.2941500345865885e-06,
+    "Time_Process_Batch": 4.369417826334636e-05,
+    "Time_Train_Batch": 0.0003888249397277832
+}
+
+Epoch 53 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 73.92it/s] 16%|#6        | 16/100 [00:00<00:01, 74.39it/s] 24%|##4       | 24/100 [00:00<00:01, 73.30it/s] 32%|###2      | 32/100 [00:00<00:00, 74.17it/s] 40%|####      | 40/100 [00:00<00:00, 73.49it/s] 48%|####8     | 48/100 [00:00<00:00, 72.34it/s] 56%|#####6    | 56/100 [00:00<00:00, 73.00it/s] 64%|######4   | 64/100 [00:00<00:00, 74.07it/s] 72%|#######2  | 72/100 [00:00<00:00, 74.06it/s] 80%|########  | 80/100 [00:01<00:00, 73.68it/s] 88%|########8 | 88/100 [00:01<00:00, 72.98it/s] 96%|#########6| 96/100 [00:01<00:00, 73.47it/s]100%|##########| 100/100 [00:01<00:00, 73.55it/s]
+Train Epoch 54
+{
+    "Loss": 30.000061416625975,
+    "Policy_Grad_Norms": 1.000000007352672,
+    "Time_Data_Loading": 0.00302813450495402,
+    "Time_Epoch": 0.022669788201649985,
+    "Time_Log_Info": 5.666017532348633e-05,
+    "Time_Process_Batch": 0.0003883639971415202,
+    "Time_Train_Batch": 0.01914265553156535
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 234.35it/s]
+Validation Epoch 54
+{
+    "Loss": 30.24922332763672,
+    "Time_Data_Loading": 0.0002780795097351074,
+    "Time_Epoch": 0.0007291316986083984,
+    "Time_Log_Info": 3.2862027486165364e-06,
+    "Time_Process_Batch": 4.60505485534668e-05,
+    "Time_Train_Batch": 0.000382387638092041
+}
+
+Epoch 54 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 73.09it/s] 16%|#6        | 16/100 [00:00<00:01, 74.90it/s] 24%|##4       | 24/100 [00:00<00:01, 75.43it/s] 32%|###2      | 32/100 [00:00<00:00, 74.70it/s] 40%|####      | 40/100 [00:00<00:00, 74.24it/s] 48%|####8     | 48/100 [00:00<00:00, 74.64it/s] 56%|#####6    | 56/100 [00:00<00:00, 74.47it/s] 64%|######4   | 64/100 [00:00<00:00, 74.01it/s] 72%|#######2  | 72/100 [00:00<00:00, 73.79it/s] 80%|########  | 80/100 [00:01<00:00, 72.99it/s] 88%|########8 | 88/100 [00:01<00:00, 72.14it/s] 96%|#########6| 96/100 [00:01<00:00, 71.87it/s]100%|##########| 100/100 [00:01<00:00, 73.26it/s]
+Train Epoch 55
+{
+    "Loss": 30.078936824798586,
+    "Policy_Grad_Norms": 1.0000000074149191,
+    "Time_Data_Loading": 0.0030501484870910645,
+    "Time_Epoch": 0.02276211977005005,
+    "Time_Log_Info": 5.492766698201497e-05,
+    "Time_Process_Batch": 0.00039920409520467125,
+    "Time_Train_Batch": 0.019197702407836914
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 222.35it/s]
+Validation Epoch 55
+{
+    "Loss": 30.167026710510253,
+    "Time_Data_Loading": 0.0003048539161682129,
+    "Time_Epoch": 0.0007600108782450358,
+    "Time_Log_Info": 8.026758829752604e-06,
+    "Time_Process_Batch": 4.1651725769042966e-05,
+    "Time_Train_Batch": 0.00039372444152832033
+}
+
+Epoch 55 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  7%|7         | 7/100 [00:00<00:01, 66.43it/s] 15%|#5        | 15/100 [00:00<00:01, 70.95it/s] 23%|##3       | 23/100 [00:00<00:01, 69.85it/s] 31%|###1      | 31/100 [00:00<00:00, 69.54it/s] 39%|###9      | 39/100 [00:00<00:00, 71.06it/s] 47%|####6     | 47/100 [00:00<00:00, 70.82it/s] 55%|#####5    | 55/100 [00:00<00:00, 72.60it/s] 63%|######3   | 63/100 [00:00<00:00, 73.14it/s] 71%|#######1  | 71/100 [00:00<00:00, 74.40it/s] 79%|#######9  | 79/100 [00:01<00:00, 74.53it/s] 87%|########7 | 87/100 [00:01<00:00, 75.22it/s] 95%|#########5| 95/100 [00:01<00:00, 74.83it/s]100%|##########| 100/100 [00:01<00:00, 73.05it/s]
+Train Epoch 56
+{
+    "Loss": 29.866278991699218,
+    "Policy_Grad_Norms": 1.0000000111273113,
+    "Time_Data_Loading": 0.003047792116800944,
+    "Time_Epoch": 0.02282445430755615,
+    "Time_Log_Info": 5.244811375935872e-05,
+    "Time_Process_Batch": 0.00038746992746988934,
+    "Time_Train_Batch": 0.01928269068400065
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 240.68it/s]
+Validation Epoch 56
+{
+    "Loss": 29.636221504211427,
+    "Time_Data_Loading": 0.00028217633565266926,
+    "Time_Epoch": 0.0007079044977823893,
+    "Time_Log_Info": 3.1232833862304687e-06,
+    "Time_Process_Batch": 3.9525826772054036e-05,
+    "Time_Train_Batch": 0.0003664215405782064
+}
+
+Epoch 56 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 73.60it/s] 16%|#6        | 16/100 [00:00<00:01, 74.27it/s] 24%|##4       | 24/100 [00:00<00:01, 75.82it/s] 32%|###2      | 32/100 [00:00<00:00, 75.49it/s] 40%|####      | 40/100 [00:00<00:00, 76.09it/s] 48%|####8     | 48/100 [00:00<00:00, 76.05it/s] 56%|#####6    | 56/100 [00:00<00:00, 75.80it/s] 64%|######4   | 64/100 [00:00<00:00, 76.55it/s] 72%|#######2  | 72/100 [00:00<00:00, 77.50it/s] 81%|########1 | 81/100 [00:01<00:00, 78.37it/s] 89%|########9 | 89/100 [00:01<00:00, 78.18it/s] 97%|#########7| 97/100 [00:01<00:00, 77.72it/s]100%|##########| 100/100 [00:01<00:00, 76.89it/s]
+Train Epoch 57
+{
+    "Loss": 29.831120738983156,
+    "Policy_Grad_Norms": 1.0000000028108647,
+    "Time_Data_Loading": 0.002902511755625407,
+    "Time_Epoch": 0.021687952677408855,
+    "Time_Log_Info": 5.709330240885417e-05,
+    "Time_Process_Batch": 0.00034656922022501625,
+    "Time_Train_Batch": 0.018325173854827882
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 241.29it/s]
+Validation Epoch 57
+{
+    "Loss": 29.01653347015381,
+    "Time_Data_Loading": 0.0002897342046101888,
+    "Time_Epoch": 0.000706020991007487,
+    "Time_Log_Info": 2.9961268107096354e-06,
+    "Time_Process_Batch": 3.8687388102213545e-05,
+    "Time_Train_Batch": 0.00035813252131144203
+}
+
+Epoch 57 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 75.39it/s] 16%|#6        | 16/100 [00:00<00:01, 75.65it/s] 24%|##4       | 24/100 [00:00<00:01, 72.52it/s] 32%|###2      | 32/100 [00:00<00:01, 66.76it/s] 39%|###9      | 39/100 [00:00<00:00, 65.37it/s] 47%|####6     | 47/100 [00:00<00:00, 68.42it/s] 55%|#####5    | 55/100 [00:00<00:00, 69.57it/s] 63%|######3   | 63/100 [00:00<00:00, 70.50it/s] 71%|#######1  | 71/100 [00:01<00:00, 64.17it/s] 78%|#######8  | 78/100 [00:01<00:00, 63.65it/s] 85%|########5 | 85/100 [00:01<00:00, 64.68it/s] 92%|#########2| 92/100 [00:01<00:00, 63.67it/s] 99%|#########9| 99/100 [00:01<00:00, 64.59it/s]100%|##########| 100/100 [00:01<00:00, 66.60it/s]
+Train Epoch 58
+{
+    "Loss": 29.788149967193604,
+    "Policy_Grad_Norms": 0.99999999273797,
+    "Time_Data_Loading": 0.0033106207847595215,
+    "Time_Epoch": 0.02503435214360555,
+    "Time_Log_Info": 7.273356119791667e-05,
+    "Time_Process_Batch": 0.0004911462465922038,
+    "Time_Train_Batch": 0.021094369888305663
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 195.46it/s]
+Validation Epoch 58
+{
+    "Loss": 29.24556694030762,
+    "Time_Data_Loading": 0.00033960342407226565,
+    "Time_Epoch": 0.0008700013160705567,
+    "Time_Log_Info": 3.949801127115885e-06,
+    "Time_Process_Batch": 4.139343897501628e-05,
+    "Time_Train_Batch": 0.00046606063842773436
+}
+
+Epoch 58 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  7%|7         | 7/100 [00:00<00:01, 64.99it/s] 14%|#4        | 14/100 [00:00<00:01, 66.30it/s] 22%|##2       | 22/100 [00:00<00:01, 69.49it/s] 30%|###       | 30/100 [00:00<00:00, 71.49it/s] 38%|###8      | 38/100 [00:00<00:00, 72.58it/s] 46%|####6     | 46/100 [00:00<00:00, 72.77it/s] 54%|#####4    | 54/100 [00:00<00:00, 72.00it/s] 62%|######2   | 62/100 [00:00<00:00, 64.79it/s] 69%|######9   | 69/100 [00:01<00:00, 64.36it/s] 76%|#######6  | 76/100 [00:01<00:00, 63.86it/s] 83%|########2 | 83/100 [00:01<00:00, 64.05it/s] 90%|######### | 90/100 [00:01<00:00, 63.59it/s] 97%|#########7| 97/100 [00:01<00:00, 63.97it/s]100%|##########| 100/100 [00:01<00:00, 66.56it/s]
+Train Epoch 59
+{
+    "Loss": 29.680224151611327,
+    "Policy_Grad_Norms": 1.0000000192040124,
+    "Time_Data_Loading": 0.0032699902852376304,
+    "Time_Epoch": 0.025052364667256674,
+    "Time_Log_Info": 7.232030232747395e-05,
+    "Time_Process_Batch": 0.0005124330520629883,
+    "Time_Train_Batch": 0.02113240957260132
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 186.56it/s]
+Validation Epoch 59
+{
+    "Loss": 28.983935356140137,
+    "Time_Data_Loading": 0.00032112201054890953,
+    "Time_Epoch": 0.0009126702944437663,
+    "Time_Log_Info": 4.23590342203776e-06,
+    "Time_Process_Batch": 7.241566975911459e-05,
+    "Time_Train_Batch": 0.0004939913749694824
+}
+
+Epoch 59 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 71.39it/s] 16%|#6        | 16/100 [00:00<00:01, 72.31it/s] 24%|##4       | 24/100 [00:00<00:01, 68.46it/s] 31%|###1      | 31/100 [00:00<00:01, 66.89it/s] 39%|###9      | 39/100 [00:00<00:00, 68.20it/s] 46%|####6     | 46/100 [00:00<00:00, 68.28it/s] 54%|#####4    | 54/100 [00:00<00:00, 70.04it/s] 62%|######2   | 62/100 [00:00<00:00, 70.48it/s] 70%|#######   | 70/100 [00:01<00:00, 70.50it/s] 78%|#######8  | 78/100 [00:01<00:00, 70.53it/s] 86%|########6 | 86/100 [00:01<00:00, 71.63it/s] 94%|#########3| 94/100 [00:01<00:00, 73.04it/s]100%|##########| 100/100 [00:01<00:00, 70.38it/s]
+Train Epoch 60
+{
+    "Loss": 29.448008785247804,
+    "Policy_Grad_Norms": 1.0000000008906895,
+    "Time_Data_Loading": 0.003127614657084147,
+    "Time_Epoch": 0.02369226614634196,
+    "Time_Log_Info": 5.755027135213216e-05,
+    "Time_Process_Batch": 0.00044325590133666994,
+    "Time_Train_Batch": 0.02000876267751058
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 226.55it/s]
+Validation Epoch 60
+{
+    "Loss": 28.229384422302246,
+    "Time_Data_Loading": 0.0002948164939880371,
+    "Time_Epoch": 0.0007567365964253743,
+    "Time_Log_Info": 3.4332275390625e-06,
+    "Time_Process_Batch": 3.069639205932617e-05,
+    "Time_Train_Batch": 0.0004052003224690755
+}
+
+Epoch 60 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  7%|7         | 7/100 [00:00<00:01, 68.53it/s] 14%|#4        | 14/100 [00:00<00:01, 68.62it/s] 21%|##1       | 21/100 [00:00<00:01, 68.69it/s] 29%|##9       | 29/100 [00:00<00:01, 70.67it/s] 37%|###7      | 37/100 [00:00<00:00, 71.70it/s] 45%|####5     | 45/100 [00:00<00:00, 70.55it/s] 53%|#####3    | 53/100 [00:00<00:00, 69.88it/s] 61%|######1   | 61/100 [00:00<00:00, 71.59it/s] 69%|######9   | 69/100 [00:00<00:00, 72.82it/s] 77%|#######7  | 77/100 [00:01<00:00, 73.97it/s] 85%|########5 | 85/100 [00:01<00:00, 72.47it/s] 93%|#########3| 93/100 [00:01<00:00, 70.88it/s]100%|##########| 100/100 [00:01<00:00, 69.99it/s]
+Train Epoch 61
+{
+    "Loss": 29.319775218963624,
+    "Policy_Grad_Norms": 1.0000000100251487,
+    "Time_Data_Loading": 0.003240013122558594,
+    "Time_Epoch": 0.023826650778452554,
+    "Time_Log_Info": 6.111462910970052e-05,
+    "Time_Process_Batch": 0.00046161413192749026,
+    "Time_Train_Batch": 0.020006887118021646
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 183.30it/s]
+Validation Epoch 61
+{
+    "Loss": 28.897183418273926,
+    "Time_Data_Loading": 0.0003319541613260905,
+    "Time_Epoch": 0.0009302099545796713,
+    "Time_Log_Info": 4.541873931884766e-06,
+    "Time_Process_Batch": 4.6706199645996095e-05,
+    "Time_Train_Batch": 0.0005242466926574707
+}
+
+Epoch 61 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  7%|7         | 7/100 [00:00<00:01, 64.88it/s] 14%|#4        | 14/100 [00:00<00:01, 62.48it/s] 22%|##2       | 22/100 [00:00<00:01, 67.93it/s] 30%|###       | 30/100 [00:00<00:00, 70.09it/s] 38%|###8      | 38/100 [00:00<00:00, 71.41it/s] 46%|####6     | 46/100 [00:00<00:00, 70.81it/s] 54%|#####4    | 54/100 [00:00<00:00, 71.95it/s] 62%|######2   | 62/100 [00:00<00:00, 68.33it/s] 69%|######9   | 69/100 [00:01<00:00, 67.77it/s] 77%|#######7  | 77/100 [00:01<00:00, 68.92it/s] 85%|########5 | 85/100 [00:01<00:00, 69.18it/s] 93%|#########3| 93/100 [00:01<00:00, 70.60it/s]100%|##########| 100/100 [00:01<00:00, 69.75it/s]
+Train Epoch 62
+{
+    "Loss": 29.129967441558836,
+    "Policy_Grad_Norms": 1.0000000109274791,
+    "Time_Data_Loading": 0.0031386693318684895,
+    "Time_Epoch": 0.023906898498535157,
+    "Time_Log_Info": 8.406639099121094e-05,
+    "Time_Process_Batch": 0.00044054190317789713,
+    "Time_Train_Batch": 0.020186197757720948
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 207.79it/s]
+Validation Epoch 62
+{
+    "Loss": 29.467193031311034,
+    "Time_Data_Loading": 0.0003238677978515625,
+    "Time_Epoch": 0.0008213361104329427,
+    "Time_Log_Info": 4.065036773681641e-06,
+    "Time_Process_Batch": 3.487666447957357e-05,
+    "Time_Train_Batch": 0.0004378716150919596
+}
+
+Epoch 62 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 72.34it/s] 16%|#6        | 16/100 [00:00<00:01, 69.16it/s] 23%|##3       | 23/100 [00:00<00:01, 68.95it/s] 31%|###1      | 31/100 [00:00<00:00, 70.01it/s] 39%|###9      | 39/100 [00:00<00:00, 69.39it/s] 47%|####6     | 47/100 [00:00<00:00, 70.46it/s] 55%|#####5    | 55/100 [00:00<00:00, 71.84it/s] 63%|######3   | 63/100 [00:00<00:00, 72.58it/s] 71%|#######1  | 71/100 [00:01<00:00, 71.00it/s] 79%|#######9  | 79/100 [00:01<00:00, 68.27it/s] 86%|########6 | 86/100 [00:01<00:00, 66.54it/s] 93%|#########3| 93/100 [00:01<00:00, 63.72it/s]100%|##########| 100/100 [00:01<00:00, 63.70it/s]100%|##########| 100/100 [00:01<00:00, 67.82it/s]
+Train Epoch 63
+{
+    "Loss": 29.106403751373293,
+    "Policy_Grad_Norms": 1.000000018946342,
+    "Time_Data_Loading": 0.003195492426554362,
+    "Time_Epoch": 0.02458732525507609,
+    "Time_Log_Info": 7.714430491129557e-05,
+    "Time_Process_Batch": 0.0005036433537801107,
+    "Time_Train_Batch": 0.020749247074127196
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 225.45it/s]
+Validation Epoch 63
+{
+    "Loss": 28.76057720184326,
+    "Time_Data_Loading": 0.0002926190694173177,
+    "Time_Epoch": 0.0007547934850056967,
+    "Time_Log_Info": 3.7391980489095053e-06,
+    "Time_Process_Batch": 4.363854726155599e-05,
+    "Time_Train_Batch": 0.00039786895116170247
+}
+
+Epoch 63 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 73.18it/s] 16%|#6        | 16/100 [00:00<00:01, 71.09it/s] 24%|##4       | 24/100 [00:00<00:01, 72.03it/s] 32%|###2      | 32/100 [00:00<00:00, 68.41it/s] 40%|####      | 40/100 [00:00<00:00, 69.63it/s] 47%|####6     | 47/100 [00:00<00:00, 67.54it/s] 55%|#####5    | 55/100 [00:00<00:00, 70.00it/s] 63%|######3   | 63/100 [00:00<00:00, 69.45it/s] 71%|#######1  | 71/100 [00:01<00:00, 70.15it/s] 79%|#######9  | 79/100 [00:01<00:00, 71.11it/s] 87%|########7 | 87/100 [00:01<00:00, 71.24it/s] 95%|#########5| 95/100 [00:01<00:00, 72.14it/s]100%|##########| 100/100 [00:01<00:00, 70.66it/s]
+Train Epoch 64
+{
+    "Loss": 29.11891653060913,
+    "Policy_Grad_Norms": 1.0000000066951202,
+    "Time_Data_Loading": 0.0031419237454732257,
+    "Time_Epoch": 0.023597510655721028,
+    "Time_Log_Info": 5.8078765869140624e-05,
+    "Time_Process_Batch": 0.0004243294397989909,
+    "Time_Train_Batch": 0.019916375478108723
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 197.61it/s]
+Validation Epoch 64
+{
+    "Loss": 29.041984367370606,
+    "Time_Data_Loading": 0.0003486474355061849,
+    "Time_Epoch": 0.0008664290110270182,
+    "Time_Log_Info": 5.618731180826823e-06,
+    "Time_Process_Batch": 4.2156378428141275e-05,
+    "Time_Train_Batch": 0.0004453301429748535
+}
+
+Epoch 64 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 73.23it/s] 16%|#6        | 16/100 [00:00<00:01, 71.59it/s] 24%|##4       | 24/100 [00:00<00:01, 71.68it/s] 32%|###2      | 32/100 [00:00<00:00, 72.81it/s] 40%|####      | 40/100 [00:00<00:00, 73.92it/s] 48%|####8     | 48/100 [00:00<00:00, 72.12it/s] 56%|#####6    | 56/100 [00:00<00:00, 71.25it/s] 64%|######4   | 64/100 [00:00<00:00, 71.43it/s] 72%|#######2  | 72/100 [00:01<00:00, 71.44it/s] 80%|########  | 80/100 [00:01<00:00, 71.41it/s] 88%|########8 | 88/100 [00:01<00:00, 70.02it/s] 96%|#########6| 96/100 [00:01<00:00, 70.00it/s]100%|##########| 100/100 [00:01<00:00, 70.85it/s]
+Train Epoch 65
+{
+    "Loss": 28.97649543762207,
+    "Policy_Grad_Norms": 1.0000000124413553,
+    "Time_Data_Loading": 0.0031088113784790037,
+    "Time_Epoch": 0.023534417152404785,
+    "Time_Log_Info": 7.32739766438802e-05,
+    "Time_Process_Batch": 0.00045929352442423504,
+    "Time_Train_Batch": 0.019836997985839842
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 192.96it/s]
+Validation Epoch 65
+{
+    "Loss": 29.452021980285643,
+    "Time_Data_Loading": 0.0003204504648844401,
+    "Time_Epoch": 0.0008806546529134114,
+    "Time_Log_Info": 4.148483276367187e-06,
+    "Time_Process_Batch": 7.459719975789388e-05,
+    "Time_Train_Batch": 0.0004628340403238932
+}
+
+Epoch 65 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  7%|7         | 7/100 [00:00<00:01, 62.09it/s] 14%|#4        | 14/100 [00:00<00:01, 64.45it/s] 21%|##1       | 21/100 [00:00<00:01, 64.18it/s] 28%|##8       | 28/100 [00:00<00:01, 54.92it/s] 34%|###4      | 34/100 [00:00<00:01, 52.84it/s] 41%|####1     | 41/100 [00:00<00:01, 53.64it/s] 47%|####6     | 47/100 [00:00<00:00, 54.55it/s] 54%|#####4    | 54/100 [00:00<00:00, 56.83it/s] 62%|######2   | 62/100 [00:01<00:00, 59.97it/s] 69%|######9   | 69/100 [00:01<00:00, 58.15it/s] 76%|#######6  | 76/100 [00:01<00:00, 60.77it/s] 83%|########2 | 83/100 [00:01<00:00, 62.74it/s] 90%|######### | 90/100 [00:01<00:00, 63.17it/s] 97%|#########7| 97/100 [00:01<00:00, 64.44it/s]100%|##########| 100/100 [00:01<00:00, 59.91it/s]
+Train Epoch 66
+{
+    "Loss": 28.667608375549317,
+    "Policy_Grad_Norms": 0.9999999989865448,
+    "Time_Data_Loading": 0.0035814682642618815,
+    "Time_Epoch": 0.02783075173695882,
+    "Time_Log_Info": 8.19245974222819e-05,
+    "Time_Process_Batch": 0.0005434314409891764,
+    "Time_Train_Batch": 0.02354245583216349
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 215.67it/s]
+Validation Epoch 66
+{
+    "Loss": 27.727365493774414,
+    "Time_Data_Loading": 0.00031696160634358725,
+    "Time_Epoch": 0.0007885018984476725,
+    "Time_Log_Info": 3.870328267415365e-06,
+    "Time_Process_Batch": 3.842910130818685e-05,
+    "Time_Train_Batch": 0.00041207472483317055
+}
+
+Epoch 66 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  7%|7         | 7/100 [00:00<00:01, 64.53it/s] 14%|#4        | 14/100 [00:00<00:01, 50.97it/s] 20%|##        | 20/100 [00:00<00:01, 46.07it/s] 25%|##5       | 25/100 [00:00<00:01, 43.07it/s] 32%|###2      | 32/100 [00:00<00:01, 49.52it/s] 39%|###9      | 39/100 [00:00<00:01, 54.08it/s] 46%|####6     | 46/100 [00:00<00:00, 56.99it/s] 53%|#####3    | 53/100 [00:00<00:00, 59.48it/s] 60%|######    | 60/100 [00:01<00:00, 61.83it/s] 67%|######7   | 67/100 [00:01<00:00, 59.42it/s] 74%|#######4  | 74/100 [00:01<00:00, 60.00it/s] 81%|########1 | 81/100 [00:01<00:00, 59.13it/s] 87%|########7 | 87/100 [00:01<00:00, 56.23it/s] 93%|#########3| 93/100 [00:01<00:00, 50.59it/s] 99%|#########9| 99/100 [00:01<00:00, 49.42it/s]100%|##########| 100/100 [00:01<00:00, 53.70it/s]
+Train Epoch 67
+{
+    "Loss": 28.74849576950073,
+    "Policy_Grad_Norms": 1.0000000033373413,
+    "Time_Data_Loading": 0.003993189334869385,
+    "Time_Epoch": 0.031046672662099203,
+    "Time_Log_Info": 0.00011127789815266927,
+    "Time_Process_Batch": 0.000630656878153483,
+    "Time_Train_Batch": 0.026217424869537355
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 198.39it/s]
+Validation Epoch 67
+{
+    "Loss": 27.759103202819823,
+    "Time_Data_Loading": 0.0003136277198791504,
+    "Time_Epoch": 0.0008572061856587728,
+    "Time_Log_Info": 6.194909413655599e-06,
+    "Time_Process_Batch": 4.1874249776204425e-05,
+    "Time_Train_Batch": 0.0004767934481302897
+}
+
+Epoch 67 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 59.31it/s] 13%|#3        | 13/100 [00:00<00:01, 61.29it/s] 20%|##        | 20/100 [00:00<00:01, 59.73it/s] 26%|##6       | 26/100 [00:00<00:01, 59.17it/s] 32%|###2      | 32/100 [00:00<00:01, 57.41it/s] 38%|###8      | 38/100 [00:00<00:01, 55.44it/s] 45%|####5     | 45/100 [00:00<00:00, 58.17it/s] 51%|#####1    | 51/100 [00:00<00:00, 57.68it/s] 57%|#####6    | 57/100 [00:00<00:00, 57.77it/s] 64%|######4   | 64/100 [00:01<00:00, 58.37it/s] 70%|#######   | 70/100 [00:01<00:00, 58.63it/s] 76%|#######6  | 76/100 [00:01<00:00, 54.84it/s] 82%|########2 | 82/100 [00:01<00:00, 49.66it/s] 88%|########8 | 88/100 [00:01<00:00, 50.53it/s] 95%|#########5| 95/100 [00:01<00:00, 54.66it/s]100%|##########| 100/100 [00:01<00:00, 56.49it/s]
+Train Epoch 68
+{
+    "Loss": 28.554876308441163,
+    "Policy_Grad_Norms": 1.0000000142178258,
+    "Time_Data_Loading": 0.003843057155609131,
+    "Time_Epoch": 0.029512556393941243,
+    "Time_Log_Info": 9.824037551879883e-05,
+    "Time_Process_Batch": 0.0006224195162455241,
+    "Time_Train_Batch": 0.02485471566518148
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 154.95it/s]
+Validation Epoch 68
+{
+    "Loss": 27.54181022644043,
+    "Time_Data_Loading": 0.00041104952494303384,
+    "Time_Epoch": 0.001094520092010498,
+    "Time_Log_Info": 5.622704823811849e-06,
+    "Time_Process_Batch": 7.363160451253255e-05,
+    "Time_Train_Batch": 0.0005832473436991374
+}
+
+Epoch 68 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 56.51it/s] 12%|#2        | 12/100 [00:00<00:01, 53.13it/s] 19%|#9        | 19/100 [00:00<00:01, 59.41it/s] 26%|##6       | 26/100 [00:00<00:01, 60.95it/s] 33%|###3      | 33/100 [00:00<00:01, 61.40it/s] 40%|####      | 40/100 [00:00<00:00, 61.80it/s] 47%|####6     | 47/100 [00:00<00:00, 60.93it/s] 54%|#####4    | 54/100 [00:00<00:00, 61.51it/s] 61%|######1   | 61/100 [00:01<00:00, 61.30it/s] 68%|######8   | 68/100 [00:01<00:00, 61.31it/s] 75%|#######5  | 75/100 [00:01<00:00, 62.10it/s] 82%|########2 | 82/100 [00:01<00:00, 63.17it/s] 89%|########9 | 89/100 [00:01<00:00, 64.42it/s] 96%|#########6| 96/100 [00:01<00:00, 61.36it/s]100%|##########| 100/100 [00:01<00:00, 61.29it/s]
+Train Epoch 69
+{
+    "Loss": 28.589696102142334,
+    "Policy_Grad_Norms": 1.0000000035816838,
+    "Time_Data_Loading": 0.0034633636474609374,
+    "Time_Epoch": 0.027208499113718667,
+    "Time_Log_Info": 7.749398549397787e-05,
+    "Time_Process_Batch": 0.0005204796791076661,
+    "Time_Train_Batch": 0.023069544633229574
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 211.00it/s]
+Validation Epoch 69
+{
+    "Loss": 27.727523803710938,
+    "Time_Data_Loading": 0.00031373898188273114,
+    "Time_Epoch": 0.0008063515027364095,
+    "Time_Log_Info": 3.7391980489095053e-06,
+    "Time_Process_Batch": 5.0071875254313154e-05,
+    "Time_Train_Batch": 0.0004209478696187337
+}
+
+Epoch 69 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  7%|7         | 7/100 [00:00<00:01, 68.02it/s] 14%|#4        | 14/100 [00:00<00:01, 67.34it/s] 21%|##1       | 21/100 [00:00<00:01, 68.41it/s] 29%|##9       | 29/100 [00:00<00:01, 68.86it/s] 37%|###7      | 37/100 [00:00<00:00, 69.11it/s] 44%|####4     | 44/100 [00:00<00:00, 68.71it/s] 52%|#####2    | 52/100 [00:00<00:00, 69.84it/s] 59%|#####8    | 59/100 [00:00<00:00, 68.63it/s] 67%|######7   | 67/100 [00:00<00:00, 70.54it/s] 75%|#######5  | 75/100 [00:01<00:00, 70.95it/s] 83%|########2 | 83/100 [00:01<00:00, 71.89it/s] 91%|#########1| 91/100 [00:01<00:00, 72.04it/s] 99%|#########9| 99/100 [00:01<00:00, 72.26it/s]100%|##########| 100/100 [00:01<00:00, 70.44it/s]
+Train Epoch 70
+{
+    "Loss": 28.45377727508545,
+    "Policy_Grad_Norms": 1.0000000137513634,
+    "Time_Data_Loading": 0.0030904452006022135,
+    "Time_Epoch": 0.023672513167063394,
+    "Time_Log_Info": 6.496508916219076e-05,
+    "Time_Process_Batch": 0.00042928457260131835,
+    "Time_Train_Batch": 0.020025253295898438
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 202.76it/s]
+Validation Epoch 70
+{
+    "Loss": 28.18906421661377,
+    "Time_Data_Loading": 0.00032959381739298504,
+    "Time_Epoch": 0.0008402784665425618,
+    "Time_Log_Info": 3.814697265625e-06,
+    "Time_Process_Batch": 4.69207763671875e-05,
+    "Time_Train_Batch": 0.0004402637481689453
+}
+
+Epoch 70 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 75.01it/s] 16%|#6        | 16/100 [00:00<00:01, 72.36it/s] 24%|##4       | 24/100 [00:00<00:01, 72.76it/s] 32%|###2      | 32/100 [00:00<00:00, 72.09it/s] 40%|####      | 40/100 [00:00<00:00, 72.67it/s] 48%|####8     | 48/100 [00:00<00:00, 72.96it/s] 56%|#####6    | 56/100 [00:00<00:00, 71.83it/s] 64%|######4   | 64/100 [00:00<00:00, 71.88it/s] 72%|#######2  | 72/100 [00:01<00:00, 71.09it/s] 80%|########  | 80/100 [00:01<00:00, 72.83it/s] 88%|########8 | 88/100 [00:01<00:00, 72.56it/s] 96%|#########6| 96/100 [00:01<00:00, 73.30it/s]100%|##########| 100/100 [00:01<00:00, 72.47it/s]
+Train Epoch 71
+{
+    "Loss": 28.15711618423462,
+    "Policy_Grad_Norms": 0.9999999845766244,
+    "Time_Data_Loading": 0.003016364574432373,
+    "Time_Epoch": 0.023008922735850017,
+    "Time_Log_Info": 6.643136342366536e-05,
+    "Time_Process_Batch": 0.00040001471837361653,
+    "Time_Train_Batch": 0.019472277164459227
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 216.27it/s]
+Validation Epoch 71
+{
+    "Loss": 27.724877548217773,
+    "Time_Data_Loading": 0.0003185709317525228,
+    "Time_Epoch": 0.0007876912752787272,
+    "Time_Log_Info": 3.933906555175781e-06,
+    "Time_Process_Batch": 6.284713745117188e-05,
+    "Time_Train_Batch": 0.00038397709528605143
+}
+
+Epoch 71 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 74.58it/s] 16%|#6        | 16/100 [00:00<00:01, 74.41it/s] 24%|##4       | 24/100 [00:00<00:01, 74.60it/s] 32%|###2      | 32/100 [00:00<00:00, 73.63it/s] 40%|####      | 40/100 [00:00<00:00, 73.17it/s] 48%|####8     | 48/100 [00:00<00:00, 73.74it/s] 56%|#####6    | 56/100 [00:00<00:00, 70.72it/s] 64%|######4   | 64/100 [00:00<00:00, 66.02it/s] 71%|#######1  | 71/100 [00:01<00:00, 66.45it/s] 78%|#######8  | 78/100 [00:01<00:00, 66.66it/s] 86%|########6 | 86/100 [00:01<00:00, 68.80it/s] 94%|#########3| 94/100 [00:01<00:00, 70.72it/s]100%|##########| 100/100 [00:01<00:00, 70.62it/s]
+Train Epoch 72
+{
+    "Loss": 28.11689701080322,
+    "Policy_Grad_Norms": 0.9999999898818791,
+    "Time_Data_Loading": 0.0031771024068196615,
+    "Time_Epoch": 0.02361243963241577,
+    "Time_Log_Info": 6.326436996459961e-05,
+    "Time_Process_Batch": 0.0004453778266906738,
+    "Time_Train_Batch": 0.01986777385075887
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 183.05it/s]
+Validation Epoch 72
+{
+    "Loss": 27.402758979797362,
+    "Time_Data_Loading": 0.00036102930704752604,
+    "Time_Epoch": 0.0009296655654907227,
+    "Time_Log_Info": 3.866354624430338e-06,
+    "Time_Process_Batch": 6.153186162312825e-05,
+    "Time_Train_Batch": 0.00048226515452067057
+}
+
+Epoch 72 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 59.41it/s] 13%|#3        | 13/100 [00:00<00:01, 64.33it/s] 21%|##1       | 21/100 [00:00<00:01, 68.58it/s] 29%|##9       | 29/100 [00:00<00:01, 70.14it/s] 36%|###6      | 36/100 [00:00<00:00, 69.40it/s] 44%|####4     | 44/100 [00:00<00:00, 70.27it/s] 52%|#####2    | 52/100 [00:00<00:00, 69.28it/s] 60%|######    | 60/100 [00:00<00:00, 70.47it/s] 68%|######8   | 68/100 [00:00<00:00, 71.59it/s] 76%|#######6  | 76/100 [00:01<00:00, 71.50it/s] 84%|########4 | 84/100 [00:01<00:00, 72.51it/s] 92%|#########2| 92/100 [00:01<00:00, 67.44it/s] 99%|#########9| 99/100 [00:01<00:00, 64.92it/s]100%|##########| 100/100 [00:01<00:00, 68.26it/s]
+Train Epoch 73
+{
+    "Loss": 27.933264141082763,
+    "Policy_Grad_Norms": 1.0000000059659648,
+    "Time_Data_Loading": 0.0031923532485961916,
+    "Time_Epoch": 0.02442884842554728,
+    "Time_Log_Info": 7.294416427612304e-05,
+    "Time_Process_Batch": 0.0004510164260864258,
+    "Time_Train_Batch": 0.020646226406097413
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 193.16it/s]
+Validation Epoch 73
+{
+    "Loss": 27.712378311157227,
+    "Time_Data_Loading": 0.0003582278887430827,
+    "Time_Epoch": 0.0008815805117289226,
+    "Time_Log_Info": 3.977616628011068e-06,
+    "Time_Process_Batch": 4.111528396606445e-05,
+    "Time_Train_Batch": 0.00045804580052693686
+}
+
+Epoch 73 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  7%|7         | 7/100 [00:00<00:01, 59.08it/s] 14%|#4        | 14/100 [00:00<00:01, 64.93it/s] 22%|##2       | 22/100 [00:00<00:01, 69.79it/s] 30%|###       | 30/100 [00:00<00:00, 72.35it/s] 38%|###8      | 38/100 [00:00<00:00, 74.11it/s] 46%|####6     | 46/100 [00:00<00:00, 74.60it/s] 54%|#####4    | 54/100 [00:00<00:00, 72.40it/s] 62%|######2   | 62/100 [00:00<00:00, 72.31it/s] 70%|#######   | 70/100 [00:00<00:00, 70.04it/s] 78%|#######8  | 78/100 [00:01<00:00, 72.00it/s] 86%|########6 | 86/100 [00:01<00:00, 71.04it/s] 94%|#########3| 94/100 [00:01<00:00, 68.91it/s]100%|##########| 100/100 [00:01<00:00, 69.91it/s]
+Train Epoch 74
+{
+    "Loss": 27.86479917526245,
+    "Policy_Grad_Norms": 0.9999999954921939,
+    "Time_Data_Loading": 0.003124499320983887,
+    "Time_Epoch": 0.023849070072174072,
+    "Time_Log_Info": 6.306966145833334e-05,
+    "Time_Process_Batch": 0.0003923177719116211,
+    "Time_Train_Batch": 0.020213401317596434
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 213.63it/s]
+Validation Epoch 74
+{
+    "Loss": 28.065757179260252,
+    "Time_Data_Loading": 0.00030424197514851886,
+    "Time_Epoch": 0.0007959405581156412,
+    "Time_Log_Info": 6.14325205485026e-06,
+    "Time_Process_Batch": 5.275408426920573e-05,
+    "Time_Train_Batch": 0.0004156629244486491
+}
+
+Epoch 74 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  7%|7         | 7/100 [00:00<00:01, 67.23it/s] 14%|#4        | 14/100 [00:00<00:01, 66.33it/s] 21%|##1       | 21/100 [00:00<00:01, 62.30it/s] 28%|##8       | 28/100 [00:00<00:01, 62.96it/s] 35%|###5      | 35/100 [00:00<00:01, 64.05it/s] 42%|####2     | 42/100 [00:00<00:00, 64.31it/s] 50%|#####     | 50/100 [00:00<00:00, 68.05it/s] 58%|#####8    | 58/100 [00:00<00:00, 70.17it/s] 67%|######7   | 67/100 [00:00<00:00, 73.47it/s] 75%|#######5  | 75/100 [00:01<00:00, 71.75it/s] 83%|########2 | 83/100 [00:01<00:00, 73.70it/s] 91%|#########1| 91/100 [00:01<00:00, 74.50it/s] 99%|#########9| 99/100 [00:01<00:00, 74.18it/s]100%|##########| 100/100 [00:01<00:00, 70.02it/s]
+Train Epoch 75
+{
+    "Loss": 27.779230060577394,
+    "Policy_Grad_Norms": 0.9999999971203358,
+    "Time_Data_Loading": 0.00314408540725708,
+    "Time_Epoch": 0.02381598154703776,
+    "Time_Log_Info": 6.142059961954753e-05,
+    "Time_Process_Batch": 0.00043375492095947265,
+    "Time_Train_Batch": 0.020116313298543295
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 185.52it/s]
+Validation Epoch 75
+{
+    "Loss": 27.926146507263184,
+    "Time_Data_Loading": 0.000320744514465332,
+    "Time_Epoch": 0.0009172558784484863,
+    "Time_Log_Info": 6.079673767089844e-06,
+    "Time_Process_Batch": 6.070534388224284e-05,
+    "Time_Train_Batch": 0.0005090475082397461
+}
+
+Epoch 75 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  7%|7         | 7/100 [00:00<00:01, 62.90it/s] 14%|#4        | 14/100 [00:00<00:01, 57.61it/s] 21%|##1       | 21/100 [00:00<00:01, 60.25it/s] 29%|##9       | 29/100 [00:00<00:01, 64.47it/s] 37%|###7      | 37/100 [00:00<00:00, 67.11it/s] 44%|####4     | 44/100 [00:00<00:00, 62.96it/s] 51%|#####1    | 51/100 [00:00<00:00, 59.41it/s] 57%|#####6    | 57/100 [00:00<00:00, 58.90it/s] 63%|######3   | 63/100 [00:01<00:00, 59.06it/s] 69%|######9   | 69/100 [00:01<00:00, 56.02it/s] 75%|#######5  | 75/100 [00:01<00:00, 54.02it/s] 82%|########2 | 82/100 [00:01<00:00, 56.28it/s] 89%|########9 | 89/100 [00:01<00:00, 58.89it/s] 96%|#########6| 96/100 [00:01<00:00, 59.79it/s]100%|##########| 100/100 [00:01<00:00, 59.63it/s]
+Train Epoch 76
+{
+    "Loss": 27.599403400421142,
+    "Policy_Grad_Norms": 1.0000000025511173,
+    "Time_Data_Loading": 0.00366057554880778,
+    "Time_Epoch": 0.02796361446380615,
+    "Time_Log_Info": 9.040037790934245e-05,
+    "Time_Process_Batch": 0.0006092985471089681,
+    "Time_Train_Batch": 0.023530050118764242
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 210.85it/s]
+Validation Epoch 76
+{
+    "Loss": 27.747304344177245,
+    "Time_Data_Loading": 0.00030028422673543295,
+    "Time_Epoch": 0.0008110404014587402,
+    "Time_Log_Info": 6.290276845296224e-06,
+    "Time_Process_Batch": 4.370212554931641e-05,
+    "Time_Train_Batch": 0.00043855508168538413
+}
+
+Epoch 76 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  7%|7         | 7/100 [00:00<00:01, 64.80it/s] 14%|#4        | 14/100 [00:00<00:01, 66.25it/s] 22%|##2       | 22/100 [00:00<00:01, 69.15it/s] 30%|###       | 30/100 [00:00<00:00, 70.22it/s] 38%|###8      | 38/100 [00:00<00:00, 69.58it/s] 45%|####5     | 45/100 [00:00<00:00, 68.40it/s] 53%|#####3    | 53/100 [00:00<00:00, 70.09it/s] 61%|######1   | 61/100 [00:00<00:00, 70.24it/s] 69%|######9   | 69/100 [00:00<00:00, 70.95it/s] 77%|#######7  | 77/100 [00:01<00:00, 72.37it/s] 85%|########5 | 85/100 [00:01<00:00, 74.04it/s] 93%|#########3| 93/100 [00:01<00:00, 74.15it/s]100%|##########| 100/100 [00:01<00:00, 71.61it/s]
+Train Epoch 77
+{
+    "Loss": 27.671001453399658,
+    "Policy_Grad_Norms": 1.0000000051254054,
+    "Time_Data_Loading": 0.003050720691680908,
+    "Time_Epoch": 0.023285098870595298,
+    "Time_Log_Info": 6.0562292734781904e-05,
+    "Time_Process_Batch": 0.0004256884256998698,
+    "Time_Train_Batch": 0.01969055732091268
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 224.21it/s]
+Validation Epoch 77
+{
+    "Loss": 27.19103546142578,
+    "Time_Data_Loading": 0.0002970417340596517,
+    "Time_Epoch": 0.0007587114969889323,
+    "Time_Log_Info": 3.4809112548828124e-06,
+    "Time_Process_Batch": 3.410975138346354e-05,
+    "Time_Train_Batch": 0.00040736198425292967
+}
+
+Epoch 77 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 74.02it/s] 16%|#6        | 16/100 [00:00<00:01, 72.87it/s] 24%|##4       | 24/100 [00:00<00:01, 71.60it/s] 32%|###2      | 32/100 [00:00<00:00, 70.07it/s] 40%|####      | 40/100 [00:00<00:00, 70.93it/s] 48%|####8     | 48/100 [00:00<00:00, 72.31it/s] 56%|#####6    | 56/100 [00:00<00:00, 71.34it/s] 64%|######4   | 64/100 [00:00<00:00, 72.24it/s] 72%|#######2  | 72/100 [00:00<00:00, 73.05it/s] 80%|########  | 80/100 [00:01<00:00, 72.29it/s] 88%|########8 | 88/100 [00:01<00:00, 73.51it/s] 96%|#########6| 96/100 [00:01<00:00, 74.68it/s]100%|##########| 100/100 [00:01<00:00, 72.96it/s]
+Train Epoch 78
+{
+    "Loss": 27.44331859588623,
+    "Policy_Grad_Norms": 1.0000000062273866,
+    "Time_Data_Loading": 0.003120597203572591,
+    "Time_Epoch": 0.022855945428212485,
+    "Time_Log_Info": 5.7979424794514975e-05,
+    "Time_Process_Batch": 0.00037553310394287107,
+    "Time_Train_Batch": 0.01924510399500529
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 216.41it/s]
+Validation Epoch 78
+{
+    "Loss": 27.197325134277342,
+    "Time_Data_Loading": 0.00030417839686075845,
+    "Time_Epoch": 0.000789801279703776,
+    "Time_Log_Info": 3.4729639689127604e-06,
+    "Time_Process_Batch": 4.76996103922526e-05,
+    "Time_Train_Batch": 0.00041337013244628905
+}
+
+Epoch 78 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 75.22it/s] 16%|#6        | 16/100 [00:00<00:01, 74.17it/s] 24%|##4       | 24/100 [00:00<00:01, 75.45it/s] 32%|###2      | 32/100 [00:00<00:00, 75.45it/s] 41%|####1     | 41/100 [00:00<00:00, 77.07it/s] 49%|####9     | 49/100 [00:00<00:00, 76.07it/s] 57%|#####6    | 57/100 [00:00<00:00, 75.18it/s] 65%|######5   | 65/100 [00:00<00:00, 73.60it/s] 73%|#######3  | 73/100 [00:00<00:00, 73.13it/s] 81%|########1 | 81/100 [00:01<00:00, 73.33it/s] 89%|########9 | 89/100 [00:01<00:00, 73.26it/s] 97%|#########7| 97/100 [00:01<00:00, 72.65it/s]100%|##########| 100/100 [00:01<00:00, 73.90it/s]
+Train Epoch 79
+{
+    "Loss": 27.300815963745116,
+    "Policy_Grad_Norms": 0.9999999948073843,
+    "Time_Data_Loading": 0.003042725721995036,
+    "Time_Epoch": 0.022562368710835775,
+    "Time_Log_Info": 6.507237752278646e-05,
+    "Time_Process_Batch": 0.0003774523735046387,
+    "Time_Train_Batch": 0.019020092487335206
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 176.04it/s]
+Validation Epoch 79
+{
+    "Loss": 26.703570556640624,
+    "Time_Data_Loading": 0.0003673791885375977,
+    "Time_Epoch": 0.0009629527727762858,
+    "Time_Log_Info": 4.34716542561849e-06,
+    "Time_Process_Batch": 4.611412684122721e-05,
+    "Time_Train_Batch": 0.0005268255869547526
+}
+
+Epoch 79 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 57.96it/s] 13%|#3        | 13/100 [00:00<00:01, 63.75it/s] 21%|##1       | 21/100 [00:00<00:01, 67.78it/s] 28%|##8       | 28/100 [00:00<00:01, 66.55it/s] 35%|###5      | 35/100 [00:00<00:00, 66.26it/s] 43%|####3     | 43/100 [00:00<00:00, 67.87it/s] 51%|#####1    | 51/100 [00:00<00:00, 69.80it/s] 59%|#####8    | 59/100 [00:00<00:00, 70.52it/s] 67%|######7   | 67/100 [00:00<00:00, 66.58it/s] 74%|#######4  | 74/100 [00:01<00:00, 62.23it/s] 81%|########1 | 81/100 [00:01<00:00, 59.66it/s] 88%|########8 | 88/100 [00:01<00:00, 59.25it/s] 94%|#########3| 94/100 [00:01<00:00, 56.92it/s]100%|##########| 100/100 [00:01<00:00, 62.72it/s]
+Train Epoch 80
+{
+    "Loss": 27.18463369369507,
+    "Policy_Grad_Norms": 0.9999999995570086,
+    "Time_Data_Loading": 0.003497775395711263,
+    "Time_Epoch": 0.026582618554433186,
+    "Time_Log_Info": 7.234017054239909e-05,
+    "Time_Process_Batch": 0.0005507270495096842,
+    "Time_Train_Batch": 0.022387870152791343
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 202.88it/s]
+Validation Epoch 80
+{
+    "Loss": 26.752570152282715,
+    "Time_Data_Loading": 0.0003196994463602702,
+    "Time_Epoch": 0.0008409261703491211,
+    "Time_Log_Info": 3.790855407714844e-06,
+    "Time_Process_Batch": 6.0220559438069664e-05,
+    "Time_Train_Batch": 0.00043596824010213214
+}
+
+Epoch 80 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  7%|7         | 7/100 [00:00<00:01, 63.83it/s] 14%|#4        | 14/100 [00:00<00:01, 64.39it/s] 21%|##1       | 21/100 [00:00<00:01, 63.21it/s] 28%|##8       | 28/100 [00:00<00:01, 63.59it/s] 35%|###5      | 35/100 [00:00<00:01, 62.97it/s] 42%|####2     | 42/100 [00:00<00:00, 64.00it/s] 49%|####9     | 49/100 [00:00<00:00, 62.36it/s] 56%|#####6    | 56/100 [00:00<00:00, 60.34it/s] 63%|######3   | 63/100 [00:01<00:00, 61.44it/s] 70%|#######   | 70/100 [00:01<00:00, 62.39it/s] 77%|#######7  | 77/100 [00:01<00:00, 63.11it/s] 85%|########5 | 85/100 [00:01<00:00, 65.61it/s] 93%|#########3| 93/100 [00:01<00:00, 67.09it/s]100%|##########| 100/100 [00:01<00:00, 62.66it/s]100%|##########| 100/100 [00:01<00:00, 63.17it/s]
+Train Epoch 81
+{
+    "Loss": 27.141447715759277,
+    "Policy_Grad_Norms": 0.9999999905414981,
+    "Time_Data_Loading": 0.003423750400543213,
+    "Time_Epoch": 0.02639398177464803,
+    "Time_Log_Info": 8.769432703653971e-05,
+    "Time_Process_Batch": 0.0006321390469868978,
+    "Time_Train_Batch": 0.02218494415283203
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 170.19it/s]
+Validation Epoch 81
+{
+    "Loss": 26.248464393615723,
+    "Time_Data_Loading": 0.0003455400466918945,
+    "Time_Epoch": 0.0010011514027913411,
+    "Time_Log_Info": 4.434585571289063e-06,
+    "Time_Process_Batch": 9.206930796305339e-05,
+    "Time_Train_Batch": 0.0005355676015218099
+}
+
+Epoch 81 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  7%|7         | 7/100 [00:00<00:01, 66.01it/s] 14%|#4        | 14/100 [00:00<00:01, 66.00it/s] 21%|##1       | 21/100 [00:00<00:01, 63.06it/s] 28%|##8       | 28/100 [00:00<00:01, 61.86it/s] 35%|###5      | 35/100 [00:00<00:01, 59.18it/s] 41%|####1     | 41/100 [00:00<00:00, 59.39it/s] 47%|####6     | 47/100 [00:00<00:00, 57.93it/s] 53%|#####3    | 53/100 [00:00<00:00, 57.21it/s] 59%|#####8    | 59/100 [00:01<00:00, 55.61it/s] 65%|######5   | 65/100 [00:01<00:00, 53.97it/s] 71%|#######1  | 71/100 [00:01<00:00, 55.30it/s] 78%|#######8  | 78/100 [00:01<00:00, 57.79it/s] 84%|########4 | 84/100 [00:01<00:00, 58.36it/s] 91%|#########1| 91/100 [00:01<00:00, 60.35it/s] 98%|#########8| 98/100 [00:01<00:00, 62.20it/s]100%|##########| 100/100 [00:01<00:00, 59.59it/s]
+Train Epoch 82
+{
+    "Loss": 27.017675380706788,
+    "Policy_Grad_Norms": 1.0000000057314646,
+    "Time_Data_Loading": 0.003677213191986084,
+    "Time_Epoch": 0.027981309096018474,
+    "Time_Log_Info": 9.312629699707032e-05,
+    "Time_Process_Batch": 0.0007315794626871745,
+    "Time_Train_Batch": 0.02340067227681478
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 202.03it/s]
+Validation Epoch 82
+{
+    "Loss": 26.56122417449951,
+    "Time_Data_Loading": 0.0003058950106302897,
+    "Time_Epoch": 0.0008416374524434408,
+    "Time_Log_Info": 3.882249196370443e-06,
+    "Time_Process_Batch": 5.330642064412435e-05,
+    "Time_Train_Batch": 0.0004604061444600423
+}
+
+Epoch 82 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  7%|7         | 7/100 [00:00<00:01, 65.10it/s] 14%|#4        | 14/100 [00:00<00:01, 59.02it/s] 20%|##        | 20/100 [00:00<00:01, 58.57it/s] 27%|##7       | 27/100 [00:00<00:01, 59.20it/s] 33%|###3      | 33/100 [00:00<00:01, 57.29it/s] 40%|####      | 40/100 [00:00<00:01, 59.55it/s] 46%|####6     | 46/100 [00:00<00:00, 58.81it/s] 53%|#####3    | 53/100 [00:00<00:00, 60.48it/s] 60%|######    | 60/100 [00:01<00:00, 60.56it/s] 67%|######7   | 67/100 [00:01<00:00, 61.70it/s] 74%|#######4  | 74/100 [00:01<00:00, 62.38it/s] 81%|########1 | 81/100 [00:01<00:00, 63.82it/s] 88%|########8 | 88/100 [00:01<00:00, 64.80it/s] 95%|#########5| 95/100 [00:01<00:00, 65.53it/s]100%|##########| 100/100 [00:01<00:00, 62.38it/s]
+Train Epoch 83
+{
+    "Loss": 26.900470161437987,
+    "Policy_Grad_Norms": 1.0000000218077607,
+    "Time_Data_Loading": 0.003315265973409017,
+    "Time_Epoch": 0.026731157302856447,
+    "Time_Log_Info": 8.379220962524414e-05,
+    "Time_Process_Batch": 0.0006512999534606934,
+    "Time_Train_Batch": 0.022610688209533693
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 228.56it/s]
+Validation Epoch 83
+{
+    "Loss": 26.103552627563477,
+    "Time_Data_Loading": 0.0003014246622721354,
+    "Time_Epoch": 0.0007460753122965495,
+    "Time_Log_Info": 4.752477010091146e-06,
+    "Time_Process_Batch": 3.9366881052652997e-05,
+    "Time_Train_Batch": 0.0003823240598042806
+}
+
+Epoch 83 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 74.20it/s] 16%|#6        | 16/100 [00:00<00:01, 77.01it/s] 24%|##4       | 24/100 [00:00<00:00, 76.05it/s] 32%|###2      | 32/100 [00:00<00:00, 76.58it/s] 40%|####      | 40/100 [00:00<00:00, 75.78it/s] 48%|####8     | 48/100 [00:00<00:00, 76.52it/s] 56%|#####6    | 56/100 [00:00<00:00, 75.61it/s] 64%|######4   | 64/100 [00:00<00:00, 75.76it/s] 72%|#######2  | 72/100 [00:00<00:00, 74.26it/s] 80%|########  | 80/100 [00:01<00:00, 73.68it/s] 88%|########8 | 88/100 [00:01<00:00, 72.54it/s] 96%|#########6| 96/100 [00:01<00:00, 73.50it/s]100%|##########| 100/100 [00:01<00:00, 74.81it/s]
+Train Epoch 84
+{
+    "Loss": 26.74232452392578,
+    "Policy_Grad_Norms": 0.9999999860308557,
+    "Time_Data_Loading": 0.002996639410654704,
+    "Time_Epoch": 0.022287686665852863,
+    "Time_Log_Info": 5.3942203521728516e-05,
+    "Time_Process_Batch": 0.0003731012344360352,
+    "Time_Train_Batch": 0.01881077289581299
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 239.08it/s]
+Validation Epoch 84
+{
+    "Loss": 26.092597007751465,
+    "Time_Data_Loading": 0.00027980804443359373,
+    "Time_Epoch": 0.0007113854090372722,
+    "Time_Log_Info": 3.3974647521972656e-06,
+    "Time_Process_Batch": 3.1117598215738935e-05,
+    "Time_Train_Batch": 0.0003815491994222005
+}
+
+Epoch 84 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 74.96it/s] 16%|#6        | 16/100 [00:00<00:01, 75.92it/s] 24%|##4       | 24/100 [00:00<00:01, 75.21it/s] 32%|###2      | 32/100 [00:00<00:00, 75.09it/s] 40%|####      | 40/100 [00:00<00:00, 73.93it/s] 48%|####8     | 48/100 [00:00<00:00, 71.86it/s] 56%|#####6    | 56/100 [00:00<00:00, 72.06it/s] 64%|######4   | 64/100 [00:00<00:00, 72.76it/s] 72%|#######2  | 72/100 [00:00<00:00, 72.65it/s] 80%|########  | 80/100 [00:01<00:00, 74.03it/s] 88%|########8 | 88/100 [00:01<00:00, 73.94it/s] 96%|#########6| 96/100 [00:01<00:00, 74.68it/s]100%|##########| 100/100 [00:01<00:00, 73.92it/s]
+Train Epoch 85
+{
+    "Loss": 26.775060768127442,
+    "Policy_Grad_Norms": 0.9999999905047778,
+    "Time_Data_Loading": 0.003098650773366292,
+    "Time_Epoch": 0.022557846705118813,
+    "Time_Log_Info": 5.5666764577229815e-05,
+    "Time_Process_Batch": 0.00038918654123942055,
+    "Time_Train_Batch": 0.018959144751230877
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 235.83it/s]
+Validation Epoch 85
+{
+    "Loss": 25.68984317779541,
+    "Time_Data_Loading": 0.00027887821197509767,
+    "Time_Epoch": 0.000721597671508789,
+    "Time_Log_Info": 3.83456548055013e-06,
+    "Time_Process_Batch": 5.050500233968099e-05,
+    "Time_Train_Batch": 0.0003722786903381348
+}
+
+Epoch 85 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 75.91it/s] 16%|#6        | 16/100 [00:00<00:01, 72.91it/s] 24%|##4       | 24/100 [00:00<00:01, 72.30it/s] 32%|###2      | 32/100 [00:00<00:00, 72.13it/s] 40%|####      | 40/100 [00:00<00:00, 68.27it/s] 47%|####6     | 47/100 [00:00<00:00, 63.79it/s] 54%|#####4    | 54/100 [00:00<00:00, 59.75it/s] 61%|######1   | 61/100 [00:00<00:00, 57.21it/s] 67%|######7   | 67/100 [00:01<00:00, 54.41it/s] 73%|#######3  | 73/100 [00:01<00:00, 54.74it/s] 79%|#######9  | 79/100 [00:01<00:00, 55.54it/s] 85%|########5 | 85/100 [00:01<00:00, 54.48it/s] 91%|#########1| 91/100 [00:01<00:00, 55.22it/s] 97%|#########7| 97/100 [00:01<00:00, 55.24it/s]100%|##########| 100/100 [00:01<00:00, 59.68it/s]
+Train Epoch 86
+{
+    "Loss": 26.60680088043213,
+    "Policy_Grad_Norms": 1.0000000053533575,
+    "Time_Data_Loading": 0.003527406851450602,
+    "Time_Epoch": 0.02793678840001424,
+    "Time_Log_Info": 8.69433085123698e-05,
+    "Time_Process_Batch": 0.0007074515024820964,
+    "Time_Train_Batch": 0.023539241154988608
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 190.73it/s]
+Validation Epoch 86
+{
+    "Loss": 25.791248893737794,
+    "Time_Data_Loading": 0.0003137509028116862,
+    "Time_Epoch": 0.0008958657582600911,
+    "Time_Log_Info": 4.104773203531901e-06,
+    "Time_Process_Batch": 5.3262710571289064e-05,
+    "Time_Train_Batch": 0.0005008776982625326
+}
+
+Epoch 86 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  7%|7         | 7/100 [00:00<00:01, 65.66it/s] 14%|#4        | 14/100 [00:00<00:01, 65.41it/s] 21%|##1       | 21/100 [00:00<00:01, 58.81it/s] 27%|##7       | 27/100 [00:00<00:01, 54.13it/s] 33%|###3      | 33/100 [00:00<00:01, 55.75it/s] 39%|###9      | 39/100 [00:00<00:01, 55.34it/s] 46%|####6     | 46/100 [00:00<00:00, 57.17it/s] 52%|#####2    | 52/100 [00:00<00:00, 57.70it/s] 58%|#####8    | 58/100 [00:01<00:00, 58.19it/s] 64%|######4   | 64/100 [00:01<00:00, 56.66it/s] 71%|#######1  | 71/100 [00:01<00:00, 59.29it/s] 78%|#######8  | 78/100 [00:01<00:00, 61.60it/s] 85%|########5 | 85/100 [00:01<00:00, 62.47it/s] 92%|#########2| 92/100 [00:01<00:00, 60.15it/s] 99%|#########9| 99/100 [00:01<00:00, 61.64it/s]100%|##########| 100/100 [00:01<00:00, 59.30it/s]
+Train Epoch 87
+{
+    "Loss": 26.398550052642822,
+    "Policy_Grad_Norms": 1.0000000067265682,
+    "Time_Data_Loading": 0.0036213119824727376,
+    "Time_Epoch": 0.028121487299601237,
+    "Time_Log_Info": 9.227991104125977e-05,
+    "Time_Process_Batch": 0.0005654652913411458,
+    "Time_Train_Batch": 0.023760525385538737
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 202.13it/s]
+Validation Epoch 87
+{
+    "Loss": 25.891769409179688,
+    "Time_Data_Loading": 0.00033394098281860354,
+    "Time_Epoch": 0.0008415699005126954,
+    "Time_Log_Info": 4.144509633382161e-06,
+    "Time_Process_Batch": 4.60505485534668e-05,
+    "Time_Train_Batch": 0.00043861865997314454
+}
+
+Epoch 87 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  7%|7         | 7/100 [00:00<00:01, 64.34it/s] 14%|#4        | 14/100 [00:00<00:01, 61.98it/s] 21%|##1       | 21/100 [00:00<00:01, 60.92it/s] 28%|##8       | 28/100 [00:00<00:01, 62.79it/s] 35%|###5      | 35/100 [00:00<00:01, 59.16it/s] 42%|####2     | 42/100 [00:00<00:00, 60.89it/s] 49%|####9     | 49/100 [00:00<00:00, 63.24it/s] 56%|#####6    | 56/100 [00:00<00:00, 64.44it/s] 63%|######3   | 63/100 [00:00<00:00, 65.92it/s] 71%|#######1  | 71/100 [00:01<00:00, 67.32it/s] 78%|#######8  | 78/100 [00:01<00:00, 67.03it/s] 85%|########5 | 85/100 [00:01<00:00, 66.78it/s] 92%|#########2| 92/100 [00:01<00:00, 65.29it/s] 99%|#########9| 99/100 [00:01<00:00, 65.59it/s]100%|##########| 100/100 [00:01<00:00, 64.40it/s]
+Train Epoch 88
+{
+    "Loss": 26.25617570877075,
+    "Policy_Grad_Norms": 0.9999999927410402,
+    "Time_Data_Loading": 0.0035007278124491374,
+    "Time_Epoch": 0.025893533229827882,
+    "Time_Log_Info": 7.805029551188151e-05,
+    "Time_Process_Batch": 0.0005047043164571126,
+    "Time_Train_Batch": 0.02173685630162557
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 203.22it/s]
+Validation Epoch 88
+{
+    "Loss": 26.205641174316405,
+    "Time_Data_Loading": 0.00031113624572753906,
+    "Time_Epoch": 0.0008406519889831543,
+    "Time_Log_Info": 4.001458485921224e-06,
+    "Time_Process_Batch": 4.194974899291992e-05,
+    "Time_Train_Batch": 0.00046101411183675133
+}
+
+Epoch 88 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  7%|7         | 7/100 [00:00<00:01, 66.46it/s] 14%|#4        | 14/100 [00:00<00:01, 66.93it/s] 21%|##1       | 21/100 [00:00<00:01, 66.90it/s] 28%|##8       | 28/100 [00:00<00:01, 66.73it/s] 35%|###5      | 35/100 [00:00<00:00, 66.62it/s] 43%|####3     | 43/100 [00:00<00:00, 69.04it/s] 50%|#####     | 50/100 [00:00<00:00, 68.44it/s] 58%|#####8    | 58/100 [00:00<00:00, 68.37it/s] 66%|######6   | 66/100 [00:00<00:00, 69.44it/s] 74%|#######4  | 74/100 [00:01<00:00, 69.85it/s] 82%|########2 | 82/100 [00:01<00:00, 71.35it/s] 90%|######### | 90/100 [00:01<00:00, 72.18it/s] 98%|#########8| 98/100 [00:01<00:00, 73.59it/s]100%|##########| 100/100 [00:01<00:00, 70.20it/s]
+Train Epoch 89
+{
+    "Loss": 26.230996589660645,
+    "Policy_Grad_Norms": 1.000000006932787,
+    "Time_Data_Loading": 0.0032151023546854655,
+    "Time_Epoch": 0.023752212524414062,
+    "Time_Log_Info": 6.153583526611329e-05,
+    "Time_Process_Batch": 0.0004165212313334147,
+    "Time_Train_Batch": 0.01999667485555013
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 216.85it/s]
+Validation Epoch 89
+{
+    "Loss": 25.892440032958984,
+    "Time_Data_Loading": 0.0003144502639770508,
+    "Time_Epoch": 0.0007862448692321777,
+    "Time_Log_Info": 3.6795934041341146e-06,
+    "Time_Process_Batch": 3.691514333089193e-05,
+    "Time_Train_Batch": 0.00041216214497884115
+}
+
+Epoch 89 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 76.25it/s] 16%|#6        | 16/100 [00:00<00:01, 74.66it/s] 24%|##4       | 24/100 [00:00<00:01, 75.54it/s] 32%|###2      | 32/100 [00:00<00:00, 73.17it/s] 40%|####      | 40/100 [00:00<00:00, 73.63it/s] 48%|####8     | 48/100 [00:00<00:00, 73.71it/s] 56%|#####6    | 56/100 [00:00<00:00, 74.24it/s] 64%|######4   | 64/100 [00:00<00:00, 74.53it/s] 72%|#######2  | 72/100 [00:00<00:00, 74.90it/s] 80%|########  | 80/100 [00:01<00:00, 74.64it/s] 88%|########8 | 88/100 [00:01<00:00, 72.19it/s] 96%|#########6| 96/100 [00:01<00:00, 73.61it/s]100%|##########| 100/100 [00:01<00:00, 74.18it/s]
+Train Epoch 90
+{
+    "Loss": 26.1858772277832,
+    "Policy_Grad_Norms": 0.9999999991792776,
+    "Time_Data_Loading": 0.0029738227526346843,
+    "Time_Epoch": 0.022476998964945476,
+    "Time_Log_Info": 5.5118401845296225e-05,
+    "Time_Process_Batch": 0.00038710435231526695,
+    "Time_Train_Batch": 0.019006351629892986
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 220.37it/s]
+Validation Epoch 90
+{
+    "Loss": 25.83733673095703,
+    "Time_Data_Loading": 0.0003183285395304362,
+    "Time_Epoch": 0.0007735808690388997,
+    "Time_Log_Info": 3.143151601155599e-06,
+    "Time_Process_Batch": 3.28222910563151e-05,
+    "Time_Train_Batch": 0.00040040810902913413
+}
+
+Epoch 90 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 78.49it/s] 16%|#6        | 16/100 [00:00<00:01, 75.67it/s] 24%|##4       | 24/100 [00:00<00:00, 76.78it/s] 32%|###2      | 32/100 [00:00<00:00, 75.67it/s] 40%|####      | 40/100 [00:00<00:00, 76.28it/s] 48%|####8     | 48/100 [00:00<00:00, 76.17it/s] 56%|#####6    | 56/100 [00:00<00:00, 76.36it/s] 64%|######4   | 64/100 [00:00<00:00, 72.42it/s] 72%|#######2  | 72/100 [00:00<00:00, 74.53it/s] 80%|########  | 80/100 [00:01<00:00, 74.08it/s] 88%|########8 | 88/100 [00:01<00:00, 73.05it/s] 96%|#########6| 96/100 [00:01<00:00, 71.21it/s]100%|##########| 100/100 [00:01<00:00, 74.01it/s]
+Train Epoch 91
+{
+    "Loss": 25.879842700958253,
+    "Policy_Grad_Norms": 0.9999999830479729,
+    "Time_Data_Loading": 0.0031253576278686525,
+    "Time_Epoch": 0.022531497478485107,
+    "Time_Log_Info": 5.004008611043294e-05,
+    "Time_Process_Batch": 0.00039029916127522786,
+    "Time_Train_Batch": 0.018906823794047036
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 222.53it/s]
+Validation Epoch 91
+{
+    "Loss": 26.304822731018067,
+    "Time_Data_Loading": 0.00029294490814208985,
+    "Time_Epoch": 0.0007637500762939453,
+    "Time_Log_Info": 3.3775965372721353e-06,
+    "Time_Process_Batch": 4.307428995768229e-05,
+    "Time_Train_Batch": 0.0004082163174947103
+}
+
+Epoch 91 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 75.84it/s] 16%|#6        | 16/100 [00:00<00:01, 74.35it/s] 24%|##4       | 24/100 [00:00<00:01, 74.69it/s] 32%|###2      | 32/100 [00:00<00:00, 74.27it/s] 40%|####      | 40/100 [00:00<00:00, 72.57it/s] 48%|####8     | 48/100 [00:00<00:00, 71.61it/s] 56%|#####6    | 56/100 [00:00<00:00, 71.37it/s] 64%|######4   | 64/100 [00:00<00:00, 70.54it/s] 72%|#######2  | 72/100 [00:00<00:00, 72.31it/s] 80%|########  | 80/100 [00:01<00:00, 73.49it/s] 88%|########8 | 88/100 [00:01<00:00, 73.97it/s] 96%|#########6| 96/100 [00:01<00:00, 75.13it/s]100%|##########| 100/100 [00:01<00:00, 73.58it/s]
+Train Epoch 92
+{
+    "Loss": 25.886546592712403,
+    "Policy_Grad_Norms": 1.0000000123213701,
+    "Time_Data_Loading": 0.0030819972356160483,
+    "Time_Epoch": 0.022663577397664388,
+    "Time_Log_Info": 5.8261553446451825e-05,
+    "Time_Process_Batch": 0.00038959582646687824,
+    "Time_Train_Batch": 0.019074447949727378
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 173.56it/s]
+Validation Epoch 92
+{
+    "Loss": 26.14146137237549,
+    "Time_Data_Loading": 0.0004120071729024251,
+    "Time_Epoch": 0.0009760061899820963,
+    "Time_Log_Info": 3.921985626220703e-06,
+    "Time_Process_Batch": 4.247426986694336e-05,
+    "Time_Train_Batch": 0.0005004684130350749
+}
+
+Epoch 92 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 77.65it/s] 16%|#6        | 16/100 [00:00<00:01, 76.72it/s] 24%|##4       | 24/100 [00:00<00:00, 77.16it/s] 32%|###2      | 32/100 [00:00<00:00, 76.18it/s] 40%|####      | 40/100 [00:00<00:00, 76.71it/s] 48%|####8     | 48/100 [00:00<00:00, 75.27it/s] 56%|#####6    | 56/100 [00:00<00:00, 76.13it/s] 64%|######4   | 64/100 [00:00<00:00, 73.77it/s] 72%|#######2  | 72/100 [00:00<00:00, 74.85it/s] 80%|########  | 80/100 [00:01<00:00, 75.63it/s] 88%|########8 | 88/100 [00:01<00:00, 75.77it/s] 96%|#########6| 96/100 [00:01<00:00, 75.70it/s]100%|##########| 100/100 [00:01<00:00, 75.72it/s]
+Train Epoch 93
+{
+    "Loss": 25.78959270477295,
+    "Policy_Grad_Norms": 0.9999999845203351,
+    "Time_Data_Loading": 0.0030263662338256836,
+    "Time_Epoch": 0.022020888328552247,
+    "Time_Log_Info": 5.143880844116211e-05,
+    "Time_Process_Batch": 0.00035614569981892903,
+    "Time_Train_Batch": 0.018533507982889812
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 226.77it/s]
+Validation Epoch 93
+{
+    "Loss": 24.855474090576173,
+    "Time_Data_Loading": 0.0002780397733052572,
+    "Time_Epoch": 0.0007499178250630696,
+    "Time_Log_Info": 4.2478243509928385e-06,
+    "Time_Process_Batch": 4.978179931640625e-05,
+    "Time_Train_Batch": 0.0004015048344930013
+}
+
+Epoch 93 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 73.51it/s] 16%|#6        | 16/100 [00:00<00:01, 74.42it/s] 24%|##4       | 24/100 [00:00<00:01, 75.67it/s] 32%|###2      | 32/100 [00:00<00:00, 75.60it/s] 40%|####      | 40/100 [00:00<00:00, 76.18it/s] 48%|####8     | 48/100 [00:00<00:00, 75.87it/s] 56%|#####6    | 56/100 [00:00<00:00, 75.72it/s] 64%|######4   | 64/100 [00:00<00:00, 75.93it/s] 72%|#######2  | 72/100 [00:00<00:00, 76.68it/s] 80%|########  | 80/100 [00:01<00:00, 75.51it/s] 88%|########8 | 88/100 [00:01<00:00, 75.72it/s] 96%|#########6| 96/100 [00:01<00:00, 74.06it/s]100%|##########| 100/100 [00:01<00:00, 74.85it/s]
+Train Epoch 94
+{
+    "Loss": 25.655173568725587,
+    "Policy_Grad_Norms": 0.9999999993129645,
+    "Time_Data_Loading": 0.0029747883478800454,
+    "Time_Epoch": 0.022278185685475668,
+    "Time_Log_Info": 5.255540211995443e-05,
+    "Time_Process_Batch": 0.00037186543146769206,
+    "Time_Train_Batch": 0.018825578689575195
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 223.75it/s]
+Validation Epoch 94
+{
+    "Loss": 25.43087730407715,
+    "Time_Data_Loading": 0.0002929488817850749,
+    "Time_Epoch": 0.0007642666498819987,
+    "Time_Log_Info": 3.5524368286132813e-06,
+    "Time_Process_Batch": 4.3964385986328126e-05,
+    "Time_Train_Batch": 0.0004031459490458171
+}
+
+Epoch 94 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 75.35it/s] 16%|#6        | 16/100 [00:00<00:01, 74.64it/s] 24%|##4       | 24/100 [00:00<00:01, 75.62it/s] 32%|###2      | 32/100 [00:00<00:00, 75.97it/s] 40%|####      | 40/100 [00:00<00:00, 75.78it/s] 48%|####8     | 48/100 [00:00<00:00, 75.14it/s] 56%|#####6    | 56/100 [00:00<00:00, 75.57it/s] 64%|######4   | 64/100 [00:00<00:00, 75.17it/s] 72%|#######2  | 72/100 [00:00<00:00, 74.79it/s] 80%|########  | 80/100 [00:01<00:00, 74.00it/s] 88%|########8 | 88/100 [00:01<00:00, 72.45it/s] 96%|#########6| 96/100 [00:01<00:00, 69.99it/s]100%|##########| 100/100 [00:01<00:00, 73.52it/s]
+Train Epoch 95
+{
+    "Loss": 25.53244951248169,
+    "Policy_Grad_Norms": 1.000000001589267,
+    "Time_Data_Loading": 0.003075083096822103,
+    "Time_Epoch": 0.02267988125483195,
+    "Time_Log_Info": 5.5889288584391274e-05,
+    "Time_Process_Batch": 0.0004022041956583659,
+    "Time_Train_Batch": 0.019088884194691975
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 224.89it/s]
+Validation Epoch 95
+{
+    "Loss": 25.987839126586913,
+    "Time_Data_Loading": 0.0003092765808105469,
+    "Time_Epoch": 0.0007564703623453776,
+    "Time_Log_Info": 3.3895174662272136e-06,
+    "Time_Process_Batch": 4.648764928181966e-05,
+    "Time_Train_Batch": 0.0003805677096048991
+}
+
+Epoch 95 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 70.80it/s] 16%|#6        | 16/100 [00:00<00:01, 70.98it/s] 24%|##4       | 24/100 [00:00<00:01, 71.79it/s] 32%|###2      | 32/100 [00:00<00:00, 70.52it/s] 40%|####      | 40/100 [00:00<00:00, 72.55it/s] 48%|####8     | 48/100 [00:00<00:00, 73.35it/s] 56%|#####6    | 56/100 [00:00<00:00, 74.29it/s] 64%|######4   | 64/100 [00:00<00:00, 74.21it/s] 72%|#######2  | 72/100 [00:00<00:00, 73.25it/s] 80%|########  | 80/100 [00:01<00:00, 73.87it/s] 88%|########8 | 88/100 [00:01<00:00, 74.47it/s] 96%|#########6| 96/100 [00:01<00:00, 74.90it/s]100%|##########| 100/100 [00:01<00:00, 73.56it/s]
+Train Epoch 96
+{
+    "Loss": 25.616174983978272,
+    "Policy_Grad_Norms": 0.9999999883581474,
+    "Time_Data_Loading": 0.003198854128519694,
+    "Time_Epoch": 0.02266947031021118,
+    "Time_Log_Info": 5.515813827514648e-05,
+    "Time_Process_Batch": 0.00037387609481811526,
+    "Time_Train_Batch": 0.018980006376902264
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 231.39it/s]
+Validation Epoch 96
+{
+    "Loss": 25.131386375427248,
+    "Time_Data_Loading": 0.00029472907384236655,
+    "Time_Epoch": 0.0007354060808817546,
+    "Time_Log_Info": 3.5444895426432293e-06,
+    "Time_Process_Batch": 4.769563674926758e-05,
+    "Time_Train_Batch": 0.0003729859987894694
+}
+
+Epoch 96 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 75.15it/s] 16%|#6        | 16/100 [00:00<00:01, 75.07it/s] 24%|##4       | 24/100 [00:00<00:01, 74.15it/s] 32%|###2      | 32/100 [00:00<00:00, 72.93it/s] 40%|####      | 40/100 [00:00<00:00, 74.21it/s] 48%|####8     | 48/100 [00:00<00:00, 71.32it/s] 56%|#####6    | 56/100 [00:00<00:00, 72.72it/s] 64%|######4   | 64/100 [00:00<00:00, 73.18it/s] 72%|#######2  | 72/100 [00:00<00:00, 74.43it/s] 80%|########  | 80/100 [00:01<00:00, 75.08it/s] 88%|########8 | 88/100 [00:01<00:00, 75.81it/s] 96%|#########6| 96/100 [00:01<00:00, 75.53it/s]100%|##########| 100/100 [00:01<00:00, 74.36it/s]
+Train Epoch 97
+{
+    "Loss": 25.443359031677247,
+    "Policy_Grad_Norms": 1.0000000048308428,
+    "Time_Data_Loading": 0.003046751022338867,
+    "Time_Epoch": 0.02242383559544881,
+    "Time_Log_Info": 5.368789037068685e-05,
+    "Time_Process_Batch": 0.0003736098607381185,
+    "Time_Train_Batch": 0.018897167841593423
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 238.86it/s]
+Validation Epoch 97
+{
+    "Loss": 25.110834693908693,
+    "Time_Data_Loading": 0.00028736193974812825,
+    "Time_Epoch": 0.000721887747446696,
+    "Time_Log_Info": 3.1749407450358072e-06,
+    "Time_Process_Batch": 4.107554753621419e-05,
+    "Time_Train_Batch": 0.00036485989888509113
+}
+
+Epoch 97 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 75.32it/s] 16%|#6        | 16/100 [00:00<00:01, 75.46it/s] 24%|##4       | 24/100 [00:00<00:00, 76.54it/s] 32%|###2      | 32/100 [00:00<00:00, 77.38it/s] 40%|####      | 40/100 [00:00<00:00, 77.35it/s] 48%|####8     | 48/100 [00:00<00:00, 77.56it/s] 56%|#####6    | 56/100 [00:00<00:00, 76.61it/s] 64%|######4   | 64/100 [00:00<00:00, 75.25it/s] 72%|#######2  | 72/100 [00:00<00:00, 70.22it/s] 80%|########  | 80/100 [00:01<00:00, 66.53it/s] 87%|########7 | 87/100 [00:01<00:00, 66.37it/s] 94%|#########3| 94/100 [00:01<00:00, 67.14it/s]100%|##########| 100/100 [00:01<00:00, 71.51it/s]
+Train Epoch 98
+{
+    "Loss": 25.261215019226075,
+    "Policy_Grad_Norms": 0.9999999993929533,
+    "Time_Data_Loading": 0.0031314810117085774,
+    "Time_Epoch": 0.023318099975585937,
+    "Time_Log_Info": 6.204843521118164e-05,
+    "Time_Process_Batch": 0.00042400360107421877,
+    "Time_Train_Batch": 0.019643354415893554
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 221.50it/s]
+Validation Epoch 98
+{
+    "Loss": 24.608396530151367,
+    "Time_Data_Loading": 0.00029811064402262367,
+    "Time_Epoch": 0.0007694840431213378,
+    "Time_Log_Info": 3.631909688313802e-06,
+    "Time_Process_Batch": 3.4991900126139326e-05,
+    "Time_Train_Batch": 0.0004141569137573242
+}
+
+Epoch 98 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 73.71it/s] 16%|#6        | 16/100 [00:00<00:01, 75.14it/s] 24%|##4       | 24/100 [00:00<00:00, 76.13it/s] 32%|###2      | 32/100 [00:00<00:00, 74.68it/s] 40%|####      | 40/100 [00:00<00:00, 72.71it/s] 48%|####8     | 48/100 [00:00<00:00, 69.30it/s] 56%|#####6    | 56/100 [00:00<00:00, 69.99it/s] 64%|######4   | 64/100 [00:00<00:00, 69.58it/s] 72%|#######2  | 72/100 [00:01<00:00, 71.08it/s] 80%|########  | 80/100 [00:01<00:00, 72.23it/s] 88%|########8 | 88/100 [00:01<00:00, 72.52it/s] 96%|#########6| 96/100 [00:01<00:00, 73.14it/s]100%|##########| 100/100 [00:01<00:00, 72.28it/s]
+Train Epoch 99
+{
+    "Loss": 25.18732526779175,
+    "Policy_Grad_Norms": 1.000000003319916,
+    "Time_Data_Loading": 0.0030331770579020184,
+    "Time_Epoch": 0.02307021220525106,
+    "Time_Log_Info": 5.79833984375e-05,
+    "Time_Process_Batch": 0.00040287176767985026,
+    "Time_Train_Batch": 0.019518609841664633
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 228.34it/s]
+Validation Epoch 99
+{
+    "Loss": 25.28223934173584,
+    "Time_Data_Loading": 0.0002930919329325358,
+    "Time_Epoch": 0.0007498343785603841,
+    "Time_Log_Info": 3.2067298889160155e-06,
+    "Time_Process_Batch": 4.6654542287190756e-05,
+    "Time_Train_Batch": 0.0003856658935546875
+}
+
+Epoch 99 Memory Usage: 4812 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 77.68it/s] 16%|#6        | 16/100 [00:00<00:01, 77.99it/s] 24%|##4       | 24/100 [00:00<00:00, 76.94it/s] 32%|###2      | 32/100 [00:00<00:00, 77.20it/s] 40%|####      | 40/100 [00:00<00:00, 76.44it/s] 48%|####8     | 48/100 [00:00<00:00, 76.25it/s] 56%|#####6    | 56/100 [00:00<00:00, 76.39it/s] 64%|######4   | 64/100 [00:00<00:00, 77.14it/s] 72%|#######2  | 72/100 [00:00<00:00, 77.31it/s] 80%|########  | 80/100 [00:01<00:00, 73.65it/s] 88%|########8 | 88/100 [00:01<00:00, 69.95it/s] 96%|#########6| 96/100 [00:01<00:00, 68.08it/s]100%|##########| 100/100 [00:01<00:00, 73.10it/s]
+Train Epoch 100
+{
+    "Loss": 25.07188711166382,
+    "Policy_Grad_Norms": 0.9999999926670681,
+    "Time_Data_Loading": 0.0030611395835876466,
+    "Time_Epoch": 0.022808527946472167,
+    "Time_Log_Info": 5.311965942382813e-05,
+    "Time_Process_Batch": 0.000413358211517334,
+    "Time_Train_Batch": 0.019224786758422853
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 242.28it/s]
+Validation Epoch 100
+{
+    "Loss": 24.939613151550294,
+    "Time_Data_Loading": 0.000280459721883138,
+    "Time_Epoch": 0.0007016976674397786,
+    "Time_Log_Info": 3.1391779581705728e-06,
+    "Time_Process_Batch": 3.802378972371419e-05,
+    "Time_Train_Batch": 0.0003650426864624023
+}
+video writes to /home/andrew/Desktop/robo_sims/robomimic/robomimic/../bet_trained_models/test/20221130034640/videos/Lift_epoch_100.mp4
+rollout: env=Lift, horizon=400, use_goals=False, num_episodes=10
+  0%|          | 0/10 [00:00<?, ?it/s] 10%|#         | 1/10 [00:08<01:15,  8.36s/it] 20%|##        | 2/10 [00:16<01:07,  8.40s/it] 30%|###       | 3/10 [00:24<00:57,  8.20s/it] 40%|####      | 4/10 [00:32<00:49,  8.21s/it] 50%|#####     | 5/10 [00:41<00:42,  8.47s/it] 60%|######    | 6/10 [00:49<00:33,  8.25s/it] 70%|#######   | 7/10 [00:57<00:24,  8.04s/it] 80%|########  | 8/10 [01:05<00:15,  7.98s/it] 90%|######### | 9/10 [01:13<00:07,  7.96s/it]100%|##########| 10/10 [01:20<00:00,  7.92s/it]100%|##########| 10/10 [01:20<00:00,  8.09s/it]
+
+Epoch 100 Rollouts took 8.093552923202514s (avg) with results:
+Env: Lift
+{
+    "Horizon": 400.0,
+    "Return": 0.0,
+    "Success_Rate": 0.0,
+    "Time_Episode": 1.348925487200419,
+    "time": 8.093552923202514
+}
+save checkpoint to /home/andrew/Desktop/robo_sims/robomimic/robomimic/../bet_trained_models/test/20221130034640/models/model_epoch_100.pth
+
+Epoch 100 Memory Usage: 4359 MB
+
+finished run successfully!

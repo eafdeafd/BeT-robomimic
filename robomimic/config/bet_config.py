@@ -11,7 +11,7 @@ class BETConfig(BaseConfig):
 
     def train_config(self):
         super(BETConfig, self).train_config()
-        self.train.seq_length = 10# length of experience sequence to fetch from the buffer
+        self.train.seq_length = 5# length of experience sequence to fetch from the buffer
         self.train.batch_size = 100
     def algo_config(self):
         """
@@ -45,3 +45,7 @@ class BETConfig(BaseConfig):
         self.algo.batch_size = 100
         self.algo.history_size = 3
         self.algo.discrete_input = False
+
+        self.algo.loss.l2_weight = 1.0      # L2 loss weight
+        self.algo.loss.l1_weight = 0.0      # L1 loss weight
+        self.algo.loss.cos_weight = 0.0     # cosine loss weight

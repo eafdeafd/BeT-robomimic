@@ -34,7 +34,7 @@
         }
     },
     "train": {
-        "data": null,
+        "data": "datasets/lift/ph/low_dim.hdf5",
         "output_dir": "../bet_trained_models",
         "num_data_workers": 0,
         "hdf5_cache_mode": "all",
@@ -67,11 +67,6 @@
             "grad_norm_clip": 1,
             "seed": 42
         },
-        "loss": {
-            "l2_weight": 1.0,
-            "l1_weight": 0.0,
-            "cos_weight": 0.0
-        },
         "n_layer": 6,
         "n_head": 6,
         "n_embd": 120,
@@ -79,8 +74,14 @@
         "predict_offsets": true,
         "offset_loss_scale": 10000.0,
         "focal_loss_gamma": 2.0,
-        "history_size" : 5,
-        "discrete_input" : false
+        "batch_size": 100,
+        "history_size": 5,
+        "discrete_input": false,
+        "loss": {
+            "l2_weight": 1.0,
+            "l1_weight": 0.0,
+            "cos_weight": 0.0
+        }
     },
     "observation": {
         "modalities": {

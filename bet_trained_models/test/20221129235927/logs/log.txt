@@ -1,0 +1,295 @@
+
+============= Initialized Observation Utils with Obs Spec =============
+
+using obs modality: low_dim with keys: ['robot0_eef_quat', 'robot0_eef_pos', 'object', 'robot0_gripper_qpos']
+using obs modality: rgb with keys: []
+using obs modality: depth with keys: []
+using obs modality: scan with keys: []
+/home/andrew/Desktop/robo_sims/robomimic
+
+============= Loaded Environment Metadata =============
+obs key object with shape (14,)
+obs key robot0_eef_pos with shape (3,)
+obs key robot0_eef_quat with shape (4,)
+obs key robot0_gripper_qpos with shape (2,)
+Created environment with name PickPlaceCan
+Action size is 7
+PickPlaceCan
+{
+    "camera_depths": false,
+    "camera_heights": 84,
+    "camera_widths": 84,
+    "control_freq": 20,
+    "controller_configs": {
+        "control_delta": true,
+        "damping": 1,
+        "damping_limits": [
+            0,
+            10
+        ],
+        "impedance_mode": "fixed",
+        "input_max": 1,
+        "input_min": -1,
+        "interpolation": null,
+        "kp": 150,
+        "kp_limits": [
+            0,
+            300
+        ],
+        "orientation_limits": null,
+        "output_max": [
+            0.05,
+            0.05,
+            0.05,
+            0.5,
+            0.5,
+            0.5
+        ],
+        "output_min": [
+            -0.05,
+            -0.05,
+            -0.05,
+            -0.5,
+            -0.5,
+            -0.5
+        ],
+        "position_limits": null,
+        "ramp_ratio": 0.2,
+        "type": "OSC_POSE",
+        "uncouple_pos_ori": true
+    },
+    "has_offscreen_renderer": true,
+    "has_renderer": false,
+    "ignore_done": true,
+    "render_gpu_device_id": 0,
+    "reward_shaping": false,
+    "robots": [
+        "Panda"
+    ],
+    "use_camera_obs": false,
+    "use_object_obs": true
+}
+
+
+============= Model Summary =============
+ObservationKeyToModalityDict: action not found, adding action to mapping with assumed low_dim modality!
+BET (
+  ModuleDict(
+    (encoder): ObservationBETGroupEncoder(
+        group=obs
+        ObservationEncoder(
+            Key(
+                name=object
+                shape=[14]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_eef_pos
+                shape=[3]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_eef_quat
+                shape=[4]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_gripper_qpos
+                shape=[2]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            output_shape=[23]
+        )
+    )
+    (ac_encoder): ObservationGroupEncoder(
+        group=obs
+        ObservationEncoder(
+            Key(
+                name=object
+                shape=[14]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_eef_pos
+                shape=[3]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_eef_quat
+                shape=[4]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_gripper_qpos
+                shape=[2]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            output_shape=[23]
+        )
+    )
+    (mlp): MLP(
+        input_dim=23
+        output_dim=400
+        layer_dims=(300,)
+        layer_func=Linear
+        dropout=None
+        act=Mish
+        output_act=Mish
+    )
+    (decoder): ObservationDecoder(
+        Key(
+            name=action
+            shape=(7,)
+            modality=low_dim
+            net=(Linear(in_features=400, out_features=7, bias=True))
+        )
+    )
+    (policy): MinGPT(
+      (model): GPT(
+        (tok_emb): Linear(in_features=23, out_features=72, bias=True)
+        (drop): Dropout(p=0.1, inplace=False)
+        (blocks): Sequential(
+          (0): Block(
+            (ln1): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=72, out_features=72, bias=True)
+              (query): Linear(in_features=72, out_features=72, bias=True)
+              (value): Linear(in_features=72, out_features=72, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=72, out_features=72, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=72, out_features=288, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=288, out_features=72, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (1): Block(
+            (ln1): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=72, out_features=72, bias=True)
+              (query): Linear(in_features=72, out_features=72, bias=True)
+              (value): Linear(in_features=72, out_features=72, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=72, out_features=72, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=72, out_features=288, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=288, out_features=72, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (2): Block(
+            (ln1): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=72, out_features=72, bias=True)
+              (query): Linear(in_features=72, out_features=72, bias=True)
+              (value): Linear(in_features=72, out_features=72, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=72, out_features=72, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=72, out_features=288, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=288, out_features=72, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (3): Block(
+            (ln1): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=72, out_features=72, bias=True)
+              (query): Linear(in_features=72, out_features=72, bias=True)
+              (value): Linear(in_features=72, out_features=72, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=72, out_features=72, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=72, out_features=288, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=288, out_features=72, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+        )
+        (ln_f): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+        (head): Linear(in_features=72, out_features=256, bias=False)
+      )
+    )
+  )
+)
+
+SequenceDataset: loading dataset into memory...
+  0%|          | 0/180 [00:00<?, ?it/s] 47%|####7     | 85/180 [00:00<00:00, 843.74it/s] 94%|#########4| 170/180 [00:00<00:00, 835.83it/s]100%|##########| 180/180 [00:00<00:00, 835.67it/s]
+SequenceDataset: caching get_item calls...
+  0%|          | 0/20883 [00:00<?, ?it/s]  6%|6         | 1356/20883 [00:00<00:01, 13558.43it/s] 13%|#3        | 2753/20883 [00:00<00:01, 13796.21it/s] 20%|#9        | 4143/20883 [00:00<00:01, 13840.50it/s] 27%|##6       | 5560/20883 [00:00<00:01, 13966.22it/s] 33%|###3      | 6957/20883 [00:00<00:01, 13911.45it/s] 40%|###9      | 8349/20883 [00:00<00:00, 13900.15it/s] 47%|####6     | 9740/20883 [00:00<00:00, 13897.40it/s] 53%|#####3    | 11130/20883 [00:00<00:00, 13879.94it/s] 60%|#####9    | 12519/20883 [00:00<00:00, 13765.82it/s] 67%|######6   | 13925/20883 [00:01<00:00, 13851.63it/s] 73%|#######3  | 15325/20883 [00:01<00:00, 13893.79it/s] 80%|########  | 16732/20883 [00:01<00:00, 13946.52it/s] 87%|########6 | 18127/20883 [00:01<00:00, 13844.31it/s] 93%|#########3| 19512/20883 [00:01<00:00, 13768.02it/s]100%|##########| 20883/20883 [00:01<00:00, 13835.21it/s]
+SequenceDataset: loading dataset into memory...
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 819.74it/s]
+SequenceDataset: caching get_item calls...
+  0%|          | 0/2324 [00:00<?, ?it/s] 59%|#####8    | 1366/2324 [00:00<00:00, 13652.40it/s]100%|##########| 2324/2324 [00:00<00:00, 13702.89it/s]
+
+============= Training Dataset =============
+SequenceDataset (
+	path=datasets/can/ph/low_dim.hdf5
+	obs_keys=('object', 'robot0_eef_pos', 'robot0_eef_quat', 'robot0_gripper_qpos')
+	seq_length=5
+	filter_key=train
+	frame_stack=1
+	pad_seq_length=True
+	pad_frame_stack=True
+	goal_mode=none
+	cache_mode=all
+	num_demos=180
+	num_sequences=20883
+)
+
+  0%|          | 0/50 [00:00<?, ?it/s]K-means clustering:   0%|          | 0/50 [00:00<?, ?it/s]K-means clustering:   6%|6         | 3/50 [00:00<00:01, 25.40it/s]K-means clustering:  12%|#2        | 6/50 [00:00<00:01, 26.72it/s]K-means clustering:  18%|#8        | 9/50 [00:00<00:01, 26.90it/s]K-means clustering:  24%|##4       | 12/50 [00:00<00:01, 26.67it/s]K-means clustering:  30%|###       | 15/50 [00:00<00:01, 27.07it/s]K-means clustering:  36%|###6      | 18/50 [00:00<00:01, 27.26it/s]K-means clustering:  42%|####2     | 21/50 [00:00<00:01, 27.46it/s]K-means clustering:  48%|####8     | 24/50 [00:00<00:00, 27.52it/s]K-means clustering:  54%|#####4    | 27/50 [00:00<00:00, 27.58it/s]K-means clustering:  60%|######    | 30/50 [00:01<00:00, 27.25it/s]K-means clustering:  66%|######6   | 33/50 [00:01<00:00, 27.26it/s]K-means clustering:  72%|#######2  | 36/50 [00:01<00:00, 27.35it/s]K-means clustering:  78%|#######8  | 39/50 [00:01<00:00, 26.91it/s]K-means clustering:  84%|########4 | 42/50 [00:01<00:00, 27.15it/s]K-means clustering:  90%|######### | 45/50 [00:01<00:00, 27.22it/s]K-means clustering:  96%|#########6| 48/50 [00:01<00:00, 27.31it/s]K-means clustering: 100%|##########| 50/50 [00:01<00:00, 27.19it/s]
+  0%|          | 0/100 [00:00<?, ?it/s]  0%|          | 0/100 [00:00<?, ?it/s]
+run failed with error:
+0
+
+Traceback (most recent call last):
+  File "robomimic/scripts/train.py", line 364, in main
+    train(config, device=device)
+  File "robomimic/scripts/train.py", line 188, in train
+    step_log = TrainUtils.run_epoch(model=model, data_loader=train_loader, epoch=epoch, num_steps=train_num_steps)
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/utils/train_utils.py", line 536, in run_epoch
+    input_batch = model.process_batch_for_training(batch)
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/algo/bet.py", line 166, in process_batch_for_training
+    print("1", batch["obs"][0])
+KeyError: 0
+

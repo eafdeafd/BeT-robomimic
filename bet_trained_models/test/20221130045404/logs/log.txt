@@ -1,0 +1,316 @@
+
+============= Initialized Observation Utils with Obs Spec =============
+
+using obs modality: low_dim with keys: ['robot0_eef_pos', 'object', 'robot0_gripper_qpos', 'robot0_eef_quat']
+using obs modality: rgb with keys: []
+using obs modality: depth with keys: []
+using obs modality: scan with keys: []
+/home/andrew/Desktop/robo_sims/robomimic
+
+============= Loaded Environment Metadata =============
+obs key object with shape (10,)
+obs key robot0_eef_pos with shape (3,)
+obs key robot0_eef_quat with shape (4,)
+obs key robot0_gripper_qpos with shape (2,)
+Created environment with name Lift
+Action size is 7
+Lift
+{
+    "camera_depths": false,
+    "camera_heights": 84,
+    "camera_widths": 84,
+    "control_freq": 20,
+    "controller_configs": {
+        "control_delta": true,
+        "damping": 1,
+        "damping_limits": [
+            0,
+            10
+        ],
+        "impedance_mode": "fixed",
+        "input_max": 1,
+        "input_min": -1,
+        "interpolation": null,
+        "kp": 150,
+        "kp_limits": [
+            0,
+            300
+        ],
+        "orientation_limits": null,
+        "output_max": [
+            0.05,
+            0.05,
+            0.05,
+            0.5,
+            0.5,
+            0.5
+        ],
+        "output_min": [
+            -0.05,
+            -0.05,
+            -0.05,
+            -0.5,
+            -0.5,
+            -0.5
+        ],
+        "position_limits": null,
+        "ramp_ratio": 0.2,
+        "type": "OSC_POSE",
+        "uncouple_pos_ori": true
+    },
+    "has_offscreen_renderer": true,
+    "has_renderer": false,
+    "ignore_done": true,
+    "render_gpu_device_id": 0,
+    "reward_shaping": false,
+    "robots": [
+        "Panda"
+    ],
+    "use_camera_obs": false,
+    "use_object_obs": true
+}
+
+
+============= Model Summary =============
+BET (
+  ModuleDict(
+    (encoder): ObservationBETGroupEncoder(
+        group=obs
+        ObservationEncoder(
+            Key(
+                name=object
+                shape=[10]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_eef_pos
+                shape=[3]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_eef_quat
+                shape=[4]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_gripper_qpos
+                shape=[2]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            output_shape=[19]
+        )
+    )
+    (ac_encoder): ObservationGroupEncoder(
+        group=obs
+        ObservationEncoder(
+            Key(
+                name=object
+                shape=[10]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_eef_pos
+                shape=[3]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_eef_quat
+                shape=[4]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_gripper_qpos
+                shape=[2]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            output_shape=[19]
+        )
+    )
+    (mlp): MLP(
+        input_dim=7
+        output_dim=7
+        layer_dims=[136, 544, 272]
+        layer_func=Linear
+        dropout=None
+        act=Mish
+        output_act=Tanh
+    )
+    (policy): MinGPT(
+      (model): GPT(
+        (tok_emb): Linear(in_features=19, out_features=72, bias=True)
+        (drop): Dropout(p=0.1, inplace=False)
+        (blocks): Sequential(
+          (0): Block(
+            (ln1): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=72, out_features=72, bias=True)
+              (query): Linear(in_features=72, out_features=72, bias=True)
+              (value): Linear(in_features=72, out_features=72, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=72, out_features=72, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=72, out_features=288, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=288, out_features=72, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (1): Block(
+            (ln1): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=72, out_features=72, bias=True)
+              (query): Linear(in_features=72, out_features=72, bias=True)
+              (value): Linear(in_features=72, out_features=72, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=72, out_features=72, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=72, out_features=288, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=288, out_features=72, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (2): Block(
+            (ln1): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=72, out_features=72, bias=True)
+              (query): Linear(in_features=72, out_features=72, bias=True)
+              (value): Linear(in_features=72, out_features=72, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=72, out_features=72, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=72, out_features=288, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=288, out_features=72, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (3): Block(
+            (ln1): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=72, out_features=72, bias=True)
+              (query): Linear(in_features=72, out_features=72, bias=True)
+              (value): Linear(in_features=72, out_features=72, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=72, out_features=72, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=72, out_features=288, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=288, out_features=72, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+        )
+        (ln_f): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+        (head): Linear(in_features=72, out_features=256, bias=False)
+      )
+    )
+  )
+)
+
+SequenceDataset: loading dataset into memory...
+  0%|          | 0/180 [00:00<?, ?it/s] 47%|####7     | 85/180 [00:00<00:00, 845.69it/s] 96%|#########5| 172/180 [00:00<00:00, 856.93it/s]100%|##########| 180/180 [00:00<00:00, 854.63it/s]
+SequenceDataset: caching get_item calls...
+  0%|          | 0/8640 [00:00<?, ?it/s] 16%|#5        | 1378/8640 [00:00<00:00, 13769.57it/s] 32%|###1      | 2755/8640 [00:00<00:00, 13520.00it/s] 48%|####7     | 4108/8640 [00:00<00:00, 13204.24it/s] 63%|######3   | 5482/8640 [00:00<00:00, 13409.86it/s] 79%|#######8  | 6825/8640 [00:00<00:00, 13416.10it/s] 95%|#########4| 8193/8640 [00:00<00:00, 13503.93it/s]100%|##########| 8640/8640 [00:00<00:00, 13478.38it/s]
+SequenceDataset: loading dataset into memory...
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 856.42it/s]
+SequenceDataset: caching get_item calls...
+  0%|          | 0/1026 [00:00<?, ?it/s]100%|##########| 1026/1026 [00:00<00:00, 13629.82it/s]
+
+============= Training Dataset =============
+SequenceDataset (
+	path=datasets/lift/ph/low_dim.hdf5
+	obs_keys=('object', 'robot0_eef_pos', 'robot0_eef_quat', 'robot0_gripper_qpos')
+	seq_length=5
+	filter_key=train
+	frame_stack=1
+	pad_seq_length=True
+	pad_frame_stack=True
+	goal_mode=none
+	cache_mode=all
+	num_demos=180
+	num_sequences=8640
+)
+
+  0%|          | 0/50 [00:00<?, ?it/s]K-means clustering:   0%|          | 0/50 [00:00<?, ?it/s]K-means clustering:  10%|#         | 5/50 [00:00<00:01, 44.85it/s]K-means clustering:  20%|##        | 10/50 [00:00<00:00, 45.72it/s]K-means clustering:  32%|###2      | 16/50 [00:00<00:00, 50.52it/s]K-means clustering:  44%|####4     | 22/50 [00:00<00:00, 51.38it/s]K-means clustering:  56%|#####6    | 28/50 [00:00<00:00, 52.98it/s]K-means clustering:  68%|######8   | 34/50 [00:00<00:00, 52.80it/s]K-means clustering:  80%|########  | 40/50 [00:00<00:00, 54.10it/s]K-means clustering:  92%|#########2| 46/50 [00:00<00:00, 54.28it/s]K-means clustering: 100%|##########| 50/50 [00:00<00:00, 52.44it/s]
+  0%|          | 0/100 [00:00<?, ?it/s]  1%|1         | 1/100 [00:00<00:19,  5.11it/s]  8%|8         | 8/100 [00:00<00:02, 31.71it/s] 15%|#5        | 15/100 [00:00<00:01, 45.88it/s] 22%|##2       | 22/100 [00:00<00:01, 54.19it/s] 30%|###       | 30/100 [00:00<00:01, 60.05it/s] 38%|###8      | 38/100 [00:00<00:00, 64.13it/s] 46%|####6     | 46/100 [00:00<00:00, 66.44it/s] 54%|#####4    | 54/100 [00:00<00:00, 69.37it/s] 62%|######2   | 62/100 [00:01<00:00, 71.89it/s] 70%|#######   | 70/100 [00:01<00:00, 73.66it/s] 78%|#######8  | 78/100 [00:01<00:00, 75.15it/s] 86%|########6 | 86/100 [00:01<00:00, 76.05it/s] 94%|#########3| 94/100 [00:01<00:00, 76.67it/s]100%|##########| 100/100 [00:01<00:00, 65.18it/s]
+Train Epoch 1
+{
+    "Cosine_Loss": 1.2061015498638152,
+    "L1_Loss": 0.10566168554127216,
+    "L2_Loss": 0.2113483852148056,
+    "Loss": 78.7904273223877,
+    "Policy_Grad_Norms": 0.9999999974611709,
+    "Time_Data_Loading": 0.002947390079498291,
+    "Time_Epoch": 0.025583346684773762,
+    "Time_Log_Info": 8.062124252319335e-05,
+    "Time_Process_Batch": 0.0003084699312845866,
+    "Time_Train_Batch": 0.022190614541371664
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 207.83it/s]
+Validation Epoch 1
+{
+    "Cosine_Loss": 1.1947231054306031,
+    "L1_Loss": 0.10264436602592468,
+    "L2_Loss": 0.20531368255615234,
+    "Loss": 42.96516418457031,
+    "Time_Data_Loading": 0.0003228346506754557,
+    "Time_Epoch": 0.0008164485295613607,
+    "Time_Log_Info": 6.202856699625651e-06,
+    "Time_Process_Batch": 3.90013058980306e-05,
+    "Time_Train_Batch": 0.00043259461720784507
+}
+video writes to /home/andrew/Desktop/robo_sims/robomimic/robomimic/../bet_trained_models/test/20221130045404/videos/Lift_epoch_1.mp4
+rollout: env=Lift, horizon=400, use_goals=False, num_episodes=10
+  0%|          | 0/10 [00:00<?, ?it/s] 10%|#         | 1/10 [00:07<01:09,  7.67s/it] 20%|##        | 2/10 [00:15<01:01,  7.66s/it] 30%|###       | 3/10 [00:22<00:52,  7.56s/it] 40%|####      | 4/10 [00:30<00:45,  7.55s/it] 50%|#####     | 5/10 [00:37<00:37,  7.47s/it] 60%|######    | 6/10 [00:45<00:29,  7.44s/it] 70%|#######   | 7/10 [00:52<00:22,  7.38s/it] 80%|########  | 8/10 [00:59<00:14,  7.38s/it] 90%|######### | 9/10 [01:07<00:07,  7.40s/it]100%|##########| 10/10 [01:14<00:00,  7.42s/it]100%|##########| 10/10 [01:14<00:00,  7.45s/it]
+
+Epoch 1 Rollouts took 7.453165888786316s (avg) with results:
+Env: Lift
+{
+    "Horizon": 400.0,
+    "Return": 0.0,
+    "Success_Rate": 0.0,
+    "Time_Episode": 1.2421943147977192,
+    "time": 7.453165888786316
+}
+save checkpoint to /home/andrew/Desktop/robo_sims/robomimic/robomimic/../bet_trained_models/test/20221130045404/models/model_epoch_1_Lift_success_0.0.pth
+
+Epoch 1 Memory Usage: 4801 MB
+
+finished run successfully!

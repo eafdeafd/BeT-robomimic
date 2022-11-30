@@ -175,6 +175,7 @@ class BET(PolicyAlgo):
         TODO: Port GPT training code over here
         """
         self.nets["policy"].train()
+        self.nets["mlp"].train()
         with TorchUtils.maybe_no_grad(no_grad=validate), TorchUtils.eval_mode(self.action_encoder):
             #for window in self.window:
             info = super(BET, self).train_on_batch(batch, epoch, validate=validate)
@@ -266,7 +267,7 @@ class BET(PolicyAlgo):
         Returns:
             action (torch.Tensor): action tensor
         """
-        with TorchUtils.eval_mode(self.action_encoder, self.nets["policy"], no_grad=True):
+        with TorchUtils.eval_mode(self.action_encoder, self.nets["policy"], self.nets["mlp"], no_grad=True):
             enc_obs = self.nets["ac_encoder"](**{"obs":obs_dict})
             enc_obs = einops.repeat(enc_obs[0], "obs -> batch obs", batch=1)
             self.history.append(enc_obs)

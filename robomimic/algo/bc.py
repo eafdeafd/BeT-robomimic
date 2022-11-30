@@ -224,7 +224,6 @@ class BC(PolicyAlgo):
         """
         assert not self.nets.training
         action = self.nets["policy"](obs_dict, goal_dict=goal_dict)
-        print("GAOIFJASIOFJ", action)
         return action
 
 

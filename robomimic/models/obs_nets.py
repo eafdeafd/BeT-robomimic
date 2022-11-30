@@ -694,11 +694,10 @@ class MIMO_MLP(Module):
             outputs (dict): dictionary of output torch.Tensors, that corresponds
                 to @self.output_shapes
         """
-        print(inputs)
         enc_outputs = self.nets["encoder"](**inputs)
-        print(enc_outputs.size())
         mlp_out = self.nets["mlp"](enc_outputs)
-        return self.nets["decoder"](mlp_out)
+        ret = self.nets["decoder"](mlp_out)
+        return ret
 
     def _to_string(self):
         """

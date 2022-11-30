@@ -24,7 +24,6 @@ class GPTConfig:
     resid_pdrop = 0.1
     attn_pdrop = 0.1
     discrete_input = False
-    input_size = 19
     n_embd = 768
     n_layer = 12
 
@@ -114,7 +113,7 @@ class Block(nn.Module):
         self.attn = CausalSelfAttention(config)
         self.mlp = nn.Sequential(
             nn.Linear(config.n_embd, 4 * config.n_embd),
-            nn.Mish(),  # was GELU
+            nn.GELU(),  # was GELU
             nn.Linear(4 * config.n_embd, config.n_embd),
             nn.Dropout(config.resid_pdrop),
         )
@@ -135,7 +134,7 @@ class GPT(nn.Module):
         if config.discrete_input:
             self.tok_emb = nn.Embedding(config.vocab_size, config.n_embd)
         else:
-            self.tok_emb = nn.Linear(config.input_size, config.n_embd)
+            self.tok_emb = nn.Linear(config.input_dim, config.n_embd)
         self.discrete_input = config.discrete_input
         self.pos_emb = nn.Parameter(torch.zeros(1, config.block_size, config.n_embd))
         self.drop = nn.Dropout(config.embd_pdrop)

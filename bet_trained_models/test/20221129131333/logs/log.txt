@@ -1,0 +1,571 @@
+
+============= Initialized Observation Utils with Obs Spec =============
+
+using obs modality: low_dim with keys: ['robot0_gripper_qpos', 'robot0_eef_quat', 'robot0_eef_pos', 'object']
+using obs modality: rgb with keys: []
+using obs modality: depth with keys: []
+using obs modality: scan with keys: []
+/home/andrew/Desktop/robo_sims/robomimic
+
+============= Loaded Environment Metadata =============
+obs key object with shape (14,)
+obs key robot0_eef_pos with shape (3,)
+obs key robot0_eef_quat with shape (4,)
+obs key robot0_gripper_qpos with shape (2,)
+Created environment with name PickPlaceCan
+Action size is 7
+PickPlaceCan
+{
+    "camera_depths": false,
+    "camera_heights": 84,
+    "camera_widths": 84,
+    "control_freq": 20,
+    "controller_configs": {
+        "control_delta": true,
+        "damping": 1,
+        "damping_limits": [
+            0,
+            10
+        ],
+        "impedance_mode": "fixed",
+        "input_max": 1,
+        "input_min": -1,
+        "interpolation": null,
+        "kp": 150,
+        "kp_limits": [
+            0,
+            300
+        ],
+        "orientation_limits": null,
+        "output_max": [
+            0.05,
+            0.05,
+            0.05,
+            0.5,
+            0.5,
+            0.5
+        ],
+        "output_min": [
+            -0.05,
+            -0.05,
+            -0.05,
+            -0.5,
+            -0.5,
+            -0.5
+        ],
+        "position_limits": null,
+        "ramp_ratio": 0.2,
+        "type": "OSC_POSE",
+        "uncouple_pos_ori": true
+    },
+    "has_offscreen_renderer": true,
+    "has_renderer": false,
+    "ignore_done": true,
+    "render_gpu_device_id": 0,
+    "reward_shaping": false,
+    "robots": [
+        "Panda"
+    ],
+    "use_camera_obs": false,
+    "use_object_obs": true
+}
+
+
+============= Model Summary =============
+ObservationKeyToModalityDict: action not found, adding action to mapping with assumed low_dim modality!
+BET (
+  ModuleDict(
+    (encoder): ObservationBETGroupEncoder(
+        group=obs
+        ObservationEncoder(
+            Key(
+                name=object
+                shape=[14]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_eef_pos
+                shape=[3]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_eef_quat
+                shape=[4]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_gripper_qpos
+                shape=[2]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            output_shape=[23]
+        )
+    )
+    (ac_encoder): ObservationGroupEncoder(
+        group=obs
+        ObservationEncoder(
+            Key(
+                name=object
+                shape=[14]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_eef_pos
+                shape=[3]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_eef_quat
+                shape=[4]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_gripper_qpos
+                shape=[2]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            output_shape=[23]
+        )
+    )
+    (mlp): MLP(
+        input_dim=23
+        output_dim=400
+        layer_dims=(300,)
+        layer_func=Linear
+        dropout=None
+        act=Mish
+        output_act=Mish
+    )
+    (decoder): ObservationDecoder(
+        Key(
+            name=action
+            shape=(7,)
+            modality=low_dim
+            net=(Linear(in_features=400, out_features=7, bias=True))
+        )
+    )
+    (policy): MinGPT(
+      (model): GPT(
+        (tok_emb): Linear(in_features=23, out_features=120, bias=True)
+        (drop): Dropout(p=0.1, inplace=False)
+        (blocks): Sequential(
+          (0): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (1): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (2): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (3): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (4): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (5): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+        )
+        (ln_f): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+        (head): Linear(in_features=120, out_features=512, bias=False)
+      )
+    )
+  )
+)
+
+SequenceDataset: loading dataset into memory...
+  0%|          | 0/180 [00:00<?, ?it/s] 44%|####3     | 79/180 [00:00<00:00, 788.46it/s] 92%|#########2| 166/180 [00:00<00:00, 834.02it/s]100%|##########| 180/180 [00:00<00:00, 829.79it/s]
+SequenceDataset: caching get_item calls...
+  0%|          | 0/20883 [00:00<?, ?it/s]  7%|6         | 1421/20883 [00:00<00:01, 14207.68it/s] 14%|#3        | 2894/20883 [00:00<00:01, 14510.01it/s] 21%|##        | 4345/20883 [00:00<00:01, 14481.59it/s] 28%|##7       | 5819/20883 [00:00<00:01, 14580.42it/s] 35%|###4      | 7278/20883 [00:00<00:00, 14488.18it/s] 42%|####1     | 8749/20883 [00:00<00:00, 14561.33it/s] 49%|####8     | 10206/20883 [00:00<00:00, 14517.80it/s] 56%|#####5    | 11658/20883 [00:00<00:00, 13614.46it/s] 62%|######2   | 13030/20883 [00:00<00:00, 13572.96it/s] 69%|######9   | 14417/20883 [00:01<00:00, 13660.86it/s] 76%|#######5  | 15806/20883 [00:01<00:00, 13728.52it/s] 83%|########2 | 17281/20883 [00:01<00:00, 14032.51it/s] 90%|########9 | 18728/20883 [00:01<00:00, 14160.76it/s] 97%|#########6| 20204/20883 [00:01<00:00, 14338.54it/s]100%|##########| 20883/20883 [00:01<00:00, 14168.75it/s]
+SequenceDataset: loading dataset into memory...
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 867.42it/s]
+SequenceDataset: caching get_item calls...
+  0%|          | 0/2324 [00:00<?, ?it/s] 63%|######2   | 1455/2324 [00:00<00:00, 14540.38it/s]100%|##########| 2324/2324 [00:00<00:00, 14400.26it/s]
+
+============= Training Dataset =============
+SequenceDataset (
+	path=datasets/can/ph/low_dim.hdf5
+	obs_keys=('object', 'robot0_eef_pos', 'robot0_eef_quat', 'robot0_gripper_qpos')
+	seq_length=3
+	filter_key=train
+	frame_stack=1
+	pad_seq_length=True
+	pad_frame_stack=True
+	goal_mode=none
+	cache_mode=all
+	num_demos=180
+	num_sequences=20883
+)
+
+  0%|          | 0/50 [00:00<?, ?it/s]K-means clustering:   0%|          | 0/50 [00:00<?, ?it/s]K-means clustering:   4%|4         | 2/50 [00:00<00:02, 17.59it/s]K-means clustering:   8%|8         | 4/50 [00:00<00:02, 17.80it/s]K-means clustering:  14%|#4        | 7/50 [00:00<00:02, 19.57it/s]K-means clustering:  20%|##        | 10/50 [00:00<00:01, 20.26it/s]K-means clustering:  26%|##6       | 13/50 [00:00<00:01, 21.30it/s]K-means clustering:  32%|###2      | 16/50 [00:00<00:01, 21.48it/s]K-means clustering:  38%|###8      | 19/50 [00:00<00:01, 21.18it/s]K-means clustering:  44%|####4     | 22/50 [00:01<00:01, 21.34it/s]K-means clustering:  50%|#####     | 25/50 [00:01<00:01, 21.09it/s]K-means clustering:  56%|#####6    | 28/50 [00:01<00:01, 19.59it/s]K-means clustering:  60%|######    | 30/50 [00:01<00:01, 18.83it/s]K-means clustering:  64%|######4   | 32/50 [00:01<00:00, 18.50it/s]K-means clustering:  68%|######8   | 34/50 [00:01<00:00, 18.21it/s]K-means clustering:  72%|#######2  | 36/50 [00:01<00:00, 18.14it/s]K-means clustering:  78%|#######8  | 39/50 [00:01<00:00, 19.00it/s]K-means clustering:  84%|########4 | 42/50 [00:02<00:00, 19.40it/s]K-means clustering:  90%|######### | 45/50 [00:02<00:00, 20.50it/s]K-means clustering:  96%|#########6| 48/50 [00:02<00:00, 20.05it/s]K-means clustering: 100%|##########| 50/50 [00:02<00:00, 19.83it/s]
+  0%|          | 0/100 [00:00<?, ?it/s]  1%|1         | 1/100 [00:00<00:18,  5.31it/s]  7%|7         | 7/100 [00:00<00:03, 27.24it/s] 14%|#4        | 14/100 [00:00<00:02, 40.71it/s] 21%|##1       | 21/100 [00:00<00:01, 48.73it/s] 27%|##7       | 27/100 [00:00<00:01, 49.28it/s] 33%|###3      | 33/100 [00:00<00:01, 50.86it/s] 39%|###9      | 39/100 [00:00<00:01, 52.12it/s] 45%|####5     | 45/100 [00:00<00:01, 53.02it/s] 52%|#####2    | 52/100 [00:01<00:00, 55.30it/s] 58%|#####8    | 58/100 [00:01<00:00, 56.38it/s] 65%|######5   | 65/100 [00:01<00:00, 57.64it/s] 71%|#######1  | 71/100 [00:01<00:00, 56.99it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.69it/s] 85%|########5 | 85/100 [00:01<00:00, 59.77it/s] 92%|#########2| 92/100 [00:01<00:00, 60.66it/s] 99%|#########9| 99/100 [00:01<00:00, 61.30it/s]100%|##########| 100/100 [00:01<00:00, 53.15it/s]
+Train Epoch 1
+{
+    "Loss": 15.55413896560669,
+    "Policy_Grad_Norms": 0.9999999910691605,
+    "Time_Data_Loading": 0.0029333074887593585,
+    "Time_Epoch": 0.03136936823527018,
+    "Time_Log_Info": 5.127588907877604e-05,
+    "Time_Process_Batch": 0.0003094156583150228,
+    "Time_Train_Batch": 0.028009486198425294
+}
+  0%|          | 0/5 [00:00<?, ?it/s]100%|##########| 5/5 [00:00<00:00, 227.62it/s]
+Validation Epoch 1
+{
+    "Loss": 10.18620491027832,
+    "Time_Data_Loading": 0.0001331965128580729,
+    "Time_Epoch": 0.00037579933802286785,
+    "Time_Log_Info": 1.4503796895345051e-06,
+    "Time_Process_Batch": 1.3347466786702474e-05,
+    "Time_Train_Batch": 0.00021717151006062825
+}
+
+Epoch 1 Memory Usage: 3603 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 57.51it/s] 13%|#3        | 13/100 [00:00<00:01, 59.14it/s] 19%|#9        | 19/100 [00:00<00:01, 57.65it/s] 25%|##5       | 25/100 [00:00<00:01, 58.17it/s] 31%|###1      | 31/100 [00:00<00:01, 56.16it/s] 38%|###8      | 38/100 [00:00<00:01, 57.37it/s] 45%|####5     | 45/100 [00:00<00:00, 58.82it/s] 51%|#####1    | 51/100 [00:00<00:00, 59.11it/s] 58%|#####8    | 58/100 [00:00<00:00, 60.55it/s] 65%|######5   | 65/100 [00:01<00:00, 60.15it/s] 72%|#######2  | 72/100 [00:01<00:00, 58.61it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.82it/s] 84%|########4 | 84/100 [00:01<00:00, 57.52it/s] 90%|######### | 90/100 [00:01<00:00, 55.63it/s] 97%|#########7| 97/100 [00:01<00:00, 57.50it/s]100%|##########| 100/100 [00:01<00:00, 58.21it/s]
+Train Epoch 2
+{
+    "Loss": 10.646206712722778,
+    "Policy_Grad_Norms": 0.999999992950616,
+    "Time_Data_Loading": 0.003044303258260091,
+    "Time_Epoch": 0.028641780217488606,
+    "Time_Log_Info": 5.389849344889323e-05,
+    "Time_Process_Batch": 0.0002978364626566569,
+    "Time_Train_Batch": 0.025185032685597738
+}
+  0%|          | 0/5 [00:00<?, ?it/s]100%|##########| 5/5 [00:00<00:00, 217.03it/s]
+Validation Epoch 2
+{
+    "Loss": 10.614014053344727,
+    "Time_Data_Loading": 0.00014356772104899088,
+    "Time_Epoch": 0.0003919124603271484,
+    "Time_Log_Info": 1.4503796895345051e-06,
+    "Time_Process_Batch": 1.5040238698323568e-05,
+    "Time_Train_Batch": 0.00022302865982055665
+}
+
+Epoch 2 Memory Usage: 3603 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  7%|7         | 7/100 [00:00<00:01, 61.40it/s] 14%|#4        | 14/100 [00:00<00:01, 60.51it/s] 21%|##1       | 21/100 [00:00<00:01, 56.71it/s] 28%|##8       | 28/100 [00:00<00:01, 59.02it/s] 34%|###4      | 34/100 [00:00<00:01, 59.20it/s] 41%|####1     | 41/100 [00:00<00:00, 60.50it/s] 48%|####8     | 48/100 [00:00<00:00, 60.44it/s] 55%|#####5    | 55/100 [00:00<00:00, 61.09it/s] 62%|######2   | 62/100 [00:01<00:00, 61.54it/s] 69%|######9   | 69/100 [00:01<00:00, 61.40it/s] 76%|#######6  | 76/100 [00:01<00:00, 61.86it/s] 83%|########2 | 83/100 [00:01<00:00, 61.52it/s] 90%|######### | 90/100 [00:01<00:00, 61.83it/s] 97%|#########7| 97/100 [00:01<00:00, 61.14it/s]100%|##########| 100/100 [00:01<00:00, 60.80it/s]
+Train Epoch 3
+{
+    "Loss": 10.494283657073975,
+    "Policy_Grad_Norms": 1.0000000114092762,
+    "Time_Data_Loading": 0.002875693639119466,
+    "Time_Epoch": 0.027420719464619953,
+    "Time_Log_Info": 3.953377405802409e-05,
+    "Time_Process_Batch": 0.00028213262557983396,
+    "Time_Train_Batch": 0.024168320496877036
+}
+  0%|          | 0/5 [00:00<?, ?it/s]100%|##########| 5/5 [00:00<00:00, 217.02it/s]
+Validation Epoch 3
+{
+    "Loss": 9.88226146697998,
+    "Time_Data_Loading": 0.00013719002405802408,
+    "Time_Epoch": 0.00040069818496704104,
+    "Time_Log_Info": 1.4901161193847656e-06,
+    "Time_Process_Batch": 1.3307730356852214e-05,
+    "Time_Train_Batch": 0.00023110310236612957
+}
+
+Epoch 3 Memory Usage: 3603 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  7%|7         | 7/100 [00:00<00:01, 60.88it/s] 14%|#4        | 14/100 [00:00<00:01, 62.30it/s] 21%|##1       | 21/100 [00:00<00:01, 61.87it/s] 28%|##8       | 28/100 [00:00<00:01, 61.98it/s] 35%|###5      | 35/100 [00:00<00:01, 62.24it/s] 42%|####2     | 42/100 [00:00<00:00, 61.36it/s] 49%|####9     | 49/100 [00:00<00:00, 61.88it/s] 56%|#####6    | 56/100 [00:00<00:00, 61.48it/s] 63%|######3   | 63/100 [00:01<00:00, 60.25it/s] 70%|#######   | 70/100 [00:01<00:00, 56.61it/s] 76%|#######6  | 76/100 [00:01<00:00, 56.13it/s] 82%|########2 | 82/100 [00:01<00:00, 55.46it/s] 88%|########8 | 88/100 [00:01<00:00, 54.40it/s] 94%|#########3| 94/100 [00:01<00:00, 51.99it/s]100%|##########| 100/100 [00:01<00:00, 51.51it/s]100%|##########| 100/100 [00:01<00:00, 57.05it/s]
+Train Epoch 4
+{
+    "Loss": 10.253547649383545,
+    "Policy_Grad_Norms": 0.9999999904303907,
+    "Time_Data_Loading": 0.003054654598236084,
+    "Time_Epoch": 0.029221685727437337,
+    "Time_Log_Info": 5.6687990824381514e-05,
+    "Time_Process_Batch": 0.00032974878946940103,
+    "Time_Train_Batch": 0.025716551144917808
+}
+  0%|          | 0/5 [00:00<?, ?it/s]100%|##########| 5/5 [00:00<00:00, 180.44it/s]
+Validation Epoch 4
+{
+    "Loss": 10.337296867370606,
+    "Time_Data_Loading": 0.00016489028930664063,
+    "Time_Epoch": 0.0004804531733194987,
+    "Time_Log_Info": 1.8040339152018229e-06,
+    "Time_Process_Batch": 2.015829086303711e-05,
+    "Time_Train_Batch": 0.0002738753954569499
+}
+
+Epoch 4 Memory Usage: 3603 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 51.97it/s] 12%|#2        | 12/100 [00:00<00:01, 51.68it/s] 18%|#8        | 18/100 [00:00<00:01, 50.93it/s] 24%|##4       | 24/100 [00:00<00:01, 51.11it/s] 30%|###       | 30/100 [00:00<00:01, 49.61it/s] 36%|###6      | 36/100 [00:00<00:01, 50.20it/s] 43%|####3     | 43/100 [00:00<00:01, 53.65it/s] 50%|#####     | 50/100 [00:00<00:00, 56.28it/s] 56%|#####6    | 56/100 [00:01<00:00, 53.28it/s] 62%|######2   | 62/100 [00:01<00:00, 50.10it/s] 68%|######8   | 68/100 [00:01<00:00, 47.93it/s] 73%|#######3  | 73/100 [00:01<00:00, 48.44it/s] 78%|#######8  | 78/100 [00:01<00:00, 48.45it/s] 84%|########4 | 84/100 [00:01<00:00, 48.70it/s] 90%|######### | 90/100 [00:01<00:00, 49.52it/s] 96%|#########6| 96/100 [00:01<00:00, 52.19it/s]100%|##########| 100/100 [00:01<00:00, 51.31it/s]
+Train Epoch 5
+{
+    "Loss": 10.081742811203004,
+    "Policy_Grad_Norms": 1.0000000056738048,
+    "Time_Data_Loading": 0.0032280762990315754,
+    "Time_Epoch": 0.03249626159667969,
+    "Time_Log_Info": 6.604989369710287e-05,
+    "Time_Process_Batch": 0.000485074520111084,
+    "Time_Train_Batch": 0.02864393393198649
+}
+  0%|          | 0/5 [00:00<?, ?it/s]100%|##########| 5/5 [00:00<00:00, 216.66it/s]
+Validation Epoch 5
+{
+    "Loss": 10.183084487915039,
+    "Time_Data_Loading": 0.0001444856325785319,
+    "Time_Epoch": 0.00039290189743041993,
+    "Time_Log_Info": 1.3709068298339844e-06,
+    "Time_Process_Batch": 1.3911724090576172e-05,
+    "Time_Train_Batch": 0.00022401014963785809
+}
+
+Epoch 5 Memory Usage: 3603 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 53.46it/s] 13%|#3        | 13/100 [00:00<00:01, 57.97it/s] 19%|#9        | 19/100 [00:00<00:01, 57.99it/s] 26%|##6       | 26/100 [00:00<00:01, 59.46it/s] 32%|###2      | 32/100 [00:00<00:01, 58.39it/s] 38%|###8      | 38/100 [00:00<00:01, 56.48it/s] 44%|####4     | 44/100 [00:00<00:01, 55.60it/s] 50%|#####     | 50/100 [00:00<00:00, 56.51it/s] 56%|#####6    | 56/100 [00:00<00:00, 57.50it/s] 62%|######2   | 62/100 [00:01<00:00, 56.31it/s] 69%|######9   | 69/100 [00:01<00:00, 57.86it/s] 75%|#######5  | 75/100 [00:01<00:00, 57.94it/s] 81%|########1 | 81/100 [00:01<00:00, 57.40it/s] 87%|########7 | 87/100 [00:01<00:00, 57.57it/s] 94%|#########3| 94/100 [00:01<00:00, 59.12it/s]100%|##########| 100/100 [00:01<00:00, 58.66it/s]100%|##########| 100/100 [00:01<00:00, 57.68it/s]
+Train Epoch 6
+{
+    "Loss": 9.891058769226074,
+    "Policy_Grad_Norms": 1.0000000222558116,
+    "Time_Data_Loading": 0.00299073060353597,
+    "Time_Epoch": 0.028903440634409586,
+    "Time_Log_Info": 5.4168701171875e-05,
+    "Time_Process_Batch": 0.000307166576385498,
+    "Time_Train_Batch": 0.025487359364827475
+}
+  0%|          | 0/5 [00:00<?, ?it/s]100%|##########| 5/5 [00:00<00:00, 198.67it/s]
+Validation Epoch 6
+{
+    "Loss": 10.058144187927246,
+    "Time_Data_Loading": 0.00015128453572591145,
+    "Time_Epoch": 0.00044208367665608724,
+    "Time_Log_Info": 1.7285346984863281e-06,
+    "Time_Process_Batch": 1.5016396840413412e-05,
+    "Time_Train_Batch": 0.0002502520879109701
+}
+
+Epoch 6 Memory Usage: 3603 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 56.25it/s] 12%|#2        | 12/100 [00:00<00:01, 56.23it/s] 18%|#8        | 18/100 [00:00<00:01, 54.71it/s] 24%|##4       | 24/100 [00:00<00:01, 56.25it/s] 30%|###       | 30/100 [00:00<00:01, 57.14it/s] 37%|###7      | 37/100 [00:00<00:01, 58.40it/s] 44%|####4     | 44/100 [00:00<00:00, 59.34it/s] 51%|#####1    | 51/100 [00:00<00:00, 59.93it/s] 57%|#####6    | 57/100 [00:00<00:00, 58.69it/s] 64%|######4   | 64/100 [00:01<00:00, 59.41it/s] 70%|#######   | 70/100 [00:01<00:00, 59.48it/s] 76%|#######6  | 76/100 [00:01<00:00, 59.08it/s] 82%|########2 | 82/100 [00:01<00:00, 58.01it/s] 88%|########8 | 88/100 [00:01<00:00, 56.86it/s] 94%|#########3| 94/100 [00:01<00:00, 55.76it/s]100%|##########| 100/100 [00:01<00:00, 55.04it/s]100%|##########| 100/100 [00:01<00:00, 57.31it/s]
+Train Epoch 7
+{
+    "Loss": 9.820278759002685,
+    "Policy_Grad_Norms": 1.0000000103703133,
+    "Time_Data_Loading": 0.0030061920483907064,
+    "Time_Epoch": 0.02908734083175659,
+    "Time_Log_Info": 5.0580501556396486e-05,
+    "Time_Process_Batch": 0.00032253662745157876,
+    "Time_Train_Batch": 0.025643062591552735
+}
+  0%|          | 0/5 [00:00<?, ?it/s]100%|##########| 5/5 [00:00<00:00, 194.10it/s]
+Validation Epoch 7
+{
+    "Loss": 9.710518836975098,
+    "Time_Data_Loading": 0.00014193852742513022,
+    "Time_Epoch": 0.00044737656911214194,
+    "Time_Log_Info": 1.923243204752604e-06,
+    "Time_Process_Batch": 1.871188481648763e-05,
+    "Time_Train_Batch": 0.000265506903330485
+}
+
+Epoch 7 Memory Usage: 3603 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 53.64it/s] 12%|#2        | 12/100 [00:00<00:01, 47.60it/s] 17%|#7        | 17/100 [00:00<00:01, 47.77it/s] 22%|##2       | 22/100 [00:00<00:01, 47.75it/s] 27%|##7       | 27/100 [00:00<00:01, 48.22it/s] 32%|###2      | 32/100 [00:00<00:01, 47.73it/s] 38%|###8      | 38/100 [00:00<00:01, 48.73it/s] 44%|####4     | 44/100 [00:00<00:01, 49.56it/s] 50%|#####     | 50/100 [00:01<00:00, 51.10it/s] 56%|#####6    | 56/100 [00:01<00:00, 52.82it/s] 62%|######2   | 62/100 [00:01<00:00, 53.59it/s] 69%|######9   | 69/100 [00:01<00:00, 55.53it/s] 76%|#######6  | 76/100 [00:01<00:00, 57.45it/s] 83%|########2 | 83/100 [00:01<00:00, 58.46it/s] 90%|######### | 90/100 [00:01<00:00, 59.31it/s] 97%|#########7| 97/100 [00:01<00:00, 59.54it/s]100%|##########| 100/100 [00:01<00:00, 53.98it/s]
+Train Epoch 8
+{
+    "Loss": 9.618972425460816,
+    "Policy_Grad_Norms": 1.0000000094910337,
+    "Time_Data_Loading": 0.0031608144442240396,
+    "Time_Epoch": 0.030885358651479084,
+    "Time_Log_Info": 6.0900052388509115e-05,
+    "Time_Process_Batch": 0.0003786921501159668,
+    "Time_Train_Batch": 0.02721386750539144
+}
+  0%|          | 0/5 [00:00<?, ?it/s]100%|##########| 5/5 [00:00<00:00, 207.81it/s]
+Validation Epoch 8
+{
+    "Loss": 9.49181022644043,
+    "Time_Data_Loading": 0.00014513731002807617,
+    "Time_Epoch": 0.0004159092903137207,
+    "Time_Log_Info": 1.5576680501302083e-06,
+    "Time_Process_Batch": 1.4579296112060547e-05,
+    "Time_Train_Batch": 0.0002388477325439453
+}
+
+Epoch 8 Memory Usage: 3603 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 59.68it/s] 13%|#3        | 13/100 [00:00<00:01, 60.60it/s] 20%|##        | 20/100 [00:00<00:01, 59.67it/s] 26%|##6       | 26/100 [00:00<00:01, 59.29it/s] 32%|###2      | 32/100 [00:00<00:01, 58.31it/s] 38%|###8      | 38/100 [00:00<00:01, 58.72it/s] 44%|####4     | 44/100 [00:00<00:00, 58.96it/s] 50%|#####     | 50/100 [00:00<00:00, 56.88it/s] 56%|#####6    | 56/100 [00:00<00:00, 53.17it/s] 62%|######2   | 62/100 [00:01<00:00, 52.46it/s] 68%|######8   | 68/100 [00:01<00:00, 54.34it/s] 74%|#######4  | 74/100 [00:01<00:00, 55.08it/s] 81%|########1 | 81/100 [00:01<00:00, 57.06it/s] 87%|########7 | 87/100 [00:01<00:00, 54.74it/s] 93%|#########3| 93/100 [00:01<00:00, 55.34it/s] 99%|#########9| 99/100 [00:01<00:00, 55.98it/s]100%|##########| 100/100 [00:01<00:00, 56.37it/s]
+Train Epoch 9
+{
+    "Loss": 9.632191925048827,
+    "Policy_Grad_Norms": 0.9999999995814574,
+    "Time_Data_Loading": 0.0030928850173950195,
+    "Time_Epoch": 0.029574958483378093,
+    "Time_Log_Info": 5.5452187856038414e-05,
+    "Time_Process_Batch": 0.00033469597498575845,
+    "Time_Train_Batch": 0.02602019707361857
+}
+  0%|          | 0/5 [00:00<?, ?it/s]100%|##########| 5/5 [00:00<00:00, 202.30it/s]
+Validation Epoch 9
+{
+    "Loss": 9.321504592895508,
+    "Time_Data_Loading": 0.00014497041702270507,
+    "Time_Epoch": 0.0004272659619649251,
+    "Time_Log_Info": 1.6887982686360676e-06,
+    "Time_Process_Batch": 1.5270709991455077e-05,
+    "Time_Train_Batch": 0.0002490441004435221
+}
+
+Epoch 9 Memory Usage: 3603 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 52.83it/s] 13%|#3        | 13/100 [00:00<00:01, 57.85it/s] 19%|#9        | 19/100 [00:00<00:01, 56.84it/s] 26%|##6       | 26/100 [00:00<00:01, 58.72it/s] 32%|###2      | 32/100 [00:00<00:01, 56.95it/s] 38%|###8      | 38/100 [00:00<00:01, 57.26it/s] 44%|####4     | 44/100 [00:00<00:00, 57.43it/s] 50%|#####     | 50/100 [00:00<00:00, 57.25it/s] 56%|#####6    | 56/100 [00:00<00:00, 58.05it/s] 62%|######2   | 62/100 [00:01<00:00, 57.58it/s] 68%|######8   | 68/100 [00:01<00:00, 55.71it/s] 74%|#######4  | 74/100 [00:01<00:00, 54.56it/s] 81%|########1 | 81/100 [00:01<00:00, 57.09it/s] 88%|########8 | 88/100 [00:01<00:00, 58.22it/s] 95%|#########5| 95/100 [00:01<00:00, 59.52it/s]100%|##########| 100/100 [00:01<00:00, 57.73it/s]
+Train Epoch 10
+{
+    "Loss": 9.446302995681762,
+    "Policy_Grad_Norms": 1.0000000079883826,
+    "Time_Data_Loading": 0.003034818172454834,
+    "Time_Epoch": 0.028878923257191977,
+    "Time_Log_Info": 4.807313283284505e-05,
+    "Time_Process_Batch": 0.0003154714902242025,
+    "Time_Train_Batch": 0.025414415200551353
+}
+  0%|          | 0/5 [00:00<?, ?it/s]100%|##########| 5/5 [00:00<00:00, 213.42it/s]
+Validation Epoch 10
+{
+    "Loss": 9.775668525695801,
+    "Time_Data_Loading": 0.00014137427012125652,
+    "Time_Epoch": 0.00040391683578491213,
+    "Time_Log_Info": 1.4821688334147136e-06,
+    "Time_Process_Batch": 1.6085306803385417e-05,
+    "Time_Train_Batch": 0.00023061434427897135
+}
+video writes to /home/andrew/Desktop/robo_sims/robomimic/robomimic/../bet_trained_models/test/20221129131333/videos/PickPlaceCan_epoch_10.mp4
+rollout: env=PickPlaceCan, horizon=400, use_goals=False, num_episodes=10
+  0%|          | 0/10 [00:00<?, ?it/s] 10%|#         | 1/10 [00:10<01:30, 10.08s/it] 20%|##        | 2/10 [00:19<01:18,  9.84s/it] 30%|###       | 3/10 [00:29<01:09,  9.98s/it] 40%|####      | 4/10 [00:40<01:00, 10.17s/it] 50%|#####     | 5/10 [00:50<00:50, 10.15s/it] 60%|######    | 6/10 [01:00<00:41, 10.27s/it] 70%|#######   | 7/10 [01:10<00:30, 10.09s/it] 80%|########  | 8/10 [01:20<00:19, 10.00s/it] 90%|######### | 9/10 [01:30<00:09,  9.92s/it]100%|##########| 10/10 [01:39<00:00,  9.85s/it]100%|##########| 10/10 [01:39<00:00,  9.99s/it]
+
+Epoch 10 Rollouts took 9.994644069671631s (avg) with results:
+Env: PickPlaceCan
+{
+    "Horizon": 400.0,
+    "Return": 0.0,
+    "Success_Rate": 0.0,
+    "Time_Episode": 1.6657740116119384,
+    "time": 9.994644069671631
+}
+save checkpoint to /home/andrew/Desktop/robo_sims/robomimic/robomimic/../bet_trained_models/test/20221129131333/models/model_epoch_10_PickPlaceCan_success_0.0.pth
+
+Epoch 10 Memory Usage: 4243 MB
+
+finished run successfully!

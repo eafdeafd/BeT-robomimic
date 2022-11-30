@@ -22,6 +22,8 @@ from robomimic.algo.bet_models.kmeans import KmeansDiscretizer
 from robomimic.algo.bet_models.generators import MinGPT
 from robomimic.config import config_factory
 import einops
+from collections import deque
+
 
 @register_algo_factory_func("bet")
 def algo_config_to_class(algo_config):
@@ -137,13 +139,14 @@ class BET(PolicyAlgo):
             n_head=self.algo_config.n_head,
             offset_loss_scale=self.algo_config.offset_loss_scale,
             focal_loss_gamma=self.algo_config.focal_loss_gamma,
-            action_dim=self.ac_dim
-    
+            action_dim=self.ac_dim,
+            discrete_input=self.algo_config.discrete_input
         )
         self.optim = self.nets["policy"].get_optim()
         self.nets = self.nets.float().to(self.device)
         self.action_encoder = torch.nn.Identity(self.ac_dim)
-        self.history = []
+        self.window_size = self.algo_config.window_size
+        self.history = deque(maxlen=self.algo_config.history_size)
 
     def process_batch_for_training(self, batch):
         """
@@ -168,7 +171,6 @@ class BET(PolicyAlgo):
         #input_batch["actions"] = batch["actions"][:, 0, :]
         
 
-        self.window_size = self.algo_config.window_size
         """
         self.slices = []
         min_seq_length = np.inf
@@ -213,55 +215,40 @@ class BET(PolicyAlgo):
         with TorchUtils.maybe_no_grad(no_grad=validate), TorchUtils.eval_mode(self.action_encoder):
             #for window in self.window:
             info = super(BET, self).train_on_batch(batch, epoch, validate=validate)
-            
-            losses = self._compute_losses(batch)
+
+            losses = OrderedDict()
+            enc_outputs = self.nets["encoder"](self.algo_config.window_size, **{"obs":batch["obs"]})
+            # optional encoding here
+            #self.action_encoder(enc_outputs)
+            latent = self.discretizer.discretize(batch["actions"])
+            _, loss, loss_comp = self.nets["policy"].get_latent_and_loss(obs_rep=enc_outputs, target_latents=latent, return_loss_components=True)
+
+            losses["action_loss"] = loss
             info["losses"] = TensorUtils.detach(losses)
 
             if not validate:
-                step_info = self._train_step(losses)
+                step_info = OrderedDict()
+                
+                
+                self.optim.zero_grad(set_to_none=True)
+                loss.backward()
+
+                # gradient clipping
+                torch.nn.utils.clip_grad_norm_(self.nets["policy"].parameters(), self.optim_params.grad_norm_clip)
+
+                # compute grad norms
+                grad_norms = 0.
+                for p in self.nets["policy"].parameters():
+                    # only clip gradients for parameters for which requires_grad is True
+                    if p.grad is not None:
+                        grad_norms += p.grad.data.norm(2).pow(2).item()
+
+                # step
+                self.optim.step()
+                
+                step_info["policy_grad_norms"] = grad_norms
                 info.update(step_info)
-
             return info
-
-
-    def _compute_losses(self, batch):
-        """
-        Args:
-            batch (dict): dictionary with torch.Tensors sampled
-                from a data loader and filtered by @process_batch_for_training
-
-        Returns:
-            losses (dict): dictionary of losses computed over the batch
-        """      
-        losses = OrderedDict()
-        enc_outputs = self.nets["encoder"](self.algo_config.window_size, **{"obs":batch["obs"]})
-        # optional encoding here
-        #self.action_encoder(enc_outputs)
-        latent = self.discretizer.discretize(batch["actions"])
-
-        _, loss, loss_comp = self.nets["policy"].get_latent_and_loss(obs_rep=enc_outputs, target_latents=latent, return_loss_components=True)
-
-        losses["action_loss"] = loss
-        return losses
-
-    def _train_step(self, losses):
-        """
-        Args:
-            losses (dict): dictionary of losses computed over the batch, from @_compute_losses
-        """
-
-        # gradient step
-        info = OrderedDict()
-
-        policy_grad_norms = TorchUtils.backprop_for_loss(
-            net=self.nets["policy"],
-            optim=self.optim,
-            loss=losses["action_loss"],
-            max_grad_norm=self.optim_params.grad_norm_clip,
-        )
-
-        info["policy_grad_norms"] = policy_grad_norms
-        return info
     
     def log_info(self, info):
         """
@@ -310,16 +297,29 @@ class BET(PolicyAlgo):
         # # return self.nets["policy"](obs_dict, goal_dict=goal_dict)
         # return self.nets["policy"](obs_dict)
         """
-        with TorchUtils.eval_mode(self.action_encoder, self.nets["policy"], no_grad=True):
+        with TorchUtils.eval_mode(self.action_encoder, self.nets["policy"], no_grad=True), self.nets["policy"].eval():
             enc_obs = self.nets["ac_encoder"](**{"obs":obs_dict})
-            enc_obs = einops.repeat(enc_obs[0], "obs -> batch obs", batch=self.algo_config.batch_size)
+            enc_obs = einops.repeat(enc_obs[0], "obs -> batch obs", batch=1)
             self.history.append(enc_obs)
             enc_obs_seq = torch.stack(tuple(self.history), dim=0)
             latents, offsets = self.nets["policy"].generate_latents(enc_obs_seq, torch.ones_like(enc_obs_seq).mean(dim=-1))
-            action_latents = (latents[:, -1:, :], offsets[:, -1:, :])
+            #print("LO", latents, offsets)
+            action_latents = (latents[:, :1, :], offsets[:, :1, :])  # was -1:
+            #print("AL", action_latents)
             actions = self.discretizer.decode_actions(latent_action_batch=action_latents)
+
+            #print("A", actions)
             sampled_action = np.random.randint(len(actions))
+            #print("SA", sampled_action)
             actions = actions[sampled_action]
             actions = einops.rearrange(actions, "1 action_dim -> action_dim")
-            actions = torch.tanh(actions) # todo: how do we get this loss inside the model?
+            #actions = torch.tanh(actions) # todo: how do we get this loss inside the model?
+            #actions = torch.clamp(actions, min=-1, max=1)
+            #print(actions)
             return [actions]
+        
+    def reset(self):
+        """
+        Reset algo state to prepare for environment rollouts.
+        """
+        self.history = deque(maxlen=self.algo_config.history_size)

@@ -10,7 +10,7 @@
         "save": {
             "enabled": true,
             "every_n_seconds": null,
-            "every_n_epochs": 50,
+            "every_n_epochs": 250,
             "epochs": [],
             "on_best_validation": false,
             "on_best_rollout_return": false,
@@ -26,9 +26,9 @@
         "video_skip": 5,
         "rollout": {
             "enabled": true,
-            "n": 50,
+            "n": 10,
             "horizon": 400,
-            "rate": 50,
+            "rate": 250,
             "warmstart": 0,
             "terminate_on_success": true
         }
@@ -41,7 +41,7 @@
         "hdf5_use_swmr": true,
         "hdf5_normalize_obs": false,
         "hdf5_filter_key": null,
-        "seq_length": 10,
+        "seq_length": 5,
         "dataset_keys": [
             "actions",
             "rewards",
@@ -49,8 +49,8 @@
         ],
         "goal_mode": null,
         "cuda": true,
-        "batch_size": 100,
-        "num_epochs": 2000,
+        "batch_size": 500,
+        "num_epochs": 250,
         "seed": 1
     },
     "algo": {
@@ -67,13 +67,15 @@
             "grad_norm_clip": 1,
             "seed": 42
         },
-        "n_layer": 6,
-        "n_head": 6,
-        "n_embd": 120,
-        "window_size": 10,
+        "n_layer": 4,
+        "n_head": 4,
+        "n_embd": 72,
+        "window_size": 5,
         "predict_offsets": true,
-        "offset_loss_scale": 1000.0,
-        "focal_loss_gamma": 2.0
+        "offset_loss_scale": 100000.0,
+        "focal_loss_gamma": 2.0,
+        "history_size" : 3,
+        "discrete_input" : false
     },
     "observation": {
         "modalities": {

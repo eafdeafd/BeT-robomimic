@@ -1,0 +1,9621 @@
+
+============= Initialized Observation Utils with Obs Spec =============
+
+using obs modality: low_dim with keys: ['robot0_gripper_qpos', 'robot0_eef_pos', 'object', 'robot0_eef_quat']
+using obs modality: rgb with keys: []
+using obs modality: depth with keys: []
+using obs modality: scan with keys: []
+/home/andrew/Desktop/robo_sims/robomimic
+
+============= Loaded Environment Metadata =============
+obs key object with shape (14,)
+obs key robot0_eef_pos with shape (3,)
+obs key robot0_eef_quat with shape (4,)
+obs key robot0_gripper_qpos with shape (2,)
+Created environment with name PickPlaceCan
+Action size is 7
+PickPlaceCan
+{
+    "camera_depths": false,
+    "camera_heights": 84,
+    "camera_widths": 84,
+    "control_freq": 20,
+    "controller_configs": {
+        "control_delta": true,
+        "damping": 1,
+        "damping_limits": [
+            0,
+            10
+        ],
+        "impedance_mode": "fixed",
+        "input_max": 1,
+        "input_min": -1,
+        "interpolation": null,
+        "kp": 150,
+        "kp_limits": [
+            0,
+            300
+        ],
+        "orientation_limits": null,
+        "output_max": [
+            0.05,
+            0.05,
+            0.05,
+            0.5,
+            0.5,
+            0.5
+        ],
+        "output_min": [
+            -0.05,
+            -0.05,
+            -0.05,
+            -0.5,
+            -0.5,
+            -0.5
+        ],
+        "position_limits": null,
+        "ramp_ratio": 0.2,
+        "type": "OSC_POSE",
+        "uncouple_pos_ori": true
+    },
+    "has_offscreen_renderer": true,
+    "has_renderer": false,
+    "ignore_done": true,
+    "render_gpu_device_id": 0,
+    "reward_shaping": false,
+    "robots": [
+        "Panda"
+    ],
+    "use_camera_obs": false,
+    "use_object_obs": true
+}
+
+
+============= Model Summary =============
+ObservationKeyToModalityDict: action not found, adding action to mapping with assumed low_dim modality!
+BET (
+  ModuleDict(
+    (encoder): ObservationBETGroupEncoder(
+        group=obs
+        ObservationEncoder(
+            Key(
+                name=object
+                shape=[14]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_eef_pos
+                shape=[3]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_eef_quat
+                shape=[4]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_gripper_qpos
+                shape=[2]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            output_shape=[23]
+        )
+    )
+    (ac_encoder): ObservationGroupEncoder(
+        group=obs
+        ObservationEncoder(
+            Key(
+                name=object
+                shape=[14]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_eef_pos
+                shape=[3]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_eef_quat
+                shape=[4]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_gripper_qpos
+                shape=[2]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            output_shape=[23]
+        )
+    )
+    (mlp): MLP(
+        input_dim=23
+        output_dim=400
+        layer_dims=(300,)
+        layer_func=Linear
+        dropout=None
+        act=Mish
+        output_act=Mish
+    )
+    (decoder): ObservationDecoder(
+        Key(
+            name=action
+            shape=(7,)
+            modality=low_dim
+            net=(Linear(in_features=400, out_features=7, bias=True))
+        )
+    )
+    (policy): MinGPT(
+      (model): GPT(
+        (tok_emb): Linear(in_features=23, out_features=120, bias=True)
+        (drop): Dropout(p=0.1, inplace=False)
+        (blocks): Sequential(
+          (0): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): Mish()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (1): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): Mish()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (2): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): Mish()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (3): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): Mish()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (4): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): Mish()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (5): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): Mish()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+        )
+        (ln_f): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+        (head): Linear(in_features=120, out_features=512, bias=False)
+      )
+    )
+  )
+)
+
+SequenceDataset: loading dataset into memory...
+  0%|          | 0/180 [00:00<?, ?it/s] 48%|####8     | 87/180 [00:00<00:00, 864.33it/s] 97%|#########7| 175/180 [00:00<00:00, 869.80it/s]100%|##########| 180/180 [00:00<00:00, 868.45it/s]
+SequenceDataset: caching get_item calls...
+  0%|          | 0/20883 [00:00<?, ?it/s]  7%|6         | 1410/20883 [00:00<00:01, 14091.51it/s] 14%|#3        | 2863/20883 [00:00<00:01, 14348.99it/s] 21%|##        | 4300/20883 [00:00<00:01, 14357.31it/s] 28%|##7       | 5762/20883 [00:00<00:01, 14459.85it/s] 35%|###4      | 7208/20883 [00:00<00:00, 14398.86it/s] 41%|####1     | 8649/20883 [00:00<00:00, 14399.93it/s] 48%|####8     | 10090/20883 [00:00<00:00, 14356.50it/s] 55%|#####5    | 11546/20883 [00:00<00:00, 14419.26it/s] 62%|######2   | 12988/20883 [00:00<00:00, 14392.28it/s] 69%|######9   | 14447/20883 [00:01<00:00, 14452.66it/s] 76%|#######6  | 15893/20883 [00:01<00:00, 14388.92it/s] 83%|########3 | 17334/20883 [00:01<00:00, 14392.49it/s] 90%|########9 | 18774/20883 [00:01<00:00, 14279.28it/s] 97%|#########6| 20242/20883 [00:01<00:00, 14396.47it/s]100%|##########| 20883/20883 [00:01<00:00, 14371.81it/s]
+SequenceDataset: loading dataset into memory...
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 871.23it/s]
+SequenceDataset: caching get_item calls...
+  0%|          | 0/2324 [00:00<?, ?it/s] 62%|######1   | 1436/2324 [00:00<00:00, 14354.78it/s]100%|##########| 2324/2324 [00:00<00:00, 14175.12it/s]
+
+============= Training Dataset =============
+SequenceDataset (
+	path=datasets/can/ph/low_dim.hdf5
+	obs_keys=('object', 'robot0_eef_pos', 'robot0_eef_quat', 'robot0_gripper_qpos')
+	seq_length=3
+	filter_key=train
+	frame_stack=1
+	pad_seq_length=True
+	pad_frame_stack=True
+	goal_mode=none
+	cache_mode=all
+	num_demos=180
+	num_sequences=20883
+)
+
+  0%|          | 0/50 [00:00<?, ?it/s]K-means clustering:   0%|          | 0/50 [00:00<?, ?it/s]K-means clustering:   6%|6         | 3/50 [00:00<00:02, 21.27it/s]K-means clustering:  12%|#2        | 6/50 [00:00<00:02, 20.71it/s]K-means clustering:  18%|#8        | 9/50 [00:00<00:01, 21.90it/s]K-means clustering:  24%|##4       | 12/50 [00:00<00:01, 21.46it/s]K-means clustering:  30%|###       | 15/50 [00:00<00:01, 21.58it/s]K-means clustering:  36%|###6      | 18/50 [00:00<00:01, 22.19it/s]K-means clustering:  42%|####2     | 21/50 [00:00<00:01, 22.17it/s]K-means clustering:  48%|####8     | 24/50 [00:01<00:01, 22.08it/s]K-means clustering:  54%|#####4    | 27/50 [00:01<00:01, 22.43it/s]K-means clustering:  60%|######    | 30/50 [00:01<00:00, 22.12it/s]K-means clustering:  66%|######6   | 33/50 [00:01<00:00, 22.00it/s]K-means clustering:  72%|#######2  | 36/50 [00:01<00:00, 22.04it/s]K-means clustering:  78%|#######8  | 39/50 [00:01<00:00, 21.86it/s]K-means clustering:  84%|########4 | 42/50 [00:01<00:00, 21.97it/s]K-means clustering:  90%|######### | 45/50 [00:02<00:00, 22.26it/s]K-means clustering:  96%|#########6| 48/50 [00:02<00:00, 22.00it/s]K-means clustering: 100%|##########| 50/50 [00:02<00:00, 21.83it/s]
+  0%|          | 0/100 [00:00<?, ?it/s]3 128
+  1%|1         | 1/100 [00:00<00:18,  5.43it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+  8%|8         | 8/100 [00:00<00:02, 31.84it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 15%|#5        | 15/100 [00:00<00:01, 43.61it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 22%|##2       | 22/100 [00:00<00:01, 49.95it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 29%|##9       | 29/100 [00:00<00:01, 53.74it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 36%|###6      | 36/100 [00:00<00:01, 56.40it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 43%|####3     | 43/100 [00:00<00:00, 57.72it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 50%|#####     | 50/100 [00:00<00:00, 58.64it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 57%|#####6    | 57/100 [00:01<00:00, 59.70it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 64%|######4   | 64/100 [00:01<00:00, 59.96it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 71%|#######1  | 71/100 [00:01<00:00, 60.21it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 78%|#######8  | 78/100 [00:01<00:00, 60.08it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 85%|########5 | 85/100 [00:01<00:00, 60.31it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 92%|#########2| 92/100 [00:01<00:00, 60.71it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 99%|#########9| 99/100 [00:01<00:00, 60.42it/s]3 128
+100%|##########| 100/100 [00:01<00:00, 55.31it/s]
+Train Epoch 1
+{
+    "Loss": 15.461088361740112,
+    "Policy_Grad_Norms": 0.9999999906461254,
+    "Time_Data_Loading": 0.0028487006823221844,
+    "Time_Epoch": 0.030143380165100098,
+    "Time_Log_Info": 4.7949949900309247e-05,
+    "Time_Process_Batch": 0.00029964844385782876,
+    "Time_Train_Batch": 0.026887877782185873
+}
+  0%|          | 0/5 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+100%|##########| 5/5 [00:00<00:00, 225.20it/s]
+Validation Epoch 1
+{
+    "Loss": 10.210597610473632,
+    "Time_Data_Loading": 0.00013164281845092773,
+    "Time_Epoch": 0.0003802220026652018,
+    "Time_Log_Info": 1.4146169026692709e-06,
+    "Time_Process_Batch": 1.3828277587890625e-05,
+    "Time_Train_Batch": 0.0002222577730814616
+}
+
+Epoch 1 Memory Usage: 3605 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+  7%|7         | 7/100 [00:00<00:01, 61.30it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 14%|#4        | 14/100 [00:00<00:01, 59.90it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 21%|##1       | 21/100 [00:00<00:01, 60.41it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 28%|##8       | 28/100 [00:00<00:01, 60.96it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 35%|###5      | 35/100 [00:00<00:01, 60.62it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 42%|####2     | 42/100 [00:00<00:00, 61.09it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 49%|####9     | 49/100 [00:00<00:00, 60.99it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 56%|#####6    | 56/100 [00:00<00:00, 61.22it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 63%|######3   | 63/100 [00:01<00:00, 60.90it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 70%|#######   | 70/100 [00:01<00:00, 60.62it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 77%|#######7  | 77/100 [00:01<00:00, 60.94it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 84%|########4 | 84/100 [00:01<00:00, 60.73it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 91%|#########1| 91/100 [00:01<00:00, 61.13it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 98%|#########8| 98/100 [00:01<00:00, 60.61it/s]3 128
+3 128
+100%|##########| 100/100 [00:01<00:00, 60.79it/s]
+Train Epoch 2
+{
+    "Loss": 10.651151447296142,
+    "Policy_Grad_Norms": 0.9999999926987537,
+    "Time_Data_Loading": 0.00285185972849528,
+    "Time_Epoch": 0.02743098735809326,
+    "Time_Log_Info": 4.17788823445638e-05,
+    "Time_Process_Batch": 0.00030288298924764,
+    "Time_Train_Batch": 0.02417501211166382
+}
+  0%|          | 0/5 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+100%|##########| 5/5 [00:00<00:00, 206.55it/s]
+Validation Epoch 2
+{
+    "Loss": 10.620665359497071,
+    "Time_Data_Loading": 0.00013378461201985677,
+    "Time_Epoch": 0.0004194895426432292,
+    "Time_Log_Info": 1.6530354817708334e-06,
+    "Time_Process_Batch": 1.337130864461263e-05,
+    "Time_Train_Batch": 0.0002538164456685384
+}
+
+Epoch 2 Memory Usage: 3605 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+  6%|6         | 6/100 [00:00<00:01, 59.33it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 13%|#3        | 13/100 [00:00<00:01, 60.44it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 20%|##        | 20/100 [00:00<00:01, 60.62it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 27%|##7       | 27/100 [00:00<00:01, 60.98it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 34%|###4      | 34/100 [00:00<00:01, 60.61it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 41%|####1     | 41/100 [00:00<00:00, 60.25it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 48%|####8     | 48/100 [00:00<00:00, 60.94it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 55%|#####5    | 55/100 [00:00<00:00, 60.15it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 62%|######2   | 62/100 [00:01<00:00, 60.29it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 69%|######9   | 69/100 [00:01<00:00, 60.13it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 76%|#######6  | 76/100 [00:01<00:00, 60.64it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 83%|########2 | 83/100 [00:01<00:00, 58.94it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 89%|########9 | 89/100 [00:01<00:00, 58.50it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 95%|#########5| 95/100 [00:01<00:00, 58.38it/s]3 128
+3 128
+3 128
+3 128
+3 128
+100%|##########| 100/100 [00:01<00:00, 59.67it/s]
+Train Epoch 3
+{
+    "Loss": 10.496747875213623,
+    "Policy_Grad_Norms": 1.0000000026497606,
+    "Time_Data_Loading": 0.002945232391357422,
+    "Time_Epoch": 0.027945629755655923,
+    "Time_Log_Info": 4.302660624186198e-05,
+    "Time_Process_Batch": 0.00030672152837117513,
+    "Time_Train_Batch": 0.02459350824356079
+}
+  0%|          | 0/5 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+100%|##########| 5/5 [00:00<00:00, 208.73it/s]
+Validation Epoch 3
+{
+    "Loss": 9.880912399291992,
+    "Time_Data_Loading": 0.00014197429021199545,
+    "Time_Epoch": 0.000412905216217041,
+    "Time_Log_Info": 1.5377998352050782e-06,
+    "Time_Process_Batch": 1.6705195109049478e-05,
+    "Time_Train_Batch": 0.0002380212148030599
+}
+
+Epoch 3 Memory Usage: 3605 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+  7%|7         | 7/100 [00:00<00:01, 60.68it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 14%|#4        | 14/100 [00:00<00:01, 59.27it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 21%|##1       | 21/100 [00:00<00:01, 60.63it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 28%|##8       | 28/100 [00:00<00:01, 59.76it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 34%|###4      | 34/100 [00:00<00:01, 59.70it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 41%|####1     | 41/100 [00:00<00:00, 60.22it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 48%|####8     | 48/100 [00:00<00:00, 59.74it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 54%|#####4    | 54/100 [00:00<00:00, 57.59it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 61%|######1   | 61/100 [00:01<00:00, 58.39it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 68%|######8   | 68/100 [00:01<00:00, 59.54it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 75%|#######5  | 75/100 [00:01<00:00, 59.80it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 82%|########2 | 82/100 [00:01<00:00, 59.77it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 89%|########9 | 89/100 [00:01<00:00, 60.62it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 96%|#########6| 96/100 [00:01<00:00, 60.58it/s]3 128
+3 128
+3 128
+3 128
+100%|##########| 100/100 [00:01<00:00, 59.88it/s]
+Train Epoch 4
+{
+    "Loss": 10.247727403640747,
+    "Policy_Grad_Norms": 0.999999984443564,
+    "Time_Data_Loading": 0.0028919219970703126,
+    "Time_Epoch": 0.027845958868662517,
+    "Time_Log_Info": 4.03285026550293e-05,
+    "Time_Process_Batch": 0.0003029783566792806,
+    "Time_Train_Batch": 0.024555071194966634
+}
+  0%|          | 0/5 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+100%|##########| 5/5 [00:00<00:00, 215.21it/s]
+Validation Epoch 4
+{
+    "Loss": 10.344281578063965,
+    "Time_Data_Loading": 0.00013276338577270508,
+    "Time_Epoch": 0.00040371417999267577,
+    "Time_Log_Info": 1.3669331868489583e-06,
+    "Time_Process_Batch": 2.2343794504801433e-05,
+    "Time_Train_Batch": 0.00022991498311360678
+}
+
+Epoch 4 Memory Usage: 3605 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+  6%|6         | 6/100 [00:00<00:01, 58.97it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 13%|#3        | 13/100 [00:00<00:01, 60.69it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 20%|##        | 20/100 [00:00<00:01, 60.62it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 27%|##7       | 27/100 [00:00<00:01, 60.87it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 34%|###4      | 34/100 [00:00<00:01, 60.93it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 41%|####1     | 41/100 [00:00<00:00, 60.82it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 48%|####8     | 48/100 [00:00<00:00, 61.19it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 55%|#####5    | 55/100 [00:00<00:00, 60.94it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 62%|######2   | 62/100 [00:01<00:00, 61.30it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 69%|######9   | 69/100 [00:01<00:00, 61.16it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 76%|#######6  | 76/100 [00:01<00:00, 61.38it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 83%|########2 | 83/100 [00:01<00:00, 61.19it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 90%|######### | 90/100 [00:01<00:00, 61.39it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 97%|#########7| 97/100 [00:01<00:00, 61.41it/s]3 128
+3 128
+3 128
+100%|##########| 100/100 [00:01<00:00, 61.15it/s]
+Train Epoch 5
+{
+    "Loss": 10.073128633499145,
+    "Policy_Grad_Norms": 0.9999999700329574,
+    "Time_Data_Loading": 0.002841834227244059,
+    "Time_Epoch": 0.027263474464416505,
+    "Time_Log_Info": 4.090070724487305e-05,
+    "Time_Process_Batch": 0.0002974192301432292,
+    "Time_Train_Batch": 0.024030021826426187
+}
+  0%|          | 0/5 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+100%|##########| 5/5 [00:00<00:00, 218.90it/s]
+Validation Epoch 5
+{
+    "Loss": 10.175994873046875,
+    "Time_Data_Loading": 0.00013353427251180014,
+    "Time_Epoch": 0.0003982861836751302,
+    "Time_Log_Info": 1.4781951904296875e-06,
+    "Time_Process_Batch": 1.4587243398030598e-05,
+    "Time_Train_Batch": 0.00022992293039957682
+}
+
+Epoch 5 Memory Usage: 3605 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+  7%|7         | 7/100 [00:00<00:01, 61.64it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 14%|#4        | 14/100 [00:00<00:01, 61.38it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 21%|##1       | 21/100 [00:00<00:01, 61.96it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 28%|##8       | 28/100 [00:00<00:01, 61.83it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 35%|###5      | 35/100 [00:00<00:01, 62.36it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 42%|####2     | 42/100 [00:00<00:00, 61.96it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 49%|####9     | 49/100 [00:00<00:00, 62.28it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 56%|#####6    | 56/100 [00:00<00:00, 61.63it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 63%|######3   | 63/100 [00:01<00:00, 60.76it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 70%|#######   | 70/100 [00:01<00:00, 60.84it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 77%|#######7  | 77/100 [00:01<00:00, 60.75it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 84%|########4 | 84/100 [00:01<00:00, 61.24it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 91%|#########1| 91/100 [00:01<00:00, 61.03it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 98%|#########8| 98/100 [00:01<00:00, 61.18it/s]3 128
+3 128
+100%|##########| 100/100 [00:01<00:00, 61.30it/s]
+Train Epoch 6
+{
+    "Loss": 9.885727252960205,
+    "Policy_Grad_Norms": 1.0000000015424215,
+    "Time_Data_Loading": 0.00284649928410848,
+    "Time_Epoch": 0.027200496196746825,
+    "Time_Log_Info": 4.573663075764974e-05,
+    "Time_Process_Batch": 0.00029987096786499023,
+    "Time_Train_Batch": 0.02395444711049398
+}
+  0%|          | 0/5 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+100%|##########| 5/5 [00:00<00:00, 220.27it/s]
+Validation Epoch 6
+{
+    "Loss": 10.052485084533691,
+    "Time_Data_Loading": 0.00013750791549682617,
+    "Time_Epoch": 0.0003922581672668457,
+    "Time_Log_Info": 1.3669331868489583e-06,
+    "Time_Process_Batch": 1.5072027842203776e-05,
+    "Time_Train_Batch": 0.00022343794504801431
+}
+
+Epoch 6 Memory Usage: 3605 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+  7%|7         | 7/100 [00:00<00:01, 61.88it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 14%|#4        | 14/100 [00:00<00:01, 61.53it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 21%|##1       | 21/100 [00:00<00:01, 62.05it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 28%|##8       | 28/100 [00:00<00:01, 61.73it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 35%|###5      | 35/100 [00:00<00:01, 61.71it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 42%|####2     | 42/100 [00:00<00:00, 61.91it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 49%|####9     | 49/100 [00:00<00:00, 61.67it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 56%|#####6    | 56/100 [00:00<00:00, 61.59it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 63%|######3   | 63/100 [00:01<00:00, 61.46it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 70%|#######   | 70/100 [00:01<00:00, 61.56it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 77%|#######7  | 77/100 [00:01<00:00, 61.01it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 84%|########4 | 84/100 [00:01<00:00, 60.79it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 91%|#########1| 91/100 [00:01<00:00, 60.87it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 98%|#########8| 98/100 [00:01<00:00, 60.88it/s]3 128
+3 128
+100%|##########| 100/100 [00:01<00:00, 61.34it/s]
+Train Epoch 7
+{
+    "Loss": 9.815325202941894,
+    "Policy_Grad_Norms": 0.9999999874356372,
+    "Time_Data_Loading": 0.0028247753779093426,
+    "Time_Epoch": 0.027181808153788248,
+    "Time_Log_Info": 4.1886170705159506e-05,
+    "Time_Process_Batch": 0.00030702749888102213,
+    "Time_Train_Batch": 0.02395414113998413
+}
+  0%|          | 0/5 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+100%|##########| 5/5 [00:00<00:00, 214.94it/s]
+Validation Epoch 7
+{
+    "Loss": 9.694670867919921,
+    "Time_Data_Loading": 0.00014778375625610352,
+    "Time_Epoch": 0.0003953417142232259,
+    "Time_Log_Info": 2.4199485778808595e-06,
+    "Time_Process_Batch": 1.3482570648193359e-05,
+    "Time_Train_Batch": 0.0002231915791829427
+}
+
+Epoch 7 Memory Usage: 3605 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+  7%|7         | 7/100 [00:00<00:01, 59.85it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 14%|#4        | 14/100 [00:00<00:01, 60.91it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 21%|##1       | 21/100 [00:00<00:01, 60.74it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 28%|##8       | 28/100 [00:00<00:01, 61.20it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 35%|###5      | 35/100 [00:00<00:01, 60.68it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 42%|####2     | 42/100 [00:00<00:00, 60.86it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 49%|####9     | 49/100 [00:00<00:00, 61.18it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 56%|#####6    | 56/100 [00:00<00:00, 61.20it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 63%|######3   | 63/100 [00:01<00:00, 61.74it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 70%|#######   | 70/100 [00:01<00:00, 61.45it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 77%|#######7  | 77/100 [00:01<00:00, 61.62it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 84%|########4 | 84/100 [00:01<00:00, 61.06it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 91%|#########1| 91/100 [00:01<00:00, 61.11it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 98%|#########8| 98/100 [00:01<00:00, 60.90it/s]3 128
+3 128
+100%|##########| 100/100 [00:01<00:00, 61.07it/s]
+Train Epoch 8
+{
+    "Loss": 9.62153154373169,
+    "Policy_Grad_Norms": 1.0000000040917838,
+    "Time_Data_Loading": 0.002825792630513509,
+    "Time_Epoch": 0.027299682299296062,
+    "Time_Log_Info": 4.245837529500326e-05,
+    "Time_Process_Batch": 0.0002958377202351888,
+    "Time_Train_Batch": 0.02407907247543335
+}
+  0%|          | 0/5 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+100%|##########| 5/5 [00:00<00:00, 218.12it/s]
+Validation Epoch 8
+{
+    "Loss": 9.489850425720215,
+    "Time_Data_Loading": 0.00014376242955525717,
+    "Time_Epoch": 0.00038990179697672524,
+    "Time_Log_Info": 1.430511474609375e-06,
+    "Time_Process_Batch": 1.3363361358642577e-05,
+    "Time_Train_Batch": 0.00022268295288085938
+}
+
+Epoch 8 Memory Usage: 3605 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+  7%|7         | 7/100 [00:00<00:01, 60.44it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 14%|#4        | 14/100 [00:00<00:01, 61.65it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 21%|##1       | 21/100 [00:00<00:01, 61.71it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 28%|##8       | 28/100 [00:00<00:01, 61.57it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 35%|###5      | 35/100 [00:00<00:01, 61.55it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 42%|####2     | 42/100 [00:00<00:00, 61.35it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 49%|####9     | 49/100 [00:00<00:00, 61.89it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 56%|#####6    | 56/100 [00:00<00:00, 61.66it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 63%|######3   | 63/100 [00:01<00:00, 62.09it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 70%|#######   | 70/100 [00:01<00:00, 61.97it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 77%|#######7  | 77/100 [00:01<00:00, 61.51it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 84%|########4 | 84/100 [00:01<00:00, 61.63it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 91%|#########1| 91/100 [00:01<00:00, 61.45it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 98%|#########8| 98/100 [00:01<00:00, 61.87it/s]3 128
+3 128
+100%|##########| 100/100 [00:01<00:00, 61.70it/s]
+Train Epoch 9
+{
+    "Loss": 9.639225616455079,
+    "Policy_Grad_Norms": 0.999999997334197,
+    "Time_Data_Loading": 0.0027812997500101726,
+    "Time_Epoch": 0.027021257082621257,
+    "Time_Log_Info": 4.2724609375e-05,
+    "Time_Process_Batch": 0.00030159552892049154,
+    "Time_Train_Batch": 0.02384014129638672
+}
+  0%|          | 0/5 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+100%|##########| 5/5 [00:00<00:00, 203.90it/s]
+Validation Epoch 9
+{
+    "Loss": 9.325622177124023,
+    "Time_Data_Loading": 0.00014018615086873373,
+    "Time_Epoch": 0.0004234711329142253,
+    "Time_Log_Info": 1.8199284871419272e-06,
+    "Time_Process_Batch": 1.6983350118001302e-05,
+    "Time_Train_Batch": 0.0002486109733581543
+}
+
+Epoch 9 Memory Usage: 3605 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+  7%|7         | 7/100 [00:00<00:01, 62.21it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 14%|#4        | 14/100 [00:00<00:01, 61.51it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 21%|##1       | 21/100 [00:00<00:01, 61.88it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 28%|##8       | 28/100 [00:00<00:01, 61.71it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 35%|###5      | 35/100 [00:00<00:01, 61.88it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 42%|####2     | 42/100 [00:00<00:00, 61.63it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 49%|####9     | 49/100 [00:00<00:00, 61.80it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 56%|#####6    | 56/100 [00:00<00:00, 61.43it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 63%|######3   | 63/100 [00:01<00:00, 60.85it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 70%|#######   | 70/100 [00:01<00:00, 60.61it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 77%|#######7  | 77/100 [00:01<00:00, 60.18it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 84%|########4 | 84/100 [00:01<00:00, 60.39it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 91%|#########1| 91/100 [00:01<00:00, 60.27it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 98%|#########8| 98/100 [00:01<00:00, 60.43it/s]3 128
+3 128
+100%|##########| 100/100 [00:01<00:00, 61.00it/s]
+Train Epoch 10
+{
+    "Loss": 9.454293642044068,
+    "Policy_Grad_Norms": 1.000000010138326,
+    "Time_Data_Loading": 0.002846833070119222,
+    "Time_Epoch": 0.027336164315541586,
+    "Time_Log_Info": 4.289547602335612e-05,
+    "Time_Process_Batch": 0.0003041267395019531,
+    "Time_Train_Batch": 0.024083952109018963
+}
+  0%|          | 0/5 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+100%|##########| 5/5 [00:00<00:00, 220.29it/s]
+Validation Epoch 10
+{
+    "Loss": 9.79731330871582,
+    "Time_Data_Loading": 0.00013764301935831707,
+    "Time_Epoch": 0.00039362112681070964,
+    "Time_Log_Info": 1.5536944071451823e-06,
+    "Time_Process_Batch": 1.3236204783121745e-05,
+    "Time_Train_Batch": 0.000224916140238444
+}
+video writes to /home/andrew/Desktop/robo_sims/robomimic/robomimic/../bet_trained_models/test/20221129130744/videos/PickPlaceCan_epoch_10.mp4
+rollout: env=PickPlaceCan, horizon=400, use_goals=False, num_episodes=10
+  0%|          | 0/10 [00:00<?, ?it/s]history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+ 10%|#         | 1/10 [00:10<01:30, 10.11s/it]history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+ 20%|##        | 2/10 [00:19<01:18,  9.84s/it]history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+ 30%|###       | 3/10 [00:30<01:10, 10.03s/it]history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+ 40%|####      | 4/10 [00:39<00:59,  9.99s/it]history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+ 50%|#####     | 5/10 [00:49<00:49,  9.89s/it]history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+ 60%|######    | 6/10 [00:59<00:39,  9.84s/it]history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+ 70%|#######   | 7/10 [01:09<00:29,  9.90s/it]history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+ 80%|########  | 8/10 [01:19<00:19,  9.85s/it]history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+ 90%|######### | 9/10 [01:28<00:09,  9.84s/it]history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+history size 1
+1 128
+100%|##########| 10/10 [01:38<00:00,  9.87s/it]100%|##########| 10/10 [01:38<00:00,  9.89s/it]
+
+Epoch 10 Rollouts took 9.892009902000428s (avg) with results:
+Env: PickPlaceCan
+{
+    "Horizon": 400.0,
+    "Return": 0.0,
+    "Success_Rate": 0.0,
+    "Time_Episode": 1.648668317000071,
+    "time": 9.892009902000428
+}
+save checkpoint to /home/andrew/Desktop/robo_sims/robomimic/robomimic/../bet_trained_models/test/20221129130744/models/model_epoch_10_PickPlaceCan_success_0.0.pth
+
+Epoch 10 Memory Usage: 4238 MB
+
+finished run successfully!

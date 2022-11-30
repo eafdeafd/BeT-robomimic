@@ -34,12 +34,14 @@ class BETConfig(BaseConfig):
         self.algo.optim_params.seed = 42
 
         # Architecture details
-        self.algo.n_layer = 6
-        self.algo.n_head = 6
-        self.algo.n_embd = 120
+        self.algo.n_layer =4
+        self.algo.n_head = 4
+        self.algo.n_embd = 72
 
-        self.algo.window_size = 10
+        self.algo.window_size = self.train.seq_length
         self.algo.predict_offsets = True
-        self.algo.offset_loss_scale = 1000.0
+        self.algo.offset_loss_scale = 100000.0
         self.algo.focal_loss_gamma = 2.0
         self.algo.batch_size = 100
+        self.algo.history_size = 3
+        self.algo.discrete_input = False

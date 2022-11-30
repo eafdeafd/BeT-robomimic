@@ -1,0 +1,1759 @@
+
+============= Initialized Observation Utils with Obs Spec =============
+
+using obs modality: low_dim with keys: ['robot0_gripper_qpos', 'object', 'robot0_eef_quat', 'robot0_eef_pos']
+using obs modality: rgb with keys: []
+using obs modality: depth with keys: []
+using obs modality: scan with keys: []
+/home/andrew/Desktop/robo_sims/robomimic
+
+============= Loaded Environment Metadata =============
+obs key object with shape (14,)
+obs key robot0_eef_pos with shape (3,)
+obs key robot0_eef_quat with shape (4,)
+obs key robot0_gripper_qpos with shape (2,)
+Created environment with name PickPlaceCan
+Action size is 7
+PickPlaceCan
+{
+    "camera_depths": false,
+    "camera_heights": 84,
+    "camera_widths": 84,
+    "control_freq": 20,
+    "controller_configs": {
+        "control_delta": true,
+        "damping": 1,
+        "damping_limits": [
+            0,
+            10
+        ],
+        "impedance_mode": "fixed",
+        "input_max": 1,
+        "input_min": -1,
+        "interpolation": null,
+        "kp": 150,
+        "kp_limits": [
+            0,
+            300
+        ],
+        "orientation_limits": null,
+        "output_max": [
+            0.05,
+            0.05,
+            0.05,
+            0.5,
+            0.5,
+            0.5
+        ],
+        "output_min": [
+            -0.05,
+            -0.05,
+            -0.05,
+            -0.5,
+            -0.5,
+            -0.5
+        ],
+        "position_limits": null,
+        "ramp_ratio": 0.2,
+        "type": "OSC_POSE",
+        "uncouple_pos_ori": true
+    },
+    "has_offscreen_renderer": true,
+    "has_renderer": false,
+    "ignore_done": true,
+    "render_gpu_device_id": 0,
+    "reward_shaping": false,
+    "robots": [
+        "Panda"
+    ],
+    "use_camera_obs": false,
+    "use_object_obs": true
+}
+
+
+============= Model Summary =============
+ObservationKeyToModalityDict: action not found, adding action to mapping with assumed low_dim modality!
+BET (
+  ModuleDict(
+    (encoder): ObservationBETGroupEncoder(
+        group=obs
+        ObservationEncoder(
+            Key(
+                name=object
+                shape=[14]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_eef_pos
+                shape=[3]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_eef_quat
+                shape=[4]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_gripper_qpos
+                shape=[2]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            output_shape=[23]
+        )
+    )
+    (ac_encoder): ObservationGroupEncoder(
+        group=obs
+        ObservationEncoder(
+            Key(
+                name=object
+                shape=[14]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_eef_pos
+                shape=[3]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_eef_quat
+                shape=[4]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_gripper_qpos
+                shape=[2]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            output_shape=[23]
+        )
+    )
+    (mlp): MLP(
+        input_dim=23
+        output_dim=400
+        layer_dims=(300,)
+        layer_func=Linear
+        dropout=None
+        act=Mish
+        output_act=Mish
+    )
+    (decoder): ObservationDecoder(
+        Key(
+            name=action
+            shape=(7,)
+            modality=low_dim
+            net=(Linear(in_features=400, out_features=7, bias=True))
+        )
+    )
+    (policy): MinGPT(
+      (model): GPT(
+        (tok_emb): Linear(in_features=23, out_features=120, bias=True)
+        (drop): Dropout(p=0.1, inplace=False)
+        (blocks): Sequential(
+          (0): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): Mish()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (1): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): Mish()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (2): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): Mish()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (3): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): Mish()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (4): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): Mish()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (5): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): Mish()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+        )
+        (ln_f): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+        (head): Linear(in_features=120, out_features=512, bias=False)
+      )
+    )
+  )
+)
+
+SequenceDataset: loading dataset into memory...
+  0%|          | 0/180 [00:00<?, ?it/s] 47%|####6     | 84/180 [00:00<00:00, 832.49it/s] 93%|#########3| 168/180 [00:00<00:00, 834.93it/s]100%|##########| 180/180 [00:00<00:00, 835.25it/s]
+SequenceDataset: caching get_item calls...
+  0%|          | 0/20883 [00:00<?, ?it/s]  7%|6         | 1421/20883 [00:00<00:01, 14204.56it/s] 14%|#3        | 2898/20883 [00:00<00:01, 14534.09it/s] 21%|##        | 4352/20883 [00:00<00:01, 14496.84it/s] 28%|##7       | 5830/20883 [00:00<00:01, 14604.07it/s] 35%|###4      | 7291/20883 [00:00<00:00, 14558.59it/s] 42%|####1     | 8755/20883 [00:00<00:00, 14584.53it/s] 49%|####8     | 10214/20883 [00:00<00:00, 14509.74it/s] 56%|#####5    | 11676/20883 [00:00<00:00, 14543.47it/s] 63%|######2   | 13131/20883 [00:00<00:00, 14470.20it/s] 70%|######9   | 14594/20883 [00:01<00:00, 14517.87it/s] 77%|#######6  | 16046/20883 [00:01<00:00, 14439.17it/s] 84%|########3 | 17519/20883 [00:01<00:00, 14524.44it/s] 91%|######### | 18972/20883 [00:01<00:00, 14488.28it/s] 98%|#########7| 20421/20883 [00:01<00:00, 14477.82it/s]100%|##########| 20883/20883 [00:01<00:00, 14502.88it/s]
+SequenceDataset: loading dataset into memory...
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 839.63it/s]
+SequenceDataset: caching get_item calls...
+  0%|          | 0/2324 [00:00<?, ?it/s] 61%|######    | 1416/2324 [00:00<00:00, 14158.83it/s]100%|##########| 2324/2324 [00:00<00:00, 14244.14it/s]
+
+============= Training Dataset =============
+SequenceDataset (
+	path=datasets/can/ph/low_dim.hdf5
+	obs_keys=('object', 'robot0_eef_pos', 'robot0_eef_quat', 'robot0_gripper_qpos')
+	seq_length=3
+	filter_key=train
+	frame_stack=1
+	pad_seq_length=True
+	pad_frame_stack=True
+	goal_mode=none
+	cache_mode=all
+	num_demos=180
+	num_sequences=20883
+)
+
+  0%|          | 0/50 [00:00<?, ?it/s]K-means clustering:   0%|          | 0/50 [00:00<?, ?it/s]K-means clustering:   4%|4         | 2/50 [00:00<00:02, 17.56it/s]K-means clustering:  10%|#         | 5/50 [00:00<00:02, 20.48it/s]K-means clustering:  16%|#6        | 8/50 [00:00<00:02, 20.83it/s]K-means clustering:  22%|##2       | 11/50 [00:00<00:01, 21.48it/s]K-means clustering:  28%|##8       | 14/50 [00:00<00:01, 21.95it/s]K-means clustering:  34%|###4      | 17/50 [00:00<00:01, 21.64it/s]K-means clustering:  40%|####      | 20/50 [00:00<00:01, 21.54it/s]K-means clustering:  46%|####6     | 23/50 [00:01<00:01, 22.12it/s]K-means clustering:  52%|#####2    | 26/50 [00:01<00:01, 22.19it/s]K-means clustering:  58%|#####8    | 29/50 [00:01<00:00, 22.06it/s]K-means clustering:  64%|######4   | 32/50 [00:01<00:00, 22.36it/s]K-means clustering:  70%|#######   | 35/50 [00:01<00:00, 22.20it/s]K-means clustering:  76%|#######6  | 38/50 [00:01<00:00, 22.02it/s]K-means clustering:  82%|########2 | 41/50 [00:01<00:00, 22.07it/s]K-means clustering:  88%|########8 | 44/50 [00:02<00:00, 22.11it/s]K-means clustering:  94%|#########3| 47/50 [00:02<00:00, 21.97it/s]K-means clustering: 100%|##########| 50/50 [00:02<00:00, 22.37it/s]K-means clustering: 100%|##########| 50/50 [00:02<00:00, 21.91it/s]
+  0%|          | 0/100 [00:00<?, ?it/s]3 128
+  1%|1         | 1/100 [00:00<00:18,  5.39it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+  7%|7         | 7/100 [00:00<00:03, 28.78it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 14%|#4        | 14/100 [00:00<00:02, 41.82it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 20%|##        | 20/100 [00:00<00:01, 47.82it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 26%|##6       | 26/100 [00:00<00:01, 51.62it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 32%|###2      | 32/100 [00:00<00:01, 54.11it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 39%|###9      | 39/100 [00:00<00:01, 56.41it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 46%|####6     | 46/100 [00:00<00:00, 57.99it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 53%|#####3    | 53/100 [00:01<00:00, 58.81it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 60%|######    | 60/100 [00:01<00:00, 59.93it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 67%|######7   | 67/100 [00:01<00:00, 60.25it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 74%|#######4  | 74/100 [00:01<00:00, 60.75it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 81%|########1 | 81/100 [00:01<00:00, 59.76it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 87%|########7 | 87/100 [00:01<00:00, 59.72it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 94%|#########3| 94/100 [00:01<00:00, 60.05it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+100%|##########| 100/100 [00:01<00:00, 54.70it/s]
+Train Epoch 1
+{
+    "Loss": 15.461088361740112,
+    "Policy_Grad_Norms": 0.9999999906461254,
+    "Time_Data_Loading": 0.0029456337292989095,
+    "Time_Epoch": 0.030478223164876302,
+    "Time_Log_Info": 4.3344497680664065e-05,
+    "Time_Process_Batch": 0.0002950429916381836,
+    "Time_Train_Batch": 0.027134597301483154
+}
+  0%|          | 0/5 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+100%|##########| 5/5 [00:00<00:00, 206.00it/s]
+Validation Epoch 1
+{
+    "Loss": 10.210597610473632,
+    "Time_Data_Loading": 0.00014340877532958984,
+    "Time_Epoch": 0.00042045116424560547,
+    "Time_Log_Info": 1.5735626220703124e-06,
+    "Time_Process_Batch": 1.9788742065429688e-05,
+    "Time_Train_Batch": 0.00023888746897379558
+}
+
+Epoch 1 Memory Usage: 3603 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+  7%|7         | 7/100 [00:00<00:01, 61.98it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 14%|#4        | 14/100 [00:00<00:01, 60.72it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 21%|##1       | 21/100 [00:00<00:01, 61.11it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 28%|##8       | 28/100 [00:00<00:01, 60.33it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 35%|###5      | 35/100 [00:00<00:01, 60.03it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 42%|####2     | 42/100 [00:00<00:00, 59.96it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 48%|####8     | 48/100 [00:00<00:00, 59.91it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 55%|#####5    | 55/100 [00:00<00:00, 60.56it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 62%|######2   | 62/100 [00:01<00:00, 60.51it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 69%|######9   | 69/100 [00:01<00:00, 60.87it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 76%|#######6  | 76/100 [00:01<00:00, 60.70it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 83%|########2 | 83/100 [00:01<00:00, 60.45it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 90%|######### | 90/100 [00:01<00:00, 60.43it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 97%|#########7| 97/100 [00:01<00:00, 60.29it/s]3 128
+3 128
+3 128
+100%|##########| 100/100 [00:01<00:00, 60.48it/s]
+Train Epoch 2
+{
+    "Loss": 10.651151447296142,
+    "Policy_Grad_Norms": 0.9999999926987537,
+    "Time_Data_Loading": 0.0028910120328267414,
+    "Time_Epoch": 0.02756581703821818,
+    "Time_Log_Info": 4.0260950724283856e-05,
+    "Time_Process_Batch": 0.0002921462059020996,
+    "Time_Train_Batch": 0.024287704626719156
+}
+  0%|          | 0/5 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+100%|##########| 5/5 [00:00<00:00, 224.05it/s]
+Validation Epoch 2
+{
+    "Loss": 10.620665359497071,
+    "Time_Data_Loading": 0.00013618866602579753,
+    "Time_Epoch": 0.000388487180074056,
+    "Time_Log_Info": 1.3629595438639323e-06,
+    "Time_Process_Batch": 1.304149627685547e-05,
+    "Time_Train_Batch": 0.00022058486938476564
+}
+
+Epoch 2 Memory Usage: 3604 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+  7%|7         | 7/100 [00:00<00:01, 60.34it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 14%|#4        | 14/100 [00:00<00:01, 61.44it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 21%|##1       | 21/100 [00:00<00:01, 61.32it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 28%|##8       | 28/100 [00:00<00:01, 62.10it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 35%|###5      | 35/100 [00:00<00:01, 61.74it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 42%|####2     | 42/100 [00:00<00:00, 61.90it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 49%|####9     | 49/100 [00:00<00:00, 61.26it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 56%|#####6    | 56/100 [00:00<00:00, 60.96it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 63%|######3   | 63/100 [00:01<00:00, 61.25it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 70%|#######   | 70/100 [00:01<00:00, 60.84it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 77%|#######7  | 77/100 [00:01<00:00, 61.37it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 84%|########4 | 84/100 [00:01<00:00, 60.89it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 91%|#########1| 91/100 [00:01<00:00, 60.63it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 98%|#########8| 98/100 [00:01<00:00, 60.29it/s]3 128
+3 128
+100%|##########| 100/100 [00:01<00:00, 61.03it/s]
+Train Epoch 3
+{
+    "Loss": 10.496747875213623,
+    "Policy_Grad_Norms": 1.0000000026497606,
+    "Time_Data_Loading": 0.002901657422383626,
+    "Time_Epoch": 0.02731719414393107,
+    "Time_Log_Info": 4.089673360188802e-05,
+    "Time_Process_Batch": 0.00030229886372884116,
+    "Time_Train_Batch": 0.02401583989461263
+}
+  0%|          | 0/5 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+100%|##########| 5/5 [00:00<00:00, 222.32it/s]
+Validation Epoch 3
+{
+    "Loss": 9.880912399291992,
+    "Time_Data_Loading": 0.00013598203659057618,
+    "Time_Epoch": 0.00039163430531819664,
+    "Time_Log_Info": 1.3232231140136718e-06,
+    "Time_Process_Batch": 1.4535586039225261e-05,
+    "Time_Train_Batch": 0.0002221862475077311
+}
+
+Epoch 3 Memory Usage: 3604 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+  6%|6         | 6/100 [00:00<00:01, 57.57it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 13%|#3        | 13/100 [00:00<00:01, 59.92it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 19%|#9        | 19/100 [00:00<00:01, 59.55it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 25%|##5       | 25/100 [00:00<00:01, 59.59it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 31%|###1      | 31/100 [00:00<00:01, 59.48it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 38%|###8      | 38/100 [00:00<00:01, 59.49it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 45%|####5     | 45/100 [00:00<00:00, 59.81it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 51%|#####1    | 51/100 [00:00<00:00, 59.63it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 57%|#####6    | 57/100 [00:00<00:00, 59.48it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 63%|######3   | 63/100 [00:01<00:00, 59.31it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 70%|#######   | 70/100 [00:01<00:00, 59.82it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 76%|#######6  | 76/100 [00:01<00:00, 59.44it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 82%|########2 | 82/100 [00:01<00:00, 59.20it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 88%|########8 | 88/100 [00:01<00:00, 59.30it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 95%|#########5| 95/100 [00:01<00:00, 60.05it/s]3 128
+3 128
+3 128
+3 128
+3 128
+100%|##########| 100/100 [00:01<00:00, 59.62it/s]
+Train Epoch 4
+{
+    "Loss": 10.247727403640747,
+    "Policy_Grad_Norms": 0.999999984443564,
+    "Time_Data_Loading": 0.002947723865509033,
+    "Time_Epoch": 0.027963288625081382,
+    "Time_Log_Info": 4.4854482014973957e-05,
+    "Time_Process_Batch": 0.0003082752227783203,
+    "Time_Train_Batch": 0.0246015469233195
+}
+  0%|          | 0/5 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+100%|##########| 5/5 [00:00<00:00, 221.82it/s]
+Validation Epoch 4
+{
+    "Loss": 10.344281578063965,
+    "Time_Data_Loading": 0.00013740062713623046,
+    "Time_Epoch": 0.00039168993631998695,
+    "Time_Log_Info": 1.3589859008789063e-06,
+    "Time_Process_Batch": 1.3152758280436197e-05,
+    "Time_Train_Batch": 0.00022295316060384114
+}
+
+Epoch 4 Memory Usage: 3604 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+  7%|7         | 7/100 [00:00<00:01, 62.56it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 14%|#4        | 14/100 [00:00<00:01, 60.94it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 21%|##1       | 21/100 [00:00<00:01, 60.96it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 28%|##8       | 28/100 [00:00<00:01, 61.25it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 35%|###5      | 35/100 [00:00<00:01, 60.70it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 42%|####2     | 42/100 [00:00<00:00, 59.77it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 48%|####8     | 48/100 [00:00<00:00, 59.03it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 55%|#####5    | 55/100 [00:00<00:00, 59.47it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 61%|######1   | 61/100 [00:01<00:00, 59.22it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 68%|######8   | 68/100 [00:01<00:00, 59.51it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 75%|#######5  | 75/100 [00:01<00:00, 59.87it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 81%|########1 | 81/100 [00:01<00:00, 59.47it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 88%|########8 | 88/100 [00:01<00:00, 60.57it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 95%|#########5| 95/100 [00:01<00:00, 60.89it/s]3 128
+3 128
+3 128
+3 128
+3 128
+100%|##########| 100/100 [00:01<00:00, 60.22it/s]
+Train Epoch 5
+{
+    "Loss": 10.073128633499145,
+    "Policy_Grad_Norms": 0.9999999700329574,
+    "Time_Data_Loading": 0.0028983434041341145,
+    "Time_Epoch": 0.027688856919606528,
+    "Time_Log_Info": 3.986358642578125e-05,
+    "Time_Process_Batch": 0.00028655131657918297,
+    "Time_Train_Batch": 0.024406278133392335
+}
+  0%|          | 0/5 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+100%|##########| 5/5 [00:00<00:00, 204.44it/s]
+Validation Epoch 5
+{
+    "Loss": 10.175994873046875,
+    "Time_Data_Loading": 0.00016312599182128907,
+    "Time_Epoch": 0.00041989882787068686,
+    "Time_Log_Info": 1.422564188639323e-06,
+    "Time_Process_Batch": 2.1326541900634766e-05,
+    "Time_Train_Batch": 0.00022089878718058268
+}
+
+Epoch 5 Memory Usage: 3604 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+  7%|7         | 7/100 [00:00<00:01, 61.41it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 14%|#4        | 14/100 [00:00<00:01, 62.53it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 21%|##1       | 21/100 [00:00<00:01, 62.04it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 28%|##8       | 28/100 [00:00<00:01, 61.75it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 35%|###5      | 35/100 [00:00<00:01, 62.29it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 42%|####2     | 42/100 [00:00<00:00, 61.86it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 49%|####9     | 49/100 [00:00<00:00, 61.88it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 56%|#####6    | 56/100 [00:00<00:00, 61.15it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 63%|######3   | 63/100 [00:01<00:00, 61.65it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 70%|#######   | 70/100 [00:01<00:00, 61.25it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 77%|#######7  | 77/100 [00:01<00:00, 61.00it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 84%|########4 | 84/100 [00:01<00:00, 60.15it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 91%|#########1| 91/100 [00:01<00:00, 58.12it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 98%|#########8| 98/100 [00:01<00:00, 59.44it/s]3 128
+3 128
+100%|##########| 100/100 [00:01<00:00, 60.56it/s]
+Train Epoch 6
+{
+    "Loss": 9.885727252960205,
+    "Policy_Grad_Norms": 1.0000000015424215,
+    "Time_Data_Loading": 0.0029079278310139975,
+    "Time_Epoch": 0.02753050724665324,
+    "Time_Log_Info": 4.909038543701172e-05,
+    "Time_Process_Batch": 0.00030002593994140627,
+    "Time_Train_Batch": 0.024214764436086018
+}
+  0%|          | 0/5 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+100%|##########| 5/5 [00:00<00:00, 208.34it/s]
+Validation Epoch 6
+{
+    "Loss": 10.052485084533691,
+    "Time_Data_Loading": 0.00014101266860961915,
+    "Time_Epoch": 0.000416719913482666,
+    "Time_Log_Info": 4.712740580240885e-06,
+    "Time_Process_Batch": 1.587867736816406e-05,
+    "Time_Train_Batch": 0.00023743311564127604
+}
+
+Epoch 6 Memory Usage: 3604 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+  7%|7         | 7/100 [00:00<00:01, 61.29it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 14%|#4        | 14/100 [00:00<00:01, 61.62it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 21%|##1       | 21/100 [00:00<00:01, 59.63it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 27%|##7       | 27/100 [00:00<00:01, 57.12it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 34%|###4      | 34/100 [00:00<00:01, 58.58it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 41%|####1     | 41/100 [00:00<00:00, 59.78it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 47%|####6     | 47/100 [00:00<00:00, 59.70it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 54%|#####4    | 54/100 [00:00<00:00, 60.93it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 61%|######1   | 61/100 [00:01<00:00, 60.80it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 68%|######8   | 68/100 [00:01<00:00, 60.01it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 75%|#######5  | 75/100 [00:01<00:00, 60.10it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 82%|########2 | 82/100 [00:01<00:00, 60.20it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 89%|########9 | 89/100 [00:01<00:00, 60.77it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 96%|#########6| 96/100 [00:01<00:00, 60.41it/s]3 128
+3 128
+3 128
+3 128
+100%|##########| 100/100 [00:01<00:00, 60.07it/s]
+Train Epoch 7
+{
+    "Loss": 9.815325202941894,
+    "Policy_Grad_Norms": 0.9999999874356372,
+    "Time_Data_Loading": 0.0029806653658548993,
+    "Time_Epoch": 0.027754620711008707,
+    "Time_Log_Info": 4.633665084838867e-05,
+    "Time_Process_Batch": 0.0003152171770731608,
+    "Time_Train_Batch": 0.024353432655334472
+}
+  0%|          | 0/5 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+100%|##########| 5/5 [00:00<00:00, 216.24it/s]
+Validation Epoch 7
+{
+    "Loss": 9.694670867919921,
+    "Time_Data_Loading": 0.00013873974482218424,
+    "Time_Epoch": 0.0003976702690124512,
+    "Time_Log_Info": 1.3947486877441405e-06,
+    "Time_Process_Batch": 1.2803077697753907e-05,
+    "Time_Train_Batch": 0.00023148457209269205
+}
+
+Epoch 7 Memory Usage: 3604 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+  6%|6         | 6/100 [00:00<00:01, 57.76it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 13%|#3        | 13/100 [00:00<00:01, 59.32it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 20%|##        | 20/100 [00:00<00:01, 59.81it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 27%|##7       | 27/100 [00:00<00:01, 60.91it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 34%|###4      | 34/100 [00:00<00:01, 61.16it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 41%|####1     | 41/100 [00:00<00:00, 60.81it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 48%|####8     | 48/100 [00:00<00:00, 61.24it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 55%|#####5    | 55/100 [00:00<00:00, 61.29it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 62%|######2   | 62/100 [00:01<00:00, 61.63it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 69%|######9   | 69/100 [00:01<00:00, 61.49it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 76%|#######6  | 76/100 [00:01<00:00, 61.60it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 83%|########2 | 83/100 [00:01<00:00, 61.23it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 90%|######### | 90/100 [00:01<00:00, 61.09it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 97%|#########7| 97/100 [00:01<00:00, 61.20it/s]3 128
+3 128
+3 128
+100%|##########| 100/100 [00:01<00:00, 61.07it/s]
+Train Epoch 8
+{
+    "Loss": 9.62153154373169,
+    "Policy_Grad_Norms": 1.0000000040917838,
+    "Time_Data_Loading": 0.0029037952423095702,
+    "Time_Epoch": 0.027302285035451252,
+    "Time_Log_Info": 4.488229751586914e-05,
+    "Time_Process_Batch": 0.0002921779950459798,
+    "Time_Train_Batch": 0.024006871382395427
+}
+  0%|          | 0/5 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+100%|##########| 5/5 [00:00<00:00, 225.01it/s]
+Validation Epoch 8
+{
+    "Loss": 9.489850425720215,
+    "Time_Data_Loading": 0.0001365184783935547,
+    "Time_Epoch": 0.0003905495007832845,
+    "Time_Log_Info": 1.5377998352050782e-06,
+    "Time_Process_Batch": 1.3955434163411458e-05,
+    "Time_Train_Batch": 0.00021751721700032553
+}
+
+Epoch 8 Memory Usage: 3604 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+  7%|7         | 7/100 [00:00<00:01, 61.12it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 14%|#4        | 14/100 [00:00<00:01, 60.59it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 21%|##1       | 21/100 [00:00<00:01, 61.43it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 28%|##8       | 28/100 [00:00<00:01, 61.27it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 35%|###5      | 35/100 [00:00<00:01, 61.53it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 42%|####2     | 42/100 [00:00<00:00, 61.48it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 49%|####9     | 49/100 [00:00<00:00, 61.63it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 56%|#####6    | 56/100 [00:00<00:00, 61.35it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 63%|######3   | 63/100 [00:01<00:00, 60.75it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 70%|#######   | 70/100 [00:01<00:00, 61.22it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 77%|#######7  | 77/100 [00:01<00:00, 61.02it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 84%|########4 | 84/100 [00:01<00:00, 60.89it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 91%|#########1| 91/100 [00:01<00:00, 60.76it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 98%|#########8| 98/100 [00:01<00:00, 61.10it/s]3 128
+3 128
+100%|##########| 100/100 [00:01<00:00, 61.08it/s]
+Train Epoch 9
+{
+    "Loss": 9.639225616455079,
+    "Policy_Grad_Norms": 0.999999997334197,
+    "Time_Data_Loading": 0.0028580307960510256,
+    "Time_Epoch": 0.02729870080947876,
+    "Time_Log_Info": 4.02371088663737e-05,
+    "Time_Process_Batch": 0.00030251344045003253,
+    "Time_Train_Batch": 0.02404175599416097
+}
+  0%|          | 0/5 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+100%|##########| 5/5 [00:00<00:00, 227.16it/s]
+Validation Epoch 9
+{
+    "Loss": 9.325622177124023,
+    "Time_Data_Loading": 0.00013503630956013997,
+    "Time_Epoch": 0.00038472811381022137,
+    "Time_Log_Info": 1.4146169026692709e-06,
+    "Time_Process_Batch": 1.318057378133138e-05,
+    "Time_Train_Batch": 0.00021645625432332357
+}
+
+Epoch 9 Memory Usage: 3604 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+  7%|7         | 7/100 [00:00<00:01, 62.29it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 14%|#4        | 14/100 [00:00<00:01, 60.86it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 21%|##1       | 21/100 [00:00<00:01, 60.68it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 28%|##8       | 28/100 [00:00<00:01, 60.66it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 35%|###5      | 35/100 [00:00<00:01, 60.64it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 42%|####2     | 42/100 [00:00<00:00, 61.37it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 49%|####9     | 49/100 [00:00<00:00, 60.20it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 56%|#####6    | 56/100 [00:00<00:00, 59.37it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 62%|######2   | 62/100 [00:01<00:00, 59.03it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 69%|######9   | 69/100 [00:01<00:00, 59.56it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 76%|#######6  | 76/100 [00:01<00:00, 60.11it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 83%|########2 | 83/100 [00:01<00:00, 59.74it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 90%|######### | 90/100 [00:01<00:00, 60.26it/s]3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+3 128
+ 97%|#########7| 97/100 [00:01<00:00, 60.39it/s]3 128
+3 128
+3 128
+100%|##########| 100/100 [00:01<00:00, 60.32it/s]
+Train Epoch 10
+{
+    "Loss": 9.454293642044068,
+    "Policy_Grad_Norms": 1.000000010138326,
+    "Time_Data_Loading": 0.0028773347536722818,
+    "Time_Epoch": 0.027641610304514567,
+    "Time_Log_Info": 4.8895676930745445e-05,
+    "Time_Process_Batch": 0.0003113667170206706,
+    "Time_Train_Batch": 0.024347615242004395
+}
+  0%|          | 0/5 [00:00<?, ?it/s]3 128
+3 128
+3 128
+3 128
+3 128
+100%|##########| 5/5 [00:00<00:00, 215.97it/s]
+Validation Epoch 10
+{
+    "Loss": 9.79731330871582,
+    "Time_Data_Loading": 0.0001491864522298177,
+    "Time_Epoch": 0.0003937204678853353,
+    "Time_Log_Info": 1.5854835510253907e-06,
+    "Time_Process_Batch": 1.3816356658935548e-05,
+    "Time_Train_Batch": 0.00022043784459431967
+}
+video writes to /home/andrew/Desktop/robo_sims/robomimic/robomimic/../bet_trained_models/test/20221129130541/videos/PickPlaceCan_epoch_10.mp4
+rollout: env=PickPlaceCan, horizon=400, use_goals=False, num_episodes=10
+  0%|          | 0/10 [00:00<?, ?it/s]1 128
+2 128
+3 128
+4 128
+5 128
+6 128
+7 128
+8 128
+9 128
+10 128
+11 128
+12 128
+13 128
+14 128
+15 128
+16 128
+17 128
+18 128
+19 128
+20 128
+21 128
+22 128
+23 128
+24 128
+25 128
+26 128
+27 128
+28 128
+29 128
+30 128
+31 128
+32 128
+33 128
+34 128
+35 128
+36 128
+37 128
+38 128
+39 128
+40 128
+41 128
+42 128
+43 128
+44 128
+45 128
+46 128
+47 128
+48 128
+49 128
+50 128
+51 128
+52 128
+53 128
+54 128
+55 128
+56 128
+57 128
+58 128
+59 128
+60 128
+61 128
+62 128
+63 128
+64 128
+65 128
+66 128
+67 128
+68 128
+69 128
+70 128
+71 128
+72 128
+73 128
+74 128
+75 128
+76 128
+77 128
+78 128
+79 128
+80 128
+81 128
+82 128
+83 128
+84 128
+85 128
+86 128
+87 128
+88 128
+89 128
+90 128
+91 128
+92 128
+93 128
+94 128
+95 128
+96 128
+97 128
+98 128
+99 128
+100 128
+101 128
+102 128
+103 128
+104 128
+105 128
+106 128
+107 128
+108 128
+109 128
+110 128
+111 128
+112 128
+113 128
+114 128
+115 128
+116 128
+117 128
+118 128
+119 128
+120 128
+121 128
+122 128
+123 128
+124 128
+125 128
+126 128
+127 128
+128 128
+129 128
+  0%|          | 0/10 [00:03<?, ?it/s]
+run failed with error:
+Cannot forward, model block size is exhausted.
+
+Traceback (most recent call last):
+  File "robomimic/scripts/train.py", line 361, in main
+    train(config, device=device)
+  File "robomimic/scripts/train.py", line 246, in train
+    all_rollout_logs, video_paths = TrainUtils.rollout_with_stats(
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/utils/train_utils.py", line 346, in rollout_with_stats
+    rollout_info = run_rollout(
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/utils/train_utils.py", line 213, in run_rollout
+    ac = policy(ob=ob_dict, goal=goal_dict)
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/algo/algo.py", line 476, in __call__
+    ac = self.policy.get_action(obs_dict=ob, goal_dict=goal)
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/algo/bet.py", line 304, in get_action
+    latents, offsets = self.nets["policy"].generate_latents(enc_obs_seq, torch.ones_like(enc_obs_seq).mean(dim=-1))
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/algo/bet_models/generators.py", line 172, in generate_latents
+    output, _ = self.model(obs_rep, None)
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/algo/bet_models/libraries/mingpt/model.py", line 233, in forward
+    assert t <= self.block_size, "Cannot forward, model block size is exhausted."
+AssertionError: Cannot forward, model block size is exhausted.
+

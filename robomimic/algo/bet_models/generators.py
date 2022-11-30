@@ -55,9 +55,10 @@ class MinGPT(Module):
             attn_pdrop=attn_pdrop,
         )
         self.model = mingpt_model.GPT(config)
+        self.wd = wd
+        self.lr = lr
+        self.betas = betas
 
-        train_config = mingpt_trainer.TrainerConfig(weight_decay=wd, learning_rate=lr, betas=betas)
-        self.trainer = self.model.configure_optimizers(train_config)
         
     # In the probabilisitc sense, this model fits and samples from P(latent|observation) given some observation.
     def get_latent_and_loss(
@@ -201,4 +202,5 @@ class MinGPT(Module):
         return self.vocab_size
     
     def get_optim(self):
-        return self.trainer
+        train_config = mingpt_trainer.TrainerConfig(weight_decay=self.wd, learning_rate=self.lr, betas=self.betas)
+        return self.model.configure_optimizers(train_config)

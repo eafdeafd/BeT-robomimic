@@ -1,0 +1,18 @@
+
+============= Initialized Observation Utils with Obs Spec =============
+
+using obs modality: low_dim with keys: ['robot0_eef_quat', 'robot0_gripper_qpos', 'robot0_eef_pos', 'object']
+using obs modality: rgb with keys: []
+using obs modality: depth with keys: []
+using obs modality: scan with keys: []
+/home/andrew/Desktop/robo_sims/robomimic
+run failed with error:
+Dataset at provided path datasets/lift/ph/can.hdf5 not found!
+
+Traceback (most recent call last):
+  File "robomimic/scripts/train.py", line 361, in main
+    train(config, device=device)
+  File "robomimic/scripts/train.py", line 72, in train
+    raise Exception("Dataset at provided path {} not found!".format(dataset_path))
+Exception: Dataset at provided path datasets/lift/ph/can.hdf5 not found!
+

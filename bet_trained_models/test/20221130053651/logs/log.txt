@@ -1,0 +1,3229 @@
+
+============= Initialized Observation Utils with Obs Spec =============
+
+using obs modality: low_dim with keys: ['robot0_gripper_qpos', 'robot0_eef_pos', 'robot0_eef_quat', 'object']
+using obs modality: rgb with keys: []
+using obs modality: depth with keys: []
+using obs modality: scan with keys: []
+/home/andrew/Desktop/robo_sims/robomimic
+
+============= Loaded Environment Metadata =============
+obs key object with shape (10,)
+obs key robot0_eef_pos with shape (3,)
+obs key robot0_eef_quat with shape (4,)
+obs key robot0_gripper_qpos with shape (2,)
+Created environment with name Lift
+Action size is 7
+Lift
+{
+    "camera_depths": false,
+    "camera_heights": 84,
+    "camera_widths": 84,
+    "control_freq": 20,
+    "controller_configs": {
+        "control_delta": true,
+        "damping": 1,
+        "damping_limits": [
+            0,
+            10
+        ],
+        "impedance_mode": "fixed",
+        "input_max": 1,
+        "input_min": -1,
+        "interpolation": null,
+        "kp": 150,
+        "kp_limits": [
+            0,
+            300
+        ],
+        "orientation_limits": null,
+        "output_max": [
+            0.05,
+            0.05,
+            0.05,
+            0.5,
+            0.5,
+            0.5
+        ],
+        "output_min": [
+            -0.05,
+            -0.05,
+            -0.05,
+            -0.5,
+            -0.5,
+            -0.5
+        ],
+        "position_limits": null,
+        "ramp_ratio": 0.2,
+        "type": "OSC_POSE",
+        "uncouple_pos_ori": true
+    },
+    "has_offscreen_renderer": true,
+    "has_renderer": false,
+    "ignore_done": true,
+    "render_gpu_device_id": 0,
+    "reward_shaping": false,
+    "robots": [
+        "Panda"
+    ],
+    "use_camera_obs": false,
+    "use_object_obs": true
+}
+
+
+============= Model Summary =============
+BET (
+  ModuleDict(
+    (encoder): ObservationBETGroupEncoder(
+        group=obs
+        ObservationEncoder(
+            Key(
+                name=object
+                shape=[10]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_eef_pos
+                shape=[3]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_eef_quat
+                shape=[4]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_gripper_qpos
+                shape=[2]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            output_shape=[19]
+        )
+    )
+    (ac_encoder): ObservationGroupEncoder(
+        group=obs
+        ObservationEncoder(
+            Key(
+                name=object
+                shape=[10]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_eef_pos
+                shape=[3]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_eef_quat
+                shape=[4]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            Key(
+                name=robot0_gripper_qpos
+                shape=[2]
+                modality=low_dim
+                randomizer=None
+                net=None
+                sharing_from=None
+            )
+            output_shape=[19]
+        )
+    )
+    (mlp): MLP(
+        input_dim=7
+        output_dim=7
+        layer_dims=[1024, 1024]
+        layer_func=Linear
+        dropout=None
+        act=Mish
+        output_act=Tanh
+    )
+    (policy): MinGPT(
+      (model): GPT(
+        (tok_emb): Linear(in_features=19, out_features=120, bias=True)
+        (drop): Dropout(p=0.1, inplace=False)
+        (blocks): Sequential(
+          (0): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (1): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (2): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (3): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (4): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (5): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+        )
+        (ln_f): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+        (head): Linear(in_features=120, out_features=256, bias=False)
+      )
+    )
+  )
+)
+
+SequenceDataset: loading dataset into memory...
+  0%|          | 0/180 [00:00<?, ?it/s] 49%|####8     | 88/180 [00:00<00:00, 877.38it/s] 98%|#########7| 176/180 [00:00<00:00, 867.46it/s]100%|##########| 180/180 [00:00<00:00, 867.52it/s]
+SequenceDataset: caching get_item calls...
+  0%|          | 0/8640 [00:00<?, ?it/s] 15%|#5        | 1329/8640 [00:00<00:00, 13281.53it/s] 31%|###       | 2665/8640 [00:00<00:00, 13322.43it/s] 46%|####6     | 3998/8640 [00:00<00:00, 13239.99it/s] 62%|######1   | 5341/8640 [00:00<00:00, 13312.80it/s] 77%|#######7  | 6693/8640 [00:00<00:00, 13385.79it/s] 93%|#########2| 8032/8640 [00:00<00:00, 13382.30it/s]100%|##########| 8640/8640 [00:00<00:00, 13346.20it/s]
+SequenceDataset: loading dataset into memory...
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 863.99it/s]
+SequenceDataset: caching get_item calls...
+  0%|          | 0/1026 [00:00<?, ?it/s]100%|##########| 1026/1026 [00:00<00:00, 13297.15it/s]
+
+============= Training Dataset =============
+SequenceDataset (
+	path=datasets/lift/ph/low_dim.hdf5
+	obs_keys=('object', 'robot0_eef_pos', 'robot0_eef_quat', 'robot0_gripper_qpos')
+	seq_length=5
+	filter_key=train
+	frame_stack=1
+	pad_seq_length=True
+	pad_frame_stack=True
+	goal_mode=none
+	cache_mode=all
+	num_demos=180
+	num_sequences=8640
+)
+
+  0%|          | 0/50 [00:00<?, ?it/s]K-means clustering:   0%|          | 0/50 [00:00<?, ?it/s]K-means clustering:  12%|#2        | 6/50 [00:00<00:00, 58.44it/s]K-means clustering:  24%|##4       | 12/50 [00:00<00:00, 58.73it/s]K-means clustering:  36%|###6      | 18/50 [00:00<00:00, 58.84it/s]K-means clustering:  48%|####8     | 24/50 [00:00<00:00, 58.62it/s]K-means clustering:  60%|######    | 30/50 [00:00<00:00, 58.76it/s]K-means clustering:  72%|#######2  | 36/50 [00:00<00:00, 58.89it/s]K-means clustering:  84%|########4 | 42/50 [00:00<00:00, 58.97it/s]K-means clustering:  96%|#########6| 48/50 [00:00<00:00, 58.83it/s]K-means clustering: 100%|##########| 50/50 [00:00<00:00, 58.77it/s]
+  0%|          | 0/100 [00:00<?, ?it/s]  1%|1         | 1/100 [00:00<00:18,  5.27it/s]  7%|7         | 7/100 [00:00<00:03, 28.02it/s] 13%|#3        | 13/100 [00:00<00:02, 39.53it/s] 19%|#9        | 19/100 [00:00<00:01, 46.16it/s] 25%|##5       | 25/100 [00:00<00:01, 50.47it/s] 31%|###1      | 31/100 [00:00<00:01, 53.35it/s] 37%|###7      | 37/100 [00:00<00:01, 55.25it/s] 43%|####3     | 43/100 [00:00<00:01, 56.71it/s] 49%|####9     | 49/100 [00:01<00:00, 57.14it/s] 55%|#####5    | 55/100 [00:01<00:00, 57.86it/s] 61%|######1   | 61/100 [00:01<00:00, 58.48it/s] 68%|######8   | 68/100 [00:01<00:00, 59.05it/s] 74%|#######4  | 74/100 [00:01<00:00, 59.33it/s] 80%|########  | 80/100 [00:01<00:00, 59.47it/s] 86%|########6 | 86/100 [00:01<00:00, 59.41it/s] 92%|#########2| 92/100 [00:01<00:00, 59.28it/s] 98%|#########8| 98/100 [00:01<00:00, 59.34it/s]100%|##########| 100/100 [00:01<00:00, 53.67it/s]
+Train Epoch 1
+{
+    "Cosine_Loss": 1.1389395105838775,
+    "L1_Loss": 0.10406836286187172,
+    "L2_Loss": 0.2081533481180668,
+    "Loss": 72.67312114715577,
+    "Policy_Grad_Norms": 1.000000024025793,
+    "Time_Data_Loading": 0.0027476827303568522,
+    "Time_Epoch": 0.031066211064656575,
+    "Time_Log_Info": 6.814797719319661e-05,
+    "Time_Process_Batch": 0.00025479396184285483,
+    "Time_Train_Batch": 0.027933120727539062
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 201.71it/s]
+Validation Epoch 1
+{
+    "Cosine_Loss": 1.133376282453537,
+    "L1_Loss": 0.10090085677802563,
+    "L2_Loss": 0.2018146902322769,
+    "Loss": 44.50929126739502,
+    "Time_Data_Loading": 0.0005267818768819173,
+    "Time_Epoch": 0.0016623616218566894,
+    "Time_Log_Info": 1.377264658610026e-05,
+    "Time_Process_Batch": 5.025466283162435e-05,
+    "Time_Train_Batch": 0.0010593533515930176
+}
+
+Epoch 1 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 58.46it/s] 12%|#2        | 12/100 [00:00<00:01, 59.26it/s] 18%|#8        | 18/100 [00:00<00:01, 59.36it/s] 24%|##4       | 24/100 [00:00<00:01, 59.38it/s] 30%|###       | 30/100 [00:00<00:01, 59.46it/s] 36%|###6      | 36/100 [00:00<00:01, 58.71it/s] 42%|####2     | 42/100 [00:00<00:00, 58.56it/s] 48%|####8     | 48/100 [00:00<00:00, 58.89it/s] 54%|#####4    | 54/100 [00:00<00:00, 59.10it/s] 61%|######1   | 61/100 [00:01<00:00, 59.44it/s] 67%|######7   | 67/100 [00:01<00:00, 59.53it/s] 73%|#######3  | 73/100 [00:01<00:00, 59.53it/s] 79%|#######9  | 79/100 [00:01<00:00, 59.47it/s] 85%|########5 | 85/100 [00:01<00:00, 59.18it/s] 91%|#########1| 91/100 [00:01<00:00, 59.26it/s] 97%|#########7| 97/100 [00:01<00:00, 59.11it/s]100%|##########| 100/100 [00:01<00:00, 59.19it/s]
+Train Epoch 2
+{
+    "Cosine_Loss": 1.1307737946510314,
+    "L1_Loss": 0.10393575817346573,
+    "L2_Loss": 0.20788518473505974,
+    "Loss": 44.56580528259278,
+    "Policy_Grad_Norms": 0.9999999980960181,
+    "Time_Data_Loading": 0.002773133913675944,
+    "Time_Epoch": 0.02816884915033976,
+    "Time_Log_Info": 6.78102175394694e-05,
+    "Time_Process_Batch": 0.0002575516700744629,
+    "Time_Train_Batch": 0.025009552637736004
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 208.46it/s]
+Validation Epoch 2
+{
+    "Cosine_Loss": 1.123123049736023,
+    "L1_Loss": 0.10077432543039322,
+    "L2_Loss": 0.20156102105975152,
+    "Loss": 43.208204650878905,
+    "Time_Data_Loading": 0.0005234122276306152,
+    "Time_Epoch": 0.0016213297843933106,
+    "Time_Log_Info": 2.9007593790690105e-05,
+    "Time_Process_Batch": 5.059242248535156e-05,
+    "Time_Train_Batch": 0.0009936769803365073
+}
+
+Epoch 2 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 58.53it/s] 12%|#2        | 12/100 [00:00<00:01, 59.03it/s] 18%|#8        | 18/100 [00:00<00:01, 59.07it/s] 25%|##5       | 25/100 [00:00<00:01, 59.50it/s] 31%|###1      | 31/100 [00:00<00:01, 59.66it/s] 37%|###7      | 37/100 [00:00<00:01, 59.59it/s] 43%|####3     | 43/100 [00:00<00:00, 59.69it/s] 49%|####9     | 49/100 [00:00<00:00, 59.66it/s] 55%|#####5    | 55/100 [00:00<00:00, 59.60it/s] 61%|######1   | 61/100 [00:01<00:00, 59.66it/s] 67%|######7   | 67/100 [00:01<00:00, 59.67it/s] 73%|#######3  | 73/100 [00:01<00:00, 59.63it/s] 79%|#######9  | 79/100 [00:01<00:00, 59.41it/s] 85%|########5 | 85/100 [00:01<00:00, 58.82it/s] 91%|#########1| 91/100 [00:01<00:00, 58.75it/s] 97%|#########7| 97/100 [00:01<00:00, 58.74it/s]100%|##########| 100/100 [00:01<00:00, 59.20it/s]
+Train Epoch 3
+{
+    "Cosine_Loss": 1.1305333471298218,
+    "L1_Loss": 0.10378078348934651,
+    "L2_Loss": 0.20757487386465073,
+    "Loss": 43.50827850341797,
+    "Policy_Grad_Norms": 0.9999999975720105,
+    "Time_Data_Loading": 0.002757620811462402,
+    "Time_Epoch": 0.028164935111999512,
+    "Time_Log_Info": 6.774663925170898e-05,
+    "Time_Process_Batch": 0.0002603014310201009,
+    "Time_Train_Batch": 0.025018020470937093
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 197.79it/s]100%|##########| 20/20 [00:00<00:00, 197.54it/s]
+Validation Epoch 3
+{
+    "Cosine_Loss": 1.1348532795906068,
+    "L1_Loss": 0.10063081569969654,
+    "L2_Loss": 0.20127396881580353,
+    "Loss": 41.68952350616455,
+    "Time_Data_Loading": 0.0005683342615763347,
+    "Time_Epoch": 0.0016994595527648926,
+    "Time_Log_Info": 1.2866655985514323e-05,
+    "Time_Process_Batch": 5.2082538604736325e-05,
+    "Time_Train_Batch": 0.0010499954223632812
+}
+
+Epoch 3 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 57.60it/s] 12%|#2        | 12/100 [00:00<00:01, 58.55it/s] 18%|#8        | 18/100 [00:00<00:01, 58.70it/s] 24%|##4       | 24/100 [00:00<00:01, 58.98it/s] 30%|###       | 30/100 [00:00<00:01, 58.99it/s] 36%|###6      | 36/100 [00:00<00:01, 59.05it/s] 42%|####2     | 42/100 [00:00<00:00, 58.96it/s] 48%|####8     | 48/100 [00:00<00:00, 58.90it/s] 54%|#####4    | 54/100 [00:00<00:00, 57.91it/s] 60%|######    | 60/100 [00:01<00:00, 58.02it/s] 66%|######6   | 66/100 [00:01<00:00, 58.29it/s] 72%|#######2  | 72/100 [00:01<00:00, 58.66it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.91it/s] 84%|########4 | 84/100 [00:01<00:00, 59.01it/s] 90%|######### | 90/100 [00:01<00:00, 58.94it/s] 96%|#########6| 96/100 [00:01<00:00, 58.82it/s]100%|##########| 100/100 [00:01<00:00, 58.70it/s]
+Train Epoch 4
+{
+    "Cosine_Loss": 1.127939488887787,
+    "L1_Loss": 0.10381853498518467,
+    "L2_Loss": 0.20765010848641396,
+    "Loss": 42.858088989257816,
+    "Policy_Grad_Norms": 0.9999999786377982,
+    "Time_Data_Loading": 0.0027585903803507487,
+    "Time_Epoch": 0.02840596834818522,
+    "Time_Log_Info": 6.7138671875e-05,
+    "Time_Process_Batch": 0.0002561171849568685,
+    "Time_Train_Batch": 0.025261016686757405
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 200.85it/s]
+Validation Epoch 4
+{
+    "Cosine_Loss": 1.137702465057373,
+    "L1_Loss": 0.10087206177413463,
+    "L2_Loss": 0.20175597444176674,
+    "Loss": 42.81837196350098,
+    "Time_Data_Loading": 0.0005539258321126302,
+    "Time_Epoch": 0.0016768534978230795,
+    "Time_Log_Info": 1.3319651285807292e-05,
+    "Time_Process_Batch": 5.278189977010091e-05,
+    "Time_Train_Batch": 0.0010370890299479167
+}
+
+Epoch 4 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 58.56it/s] 12%|#2        | 12/100 [00:00<00:01, 58.44it/s] 18%|#8        | 18/100 [00:00<00:01, 58.75it/s] 24%|##4       | 24/100 [00:00<00:01, 58.60it/s] 30%|###       | 30/100 [00:00<00:01, 58.89it/s] 36%|###6      | 36/100 [00:00<00:01, 59.10it/s] 42%|####2     | 42/100 [00:00<00:00, 58.27it/s] 48%|####8     | 48/100 [00:00<00:00, 58.52it/s] 54%|#####4    | 54/100 [00:00<00:00, 58.92it/s] 60%|######    | 60/100 [00:01<00:00, 58.95it/s] 66%|######6   | 66/100 [00:01<00:00, 59.14it/s] 72%|#######2  | 72/100 [00:01<00:00, 59.13it/s] 78%|#######8  | 78/100 [00:01<00:00, 59.09it/s] 84%|########4 | 84/100 [00:01<00:00, 59.02it/s] 90%|######### | 90/100 [00:01<00:00, 58.99it/s] 96%|#########6| 96/100 [00:01<00:00, 58.90it/s]100%|##########| 100/100 [00:01<00:00, 58.83it/s]
+Train Epoch 5
+{
+    "Cosine_Loss": 1.1337794244289399,
+    "L1_Loss": 0.10364004328846932,
+    "L2_Loss": 0.20729323387145995,
+    "Loss": 42.53395469665527,
+    "Policy_Grad_Norms": 1.0000000031950567,
+    "Time_Data_Loading": 0.0027702967325846355,
+    "Time_Epoch": 0.02834018071492513,
+    "Time_Log_Info": 6.845394770304362e-05,
+    "Time_Process_Batch": 0.00025881131490071614,
+    "Time_Train_Batch": 0.025180121262868244
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 208.84it/s]
+Validation Epoch 5
+{
+    "Cosine_Loss": 1.1298584043979645,
+    "L1_Loss": 0.10076555795967579,
+    "L2_Loss": 0.20154353827238083,
+    "Loss": 41.595920372009275,
+    "Time_Data_Loading": 0.0005272150039672852,
+    "Time_Epoch": 0.0016150474548339844,
+    "Time_Log_Info": 1.281897226969401e-05,
+    "Time_Process_Batch": 4.820028940836588e-05,
+    "Time_Train_Batch": 0.0010056455930074057
+}
+
+Epoch 5 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 57.77it/s] 12%|#2        | 12/100 [00:00<00:01, 58.25it/s] 18%|#8        | 18/100 [00:00<00:01, 58.54it/s] 24%|##4       | 24/100 [00:00<00:01, 58.61it/s] 30%|###       | 30/100 [00:00<00:01, 58.73it/s] 36%|###6      | 36/100 [00:00<00:01, 58.60it/s] 42%|####2     | 42/100 [00:00<00:00, 58.75it/s] 48%|####8     | 48/100 [00:00<00:00, 58.85it/s] 54%|#####4    | 54/100 [00:00<00:00, 58.79it/s] 60%|######    | 60/100 [00:01<00:00, 58.80it/s] 66%|######6   | 66/100 [00:01<00:00, 58.75it/s] 72%|#######2  | 72/100 [00:01<00:00, 58.70it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.60it/s] 84%|########4 | 84/100 [00:01<00:00, 58.78it/s] 90%|######### | 90/100 [00:01<00:00, 58.96it/s] 96%|#########6| 96/100 [00:01<00:00, 59.25it/s]100%|##########| 100/100 [00:01<00:00, 58.81it/s]
+Train Epoch 6
+{
+    "Cosine_Loss": 1.1277452158927916,
+    "L1_Loss": 0.10387928627431392,
+    "L2_Loss": 0.20777183428406715,
+    "Loss": 41.95108520507812,
+    "Policy_Grad_Norms": 1.000000006233273,
+    "Time_Data_Loading": 0.0027936259905497235,
+    "Time_Epoch": 0.028348004817962645,
+    "Time_Log_Info": 6.708701451619466e-05,
+    "Time_Process_Batch": 0.0002559105555216471,
+    "Time_Train_Batch": 0.025171049435933433
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 210.69it/s]
+Validation Epoch 6
+{
+    "Cosine_Loss": 1.1308013558387757,
+    "L1_Loss": 0.1008145309984684,
+    "L2_Loss": 0.20164108499884606,
+    "Loss": 41.206436729431154,
+    "Time_Data_Loading": 0.0005239685376485189,
+    "Time_Epoch": 0.0015997608502705892,
+    "Time_Log_Info": 1.3907750447591146e-05,
+    "Time_Process_Batch": 5.1017602284749346e-05,
+    "Time_Train_Batch": 0.000990895430246989
+}
+
+Epoch 6 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 58.76it/s] 12%|#2        | 12/100 [00:00<00:01, 59.20it/s] 18%|#8        | 18/100 [00:00<00:01, 58.85it/s] 24%|##4       | 24/100 [00:00<00:01, 58.44it/s] 30%|###       | 30/100 [00:00<00:01, 58.69it/s] 36%|###6      | 36/100 [00:00<00:01, 58.75it/s] 42%|####2     | 42/100 [00:00<00:00, 58.32it/s] 48%|####8     | 48/100 [00:00<00:00, 58.13it/s] 54%|#####4    | 54/100 [00:00<00:00, 57.94it/s] 60%|######    | 60/100 [00:01<00:00, 57.72it/s] 66%|######6   | 66/100 [00:01<00:00, 57.67it/s] 72%|#######2  | 72/100 [00:01<00:00, 57.02it/s] 78%|#######8  | 78/100 [00:01<00:00, 57.23it/s] 84%|########4 | 84/100 [00:01<00:00, 57.42it/s] 90%|######### | 90/100 [00:01<00:00, 57.62it/s] 96%|#########6| 96/100 [00:01<00:00, 57.63it/s]100%|##########| 100/100 [00:01<00:00, 57.91it/s]
+Train Epoch 7
+{
+    "Cosine_Loss": 1.1319744753837586,
+    "L1_Loss": 0.10392231456935405,
+    "L2_Loss": 0.20785814687609672,
+    "Loss": 41.085883140563965,
+    "Policy_Grad_Norms": 1.0000000125098314,
+    "Time_Data_Loading": 0.002816645304361979,
+    "Time_Epoch": 0.028788161277770997,
+    "Time_Log_Info": 6.9884459177653e-05,
+    "Time_Process_Batch": 0.0002622882525126139,
+    "Time_Train_Batch": 0.02557826042175293
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 204.26it/s]
+Validation Epoch 7
+{
+    "Cosine_Loss": 1.126919424533844,
+    "L1_Loss": 0.10075577199459076,
+    "L2_Loss": 0.20152446776628494,
+    "Loss": 40.39960651397705,
+    "Time_Data_Loading": 0.0005437811215718587,
+    "Time_Epoch": 0.0016405423482259115,
+    "Time_Log_Info": 1.4730294545491536e-05,
+    "Time_Process_Batch": 5.184014638264974e-05,
+    "Time_Train_Batch": 0.001019152005513509
+}
+
+Epoch 7 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 58.14it/s] 12%|#2        | 12/100 [00:00<00:01, 58.47it/s] 18%|#8        | 18/100 [00:00<00:01, 58.50it/s] 24%|##4       | 24/100 [00:00<00:01, 58.53it/s] 30%|###       | 30/100 [00:00<00:01, 58.20it/s] 36%|###6      | 36/100 [00:00<00:01, 58.06it/s] 42%|####2     | 42/100 [00:00<00:00, 58.06it/s] 48%|####8     | 48/100 [00:00<00:00, 58.18it/s] 54%|#####4    | 54/100 [00:00<00:00, 58.33it/s] 60%|######    | 60/100 [00:01<00:00, 58.51it/s] 66%|######6   | 66/100 [00:01<00:00, 58.48it/s] 72%|#######2  | 72/100 [00:01<00:00, 58.50it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.59it/s] 84%|########4 | 84/100 [00:01<00:00, 58.73it/s] 90%|######### | 90/100 [00:01<00:00, 58.77it/s] 96%|#########6| 96/100 [00:01<00:00, 58.80it/s]100%|##########| 100/100 [00:01<00:00, 58.48it/s]
+Train Epoch 8
+{
+    "Cosine_Loss": 1.1323244392871856,
+    "L1_Loss": 0.10387171074748039,
+    "L2_Loss": 0.20775691002607347,
+    "Loss": 40.37993015289307,
+    "Policy_Grad_Norms": 1.0000000048889781,
+    "Time_Data_Loading": 0.002781367301940918,
+    "Time_Epoch": 0.028509291013081868,
+    "Time_Log_Info": 6.836255391438802e-05,
+    "Time_Process_Batch": 0.0002589106559753418,
+    "Time_Train_Batch": 0.025339245796203613
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 203.84it/s]
+Validation Epoch 8
+{
+    "Cosine_Loss": 1.1357965111732482,
+    "L1_Loss": 0.10094825178384781,
+    "L2_Loss": 0.201908989995718,
+    "Loss": 39.58238906860352,
+    "Time_Data_Loading": 0.0005350232124328614,
+    "Time_Epoch": 0.0016525348027547201,
+    "Time_Log_Info": 1.2616316477457682e-05,
+    "Time_Process_Batch": 4.93009885152181e-05,
+    "Time_Train_Batch": 0.0010358850161234538
+}
+
+Epoch 8 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 58.30it/s] 12%|#2        | 12/100 [00:00<00:01, 58.27it/s] 18%|#8        | 18/100 [00:00<00:01, 58.56it/s] 24%|##4       | 24/100 [00:00<00:01, 57.97it/s] 30%|###       | 30/100 [00:00<00:01, 58.11it/s] 36%|###6      | 36/100 [00:00<00:01, 58.56it/s] 42%|####2     | 42/100 [00:00<00:00, 58.74it/s] 48%|####8     | 48/100 [00:00<00:00, 58.61it/s] 54%|#####4    | 54/100 [00:00<00:00, 57.58it/s] 60%|######    | 60/100 [00:01<00:00, 57.74it/s] 66%|######6   | 66/100 [00:01<00:00, 58.01it/s] 72%|#######2  | 72/100 [00:01<00:00, 58.05it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.42it/s] 84%|########4 | 84/100 [00:01<00:00, 58.29it/s] 90%|######### | 90/100 [00:01<00:00, 58.24it/s] 96%|#########6| 96/100 [00:01<00:00, 58.29it/s]100%|##########| 100/100 [00:01<00:00, 58.21it/s]
+Train Epoch 9
+{
+    "Cosine_Loss": 1.1301637196540832,
+    "L1_Loss": 0.10393360607326031,
+    "L2_Loss": 0.20788105979561805,
+    "Loss": 39.7515251159668,
+    "Policy_Grad_Norms": 1.000000011174213,
+    "Time_Data_Loading": 0.0028237422307332356,
+    "Time_Epoch": 0.02864365577697754,
+    "Time_Log_Info": 6.928841272989909e-05,
+    "Time_Process_Batch": 0.0002612034479777018,
+    "Time_Train_Batch": 0.02542825142542521
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 202.24it/s]
+Validation Epoch 9
+{
+    "Cosine_Loss": 1.1407892763614655,
+    "L1_Loss": 0.1008120559155941,
+    "L2_Loss": 0.20163710415363312,
+    "Loss": 39.44582061767578,
+    "Time_Data_Loading": 0.0005398909250895182,
+    "Time_Epoch": 0.0016672293345133464,
+    "Time_Log_Info": 1.275936762491862e-05,
+    "Time_Process_Batch": 4.99725341796875e-05,
+    "Time_Train_Batch": 0.0010430614153544109
+}
+
+Epoch 9 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 57.08it/s] 12%|#2        | 12/100 [00:00<00:01, 57.77it/s] 18%|#8        | 18/100 [00:00<00:01, 58.18it/s] 24%|##4       | 24/100 [00:00<00:01, 58.00it/s] 30%|###       | 30/100 [00:00<00:01, 57.88it/s] 36%|###6      | 36/100 [00:00<00:01, 57.96it/s] 42%|####2     | 42/100 [00:00<00:00, 58.13it/s] 48%|####8     | 48/100 [00:00<00:00, 58.32it/s] 54%|#####4    | 54/100 [00:00<00:00, 58.47it/s] 60%|######    | 60/100 [00:01<00:00, 58.54it/s] 66%|######6   | 66/100 [00:01<00:00, 58.30it/s] 72%|#######2  | 72/100 [00:01<00:00, 58.12it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.14it/s] 84%|########4 | 84/100 [00:01<00:00, 58.31it/s] 90%|######### | 90/100 [00:01<00:00, 58.34it/s] 96%|#########6| 96/100 [00:01<00:00, 58.21it/s]100%|##########| 100/100 [00:01<00:00, 58.19it/s]
+Train Epoch 10
+{
+    "Cosine_Loss": 1.1321052598953247,
+    "L1_Loss": 0.10384573854506016,
+    "L2_Loss": 0.20770536452531815,
+    "Loss": 39.33968822479248,
+    "Policy_Grad_Norms": 0.9999999960089373,
+    "Time_Data_Loading": 0.0028225978215535483,
+    "Time_Epoch": 0.028651241461435953,
+    "Time_Log_Info": 6.90301259358724e-05,
+    "Time_Process_Batch": 0.0002573291460673014,
+    "Time_Train_Batch": 0.025439321994781494
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 207.80it/s]
+Validation Epoch 10
+{
+    "Cosine_Loss": 1.1265621483325958,
+    "L1_Loss": 0.10081761442124844,
+    "L2_Loss": 0.20164890810847283,
+    "Loss": 39.73315773010254,
+    "Time_Data_Loading": 0.0005267500877380371,
+    "Time_Epoch": 0.0016204555829366048,
+    "Time_Log_Info": 1.6089280446370443e-05,
+    "Time_Process_Batch": 5.015134811401367e-05,
+    "Time_Train_Batch": 0.0010086576143900554
+}
+
+Epoch 10 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 57.76it/s] 12%|#2        | 12/100 [00:00<00:01, 58.39it/s] 18%|#8        | 18/100 [00:00<00:01, 58.30it/s] 24%|##4       | 24/100 [00:00<00:01, 58.12it/s] 30%|###       | 30/100 [00:00<00:01, 58.26it/s] 36%|###6      | 36/100 [00:00<00:01, 58.35it/s] 42%|####2     | 42/100 [00:00<00:00, 58.44it/s] 48%|####8     | 48/100 [00:00<00:00, 58.41it/s] 54%|#####4    | 54/100 [00:00<00:00, 58.43it/s] 60%|######    | 60/100 [00:01<00:00, 58.50it/s] 66%|######6   | 66/100 [00:01<00:00, 58.20it/s] 72%|#######2  | 72/100 [00:01<00:00, 58.26it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.15it/s] 84%|########4 | 84/100 [00:01<00:00, 58.15it/s] 90%|######### | 90/100 [00:01<00:00, 58.11it/s] 96%|#########6| 96/100 [00:01<00:00, 57.86it/s]100%|##########| 100/100 [00:01<00:00, 58.16it/s]
+Train Epoch 11
+{
+    "Cosine_Loss": 1.1311723744869233,
+    "L1_Loss": 0.10383151300251484,
+    "L2_Loss": 0.20767684102058412,
+    "Loss": 38.56220287322998,
+    "Policy_Grad_Norms": 0.9999999951660052,
+    "Time_Data_Loading": 0.0027999639511108398,
+    "Time_Epoch": 0.028668495019276936,
+    "Time_Log_Info": 6.880760192871094e-05,
+    "Time_Process_Batch": 0.0002606352170308431,
+    "Time_Train_Batch": 0.025477397441864013
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 201.35it/s]
+Validation Epoch 11
+{
+    "Cosine_Loss": 1.127962464094162,
+    "L1_Loss": 0.10070937350392342,
+    "L2_Loss": 0.20143166929483414,
+    "Loss": 38.48361663818359,
+    "Time_Data_Loading": 0.000560752550760905,
+    "Time_Epoch": 0.0016639590263366698,
+    "Time_Log_Info": 1.2703736623128255e-05,
+    "Time_Process_Batch": 5.278587341308594e-05,
+    "Time_Train_Batch": 0.001026757558186849
+}
+
+Epoch 11 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 57.54it/s] 12%|#2        | 12/100 [00:00<00:01, 58.73it/s] 18%|#8        | 18/100 [00:00<00:01, 59.13it/s] 24%|##4       | 24/100 [00:00<00:01, 59.22it/s] 30%|###       | 30/100 [00:00<00:01, 59.21it/s] 36%|###6      | 36/100 [00:00<00:01, 59.16it/s] 42%|####2     | 42/100 [00:00<00:00, 59.31it/s] 48%|####8     | 48/100 [00:00<00:00, 59.41it/s] 54%|#####4    | 54/100 [00:00<00:00, 59.57it/s] 60%|######    | 60/100 [00:01<00:00, 59.63it/s] 66%|######6   | 66/100 [00:01<00:00, 59.61it/s] 72%|#######2  | 72/100 [00:01<00:00, 59.63it/s] 78%|#######8  | 78/100 [00:01<00:00, 59.53it/s] 84%|########4 | 84/100 [00:01<00:00, 59.55it/s] 90%|######### | 90/100 [00:01<00:00, 59.49it/s] 96%|#########6| 96/100 [00:01<00:00, 59.45it/s]100%|##########| 100/100 [00:01<00:00, 59.37it/s]
+Train Epoch 12
+{
+    "Cosine_Loss": 1.1278745448589325,
+    "L1_Loss": 0.1038095386326313,
+    "L2_Loss": 0.20763280898332595,
+    "Loss": 38.24351932525635,
+    "Policy_Grad_Norms": 0.9999999810209985,
+    "Time_Data_Loading": 0.002788829803466797,
+    "Time_Epoch": 0.028081182638804117,
+    "Time_Log_Info": 6.6987673441569e-05,
+    "Time_Process_Batch": 0.00025838613510131836,
+    "Time_Train_Batch": 0.024904843171437582
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 207.32it/s]
+Validation Epoch 12
+{
+    "Cosine_Loss": 1.130727654695511,
+    "L1_Loss": 0.1008398573845625,
+    "L2_Loss": 0.20169281587004662,
+    "Loss": 39.424220657348634,
+    "Time_Data_Loading": 0.0005213101704915365,
+    "Time_Epoch": 0.0016237338383992513,
+    "Time_Log_Info": 1.3442834218343099e-05,
+    "Time_Process_Batch": 4.845460255940755e-05,
+    "Time_Train_Batch": 0.0010222911834716797
+}
+
+Epoch 12 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 59.14it/s] 12%|#2        | 12/100 [00:00<00:01, 59.37it/s] 18%|#8        | 18/100 [00:00<00:01, 59.64it/s] 25%|##5       | 25/100 [00:00<00:01, 59.99it/s] 31%|###1      | 31/100 [00:00<00:01, 59.98it/s] 37%|###7      | 37/100 [00:00<00:01, 59.56it/s] 43%|####3     | 43/100 [00:00<00:00, 59.45it/s] 49%|####9     | 49/100 [00:00<00:00, 59.30it/s] 55%|#####5    | 55/100 [00:00<00:00, 58.91it/s] 61%|######1   | 61/100 [00:01<00:00, 58.88it/s] 67%|######7   | 67/100 [00:01<00:00, 58.54it/s] 73%|#######3  | 73/100 [00:01<00:00, 58.26it/s] 79%|#######9  | 79/100 [00:01<00:00, 58.41it/s] 85%|########5 | 85/100 [00:01<00:00, 58.63it/s] 91%|#########1| 91/100 [00:01<00:00, 58.74it/s] 97%|#########7| 97/100 [00:01<00:00, 58.94it/s]100%|##########| 100/100 [00:01<00:00, 59.03it/s]
+Train Epoch 13
+{
+    "Cosine_Loss": 1.125647783279419,
+    "L1_Loss": 0.10372779175639152,
+    "L2_Loss": 0.20746957540512084,
+    "Loss": 37.76040054321289,
+    "Policy_Grad_Norms": 0.9999999938525442,
+    "Time_Data_Loading": 0.0027715603510538736,
+    "Time_Epoch": 0.028242293993631998,
+    "Time_Log_Info": 6.771485010782877e-05,
+    "Time_Process_Batch": 0.0002582708994547526,
+    "Time_Train_Batch": 0.025083522001902264
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 202.65it/s]
+Validation Epoch 13
+{
+    "Cosine_Loss": 1.123682451248169,
+    "L1_Loss": 0.10090028867125511,
+    "L2_Loss": 0.2018136866390705,
+    "Loss": 37.86013469696045,
+    "Time_Data_Loading": 0.0005408843358357747,
+    "Time_Epoch": 0.0016563495000203451,
+    "Time_Log_Info": 1.352230707804362e-05,
+    "Time_Process_Batch": 5.620718002319336e-05,
+    "Time_Train_Batch": 0.0010316967964172363
+}
+
+Epoch 13 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 58.11it/s] 12%|#2        | 12/100 [00:00<00:01, 58.59it/s] 18%|#8        | 18/100 [00:00<00:01, 58.91it/s] 24%|##4       | 24/100 [00:00<00:01, 58.85it/s] 30%|###       | 30/100 [00:00<00:01, 58.69it/s] 36%|###6      | 36/100 [00:00<00:01, 58.80it/s] 42%|####2     | 42/100 [00:00<00:00, 58.88it/s] 48%|####8     | 48/100 [00:00<00:00, 58.97it/s] 54%|#####4    | 54/100 [00:00<00:00, 58.77it/s] 60%|######    | 60/100 [00:01<00:00, 58.53it/s] 66%|######6   | 66/100 [00:01<00:00, 58.67it/s] 72%|#######2  | 72/100 [00:01<00:00, 58.41it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.38it/s] 84%|########4 | 84/100 [00:01<00:00, 58.54it/s] 90%|######### | 90/100 [00:01<00:00, 58.61it/s] 96%|#########6| 96/100 [00:01<00:00, 58.79it/s]100%|##########| 100/100 [00:01<00:00, 58.68it/s]
+Train Epoch 14
+{
+    "Cosine_Loss": 1.123738408088684,
+    "L1_Loss": 0.10377879835665225,
+    "L2_Loss": 0.20757165551185608,
+    "Loss": 37.23887069702148,
+    "Policy_Grad_Norms": 1.0000000133027285,
+    "Time_Data_Loading": 0.002774035930633545,
+    "Time_Epoch": 0.02841152747472127,
+    "Time_Log_Info": 6.775458653767904e-05,
+    "Time_Process_Batch": 0.0002578457196553548,
+    "Time_Train_Batch": 0.02525034745534261
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 200.49it/s]
+Validation Epoch 14
+{
+    "Cosine_Loss": 1.138858675956726,
+    "L1_Loss": 0.10072243884205818,
+    "L2_Loss": 0.20145788863301278,
+    "Loss": 38.39080696105957,
+    "Time_Data_Loading": 0.0005412658055623372,
+    "Time_Epoch": 0.0016793171564737956,
+    "Time_Log_Info": 1.4905134836832682e-05,
+    "Time_Process_Batch": 5.014340082804362e-05,
+    "Time_Train_Batch": 0.001053778330485026
+}
+
+Epoch 14 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 58.31it/s] 12%|#2        | 12/100 [00:00<00:01, 58.60it/s] 18%|#8        | 18/100 [00:00<00:01, 58.75it/s] 24%|##4       | 24/100 [00:00<00:01, 59.03it/s] 30%|###       | 30/100 [00:00<00:01, 59.29it/s] 36%|###6      | 36/100 [00:00<00:01, 59.06it/s] 42%|####2     | 42/100 [00:00<00:00, 59.19it/s] 49%|####9     | 49/100 [00:00<00:00, 59.20it/s] 55%|#####5    | 55/100 [00:00<00:00, 59.20it/s] 61%|######1   | 61/100 [00:01<00:00, 59.39it/s] 67%|######7   | 67/100 [00:01<00:00, 59.41it/s] 73%|#######3  | 73/100 [00:01<00:00, 59.53it/s] 79%|#######9  | 79/100 [00:01<00:00, 59.35it/s] 85%|########5 | 85/100 [00:01<00:00, 59.40it/s] 91%|#########1| 91/100 [00:01<00:00, 59.51it/s] 97%|#########7| 97/100 [00:01<00:00, 59.29it/s]100%|##########| 100/100 [00:01<00:00, 59.24it/s]
+Train Epoch 15
+{
+    "Cosine_Loss": 1.1242127537727356,
+    "L1_Loss": 0.10381737992167472,
+    "L2_Loss": 0.2076488836109638,
+    "Loss": 36.98876140594482,
+    "Policy_Grad_Norms": 1.000000006193167,
+    "Time_Data_Loading": 0.002785774072011312,
+    "Time_Epoch": 0.028145178159077962,
+    "Time_Log_Info": 6.777048110961914e-05,
+    "Time_Process_Batch": 0.00026367505391438804,
+    "Time_Train_Batch": 0.02496658166249593
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 203.43it/s]
+Validation Epoch 15
+{
+    "Cosine_Loss": 1.1277383089065551,
+    "L1_Loss": 0.10066789761185646,
+    "L2_Loss": 0.20134877935051917,
+    "Loss": 37.58424072265625,
+    "Time_Data_Loading": 0.0005325754483540853,
+    "Time_Epoch": 0.0016535123189290364,
+    "Time_Log_Info": 1.2477238972981771e-05,
+    "Time_Process_Batch": 5.3199132283528644e-05,
+    "Time_Train_Batch": 0.0010378201802571615
+}
+
+Epoch 15 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 57.81it/s] 12%|#2        | 12/100 [00:00<00:01, 58.35it/s] 18%|#8        | 18/100 [00:00<00:01, 58.74it/s] 24%|##4       | 24/100 [00:00<00:01, 58.56it/s] 30%|###       | 30/100 [00:00<00:01, 58.03it/s] 36%|###6      | 36/100 [00:00<00:01, 58.50it/s] 42%|####2     | 42/100 [00:00<00:00, 58.79it/s] 48%|####8     | 48/100 [00:00<00:00, 58.83it/s] 54%|#####4    | 54/100 [00:00<00:00, 58.76it/s] 60%|######    | 60/100 [00:01<00:00, 58.68it/s] 66%|######6   | 66/100 [00:01<00:00, 58.58it/s] 72%|#######2  | 72/100 [00:01<00:00, 58.60it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.58it/s] 84%|########4 | 84/100 [00:01<00:00, 58.61it/s] 90%|######### | 90/100 [00:01<00:00, 58.61it/s] 96%|#########6| 96/100 [00:01<00:00, 58.72it/s]100%|##########| 100/100 [00:01<00:00, 58.61it/s]
+Train Epoch 16
+{
+    "Cosine_Loss": 1.127397232055664,
+    "L1_Loss": 0.10380929261446,
+    "L2_Loss": 0.20763271152973176,
+    "Loss": 36.499371242523196,
+    "Policy_Grad_Norms": 0.999999992528125,
+    "Time_Data_Loading": 0.002790681521097819,
+    "Time_Epoch": 0.028450024127960206,
+    "Time_Log_Info": 6.776650746663412e-05,
+    "Time_Process_Batch": 0.0002613504727681478,
+    "Time_Train_Batch": 0.025267847379048667
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 207.02it/s]
+Validation Epoch 16
+{
+    "Cosine_Loss": 1.125450474023819,
+    "L1_Loss": 0.10063083730638027,
+    "L2_Loss": 0.2012750305235386,
+    "Loss": 37.323126220703124,
+    "Time_Data_Loading": 0.000528872013092041,
+    "Time_Epoch": 0.0016286015510559083,
+    "Time_Log_Info": 1.293023427327474e-05,
+    "Time_Process_Batch": 5.279779434204101e-05,
+    "Time_Train_Batch": 0.0010131239891052247
+}
+
+Epoch 16 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 57.32it/s] 12%|#2        | 12/100 [00:00<00:01, 57.87it/s] 18%|#8        | 18/100 [00:00<00:01, 57.93it/s] 24%|##4       | 24/100 [00:00<00:01, 57.86it/s] 30%|###       | 30/100 [00:00<00:01, 58.18it/s] 36%|###6      | 36/100 [00:00<00:01, 58.12it/s] 42%|####2     | 42/100 [00:00<00:00, 58.26it/s] 48%|####8     | 48/100 [00:00<00:00, 58.40it/s] 54%|#####4    | 54/100 [00:00<00:00, 57.95it/s] 60%|######    | 60/100 [00:01<00:00, 57.28it/s] 66%|######6   | 66/100 [00:01<00:00, 57.58it/s] 72%|#######2  | 72/100 [00:01<00:00, 57.89it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.20it/s] 84%|########4 | 84/100 [00:01<00:00, 58.41it/s] 90%|######### | 90/100 [00:01<00:00, 58.09it/s] 96%|#########6| 96/100 [00:01<00:00, 58.17it/s]100%|##########| 100/100 [00:01<00:00, 58.08it/s]
+Train Epoch 17
+{
+    "Cosine_Loss": 1.1237400901317596,
+    "L1_Loss": 0.10379883781075477,
+    "L2_Loss": 0.20761191114783287,
+    "Loss": 36.258119373321534,
+    "Policy_Grad_Norms": 0.999999985466455,
+    "Time_Data_Loading": 0.0028125961621602376,
+    "Time_Epoch": 0.0287064790725708,
+    "Time_Log_Info": 6.959438323974609e-05,
+    "Time_Process_Batch": 0.00026429096857706705,
+    "Time_Train_Batch": 0.025497031211853028
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 209.15it/s]
+Validation Epoch 17
+{
+    "Cosine_Loss": 1.1277720153331756,
+    "L1_Loss": 0.10048408769071102,
+    "L2_Loss": 0.20098155364394188,
+    "Loss": 36.77254066467285,
+    "Time_Data_Loading": 0.0005230943361918132,
+    "Time_Epoch": 0.0016107360521952312,
+    "Time_Log_Info": 1.5473365783691408e-05,
+    "Time_Process_Batch": 5.4625670115152997e-05,
+    "Time_Train_Batch": 0.0009981711705525716
+}
+
+Epoch 17 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 59.30it/s] 12%|#2        | 12/100 [00:00<00:01, 58.76it/s] 18%|#8        | 18/100 [00:00<00:01, 59.01it/s] 25%|##5       | 25/100 [00:00<00:01, 59.45it/s] 31%|###1      | 31/100 [00:00<00:01, 59.57it/s] 37%|###7      | 37/100 [00:00<00:01, 59.65it/s] 43%|####3     | 43/100 [00:00<00:00, 59.52it/s] 49%|####9     | 49/100 [00:00<00:00, 59.53it/s] 55%|#####5    | 55/100 [00:00<00:00, 59.50it/s] 61%|######1   | 61/100 [00:01<00:00, 59.38it/s] 67%|######7   | 67/100 [00:01<00:00, 59.47it/s] 73%|#######3  | 73/100 [00:01<00:00, 59.30it/s] 79%|#######9  | 79/100 [00:01<00:00, 59.43it/s] 86%|########6 | 86/100 [00:01<00:00, 59.67it/s] 92%|#########2| 92/100 [00:01<00:00, 59.53it/s] 98%|#########8| 98/100 [00:01<00:00, 59.47it/s]100%|##########| 100/100 [00:01<00:00, 59.42it/s]
+Train Epoch 18
+{
+    "Cosine_Loss": 1.1246285462379455,
+    "L1_Loss": 0.10369570352137089,
+    "L2_Loss": 0.2074059297144413,
+    "Loss": 35.66996953964233,
+    "Policy_Grad_Norms": 1.0000000132086218,
+    "Time_Data_Loading": 0.0027529239654541016,
+    "Time_Epoch": 0.028058381875356038,
+    "Time_Log_Info": 6.705919901529948e-05,
+    "Time_Process_Batch": 0.00025906165440877277,
+    "Time_Train_Batch": 0.024918639659881593
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 203.80it/s]
+Validation Epoch 18
+{
+    "Cosine_Loss": 1.1234921753406524,
+    "L1_Loss": 0.10061497390270233,
+    "L2_Loss": 0.20124354884028434,
+    "Loss": 36.658317947387694,
+    "Time_Data_Loading": 0.000535273551940918,
+    "Time_Epoch": 0.001654370625813802,
+    "Time_Log_Info": 1.314083735148112e-05,
+    "Time_Process_Batch": 6.058613459269206e-05,
+    "Time_Train_Batch": 0.0010241230328877768
+}
+
+Epoch 18 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 58.69it/s] 12%|#2        | 12/100 [00:00<00:01, 59.18it/s] 18%|#8        | 18/100 [00:00<00:01, 59.23it/s] 24%|##4       | 24/100 [00:00<00:01, 58.80it/s] 30%|###       | 30/100 [00:00<00:01, 58.60it/s] 36%|###6      | 36/100 [00:00<00:01, 57.39it/s] 42%|####2     | 42/100 [00:00<00:00, 58.05it/s] 48%|####8     | 48/100 [00:00<00:00, 58.39it/s] 54%|#####4    | 54/100 [00:00<00:00, 58.37it/s] 60%|######    | 60/100 [00:01<00:00, 58.54it/s] 66%|######6   | 66/100 [00:01<00:00, 58.76it/s] 72%|#######2  | 72/100 [00:01<00:00, 59.01it/s] 78%|#######8  | 78/100 [00:01<00:00, 59.12it/s] 84%|########4 | 84/100 [00:01<00:00, 58.91it/s] 90%|######### | 90/100 [00:01<00:00, 58.98it/s] 97%|#########7| 97/100 [00:01<00:00, 59.40it/s]100%|##########| 100/100 [00:01<00:00, 58.83it/s]
+Train Epoch 19
+{
+    "Cosine_Loss": 1.1231372332572938,
+    "L1_Loss": 0.10365331538021565,
+    "L2_Loss": 0.2073211334645748,
+    "Loss": 35.400579051971434,
+    "Policy_Grad_Norms": 1.0000000114351977,
+    "Time_Data_Loading": 0.0027716954549153647,
+    "Time_Epoch": 0.028339314460754394,
+    "Time_Log_Info": 6.896654764811198e-05,
+    "Time_Process_Batch": 0.0002594788869222005,
+    "Time_Train_Batch": 0.025176207224527996
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 208.99it/s]
+Validation Epoch 19
+{
+    "Cosine_Loss": 1.1218316197395324,
+    "L1_Loss": 0.10062809772789479,
+    "L2_Loss": 0.20126985460519792,
+    "Loss": 36.598116874694824,
+    "Time_Data_Loading": 0.0005227009455362956,
+    "Time_Epoch": 0.0016117691993713379,
+    "Time_Log_Info": 2.728700637817383e-05,
+    "Time_Process_Batch": 4.954338073730469e-05,
+    "Time_Train_Batch": 0.0009930729866027832
+}
+
+Epoch 19 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 58.86it/s] 12%|#2        | 12/100 [00:00<00:01, 59.29it/s] 19%|#9        | 19/100 [00:00<00:01, 59.74it/s] 25%|##5       | 25/100 [00:00<00:01, 59.81it/s] 31%|###1      | 31/100 [00:00<00:01, 59.87it/s] 37%|###7      | 37/100 [00:00<00:01, 59.77it/s] 43%|####3     | 43/100 [00:00<00:00, 59.75it/s] 49%|####9     | 49/100 [00:00<00:00, 59.81it/s] 55%|#####5    | 55/100 [00:00<00:00, 59.78it/s] 61%|######1   | 61/100 [00:01<00:00, 59.76it/s] 67%|######7   | 67/100 [00:01<00:00, 59.74it/s] 73%|#######3  | 73/100 [00:01<00:00, 59.42it/s] 79%|#######9  | 79/100 [00:01<00:00, 59.39it/s] 85%|########5 | 85/100 [00:01<00:00, 59.18it/s] 91%|#########1| 91/100 [00:01<00:00, 58.71it/s] 97%|#########7| 97/100 [00:01<00:00, 58.31it/s]100%|##########| 100/100 [00:01<00:00, 59.20it/s]
+Train Epoch 20
+{
+    "Cosine_Loss": 1.122228353023529,
+    "L1_Loss": 0.10383787877857685,
+    "L2_Loss": 0.2076904359459877,
+    "Loss": 34.73715791702271,
+    "Policy_Grad_Norms": 0.9999999984818531,
+    "Time_Data_Loading": 0.0027534166971842446,
+    "Time_Epoch": 0.028165090084075927,
+    "Time_Log_Info": 6.754398345947266e-05,
+    "Time_Process_Batch": 0.00025540987650553385,
+    "Time_Train_Batch": 0.025028014183044435
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 205.63it/s]
+Validation Epoch 20
+{
+    "Cosine_Loss": 1.1302964091300964,
+    "L1_Loss": 0.1006713330745697,
+    "L2_Loss": 0.20135614797472953,
+    "Loss": 36.73255634307861,
+    "Time_Data_Loading": 0.0005297342936197917,
+    "Time_Epoch": 0.0016412178675333658,
+    "Time_Log_Info": 1.283089319864909e-05,
+    "Time_Process_Batch": 6.392002105712891e-05,
+    "Time_Train_Batch": 0.0010122418403625487
+}
+
+Epoch 20 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 57.42it/s] 12%|#2        | 12/100 [00:00<00:01, 58.00it/s] 18%|#8        | 18/100 [00:00<00:01, 58.64it/s] 24%|##4       | 24/100 [00:00<00:01, 58.79it/s] 30%|###       | 30/100 [00:00<00:01, 59.09it/s] 36%|###6      | 36/100 [00:00<00:01, 59.35it/s] 42%|####2     | 42/100 [00:00<00:00, 59.44it/s] 48%|####8     | 48/100 [00:00<00:00, 59.47it/s] 54%|#####4    | 54/100 [00:00<00:00, 59.54it/s] 60%|######    | 60/100 [00:01<00:00, 59.56it/s] 66%|######6   | 66/100 [00:01<00:00, 59.51it/s] 72%|#######2  | 72/100 [00:01<00:00, 59.35it/s] 78%|#######8  | 78/100 [00:01<00:00, 59.22it/s] 84%|########4 | 84/100 [00:01<00:00, 58.78it/s] 90%|######### | 90/100 [00:01<00:00, 58.46it/s] 96%|#########6| 96/100 [00:01<00:00, 58.52it/s]100%|##########| 100/100 [00:01<00:00, 58.96it/s]
+Train Epoch 21
+{
+    "Cosine_Loss": 1.1160221707820892,
+    "L1_Loss": 0.10372061260044575,
+    "L2_Loss": 0.2074560923874378,
+    "Loss": 34.62447290420532,
+    "Policy_Grad_Norms": 0.999999996074702,
+    "Time_Data_Loading": 0.0027579069137573242,
+    "Time_Epoch": 0.028278708457946777,
+    "Time_Log_Info": 6.73214594523112e-05,
+    "Time_Process_Batch": 0.0002548019091288249,
+    "Time_Train_Batch": 0.025137674808502198
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 208.20it/s]
+Validation Epoch 21
+{
+    "Cosine_Loss": 1.1298711895942688,
+    "L1_Loss": 0.10070677623152732,
+    "L2_Loss": 0.20142753347754477,
+    "Loss": 36.39076747894287,
+    "Time_Data_Loading": 0.0005285024642944336,
+    "Time_Epoch": 0.001616187890370687,
+    "Time_Log_Info": 1.4142195383707683e-05,
+    "Time_Process_Batch": 5.3040186564127605e-05,
+    "Time_Train_Batch": 0.0010029911994934083
+}
+
+Epoch 21 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 57.06it/s] 12%|#2        | 12/100 [00:00<00:01, 57.74it/s] 18%|#8        | 18/100 [00:00<00:01, 57.95it/s] 24%|##4       | 24/100 [00:00<00:01, 57.96it/s] 30%|###       | 30/100 [00:00<00:01, 58.22it/s] 36%|###6      | 36/100 [00:00<00:01, 58.21it/s] 42%|####2     | 42/100 [00:00<00:00, 58.46it/s] 48%|####8     | 48/100 [00:00<00:00, 58.56it/s] 54%|#####4    | 54/100 [00:00<00:00, 58.55it/s] 60%|######    | 60/100 [00:01<00:00, 58.42it/s] 66%|######6   | 66/100 [00:01<00:00, 58.41it/s] 72%|#######2  | 72/100 [00:01<00:00, 58.18it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.29it/s] 84%|########4 | 84/100 [00:01<00:00, 58.47it/s] 90%|######### | 90/100 [00:01<00:00, 58.59it/s] 96%|#########6| 96/100 [00:01<00:00, 58.42it/s]100%|##########| 100/100 [00:01<00:00, 58.33it/s]
+Train Epoch 22
+{
+    "Cosine_Loss": 1.1179827231168746,
+    "L1_Loss": 0.10370001539587975,
+    "L2_Loss": 0.20741463348269462,
+    "Loss": 34.21622766494751,
+    "Policy_Grad_Norms": 1.0000000220145406,
+    "Time_Data_Loading": 0.002795914808909098,
+    "Time_Epoch": 0.028583367665608723,
+    "Time_Log_Info": 6.802082061767578e-05,
+    "Time_Process_Batch": 0.00025864839553833006,
+    "Time_Train_Batch": 0.025399295488993327
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 205.13it/s]
+Validation Epoch 22
+{
+    "Cosine_Loss": 1.1215061604976655,
+    "L1_Loss": 0.10051307305693627,
+    "L2_Loss": 0.20104047358036042,
+    "Loss": 35.73094186782837,
+    "Time_Data_Loading": 0.0005286693572998047,
+    "Time_Epoch": 0.001642322540283203,
+    "Time_Log_Info": 2.8777122497558594e-05,
+    "Time_Process_Batch": 5.078713099161784e-05,
+    "Time_Train_Batch": 0.0010143240292867024
+}
+
+Epoch 22 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 58.09it/s] 12%|#2        | 12/100 [00:00<00:01, 58.49it/s] 18%|#8        | 18/100 [00:00<00:01, 58.20it/s] 24%|##4       | 24/100 [00:00<00:01, 58.05it/s] 30%|###       | 30/100 [00:00<00:01, 58.28it/s] 36%|###6      | 36/100 [00:00<00:01, 58.12it/s] 42%|####2     | 42/100 [00:00<00:01, 57.93it/s] 48%|####8     | 48/100 [00:00<00:00, 57.80it/s] 54%|#####4    | 54/100 [00:00<00:00, 58.15it/s] 60%|######    | 60/100 [00:01<00:00, 58.31it/s] 66%|######6   | 66/100 [00:01<00:00, 58.61it/s] 72%|#######2  | 72/100 [00:01<00:00, 58.47it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.58it/s] 84%|########4 | 84/100 [00:01<00:00, 58.68it/s] 90%|######### | 90/100 [00:01<00:00, 58.57it/s] 96%|#########6| 96/100 [00:01<00:00, 58.52it/s]100%|##########| 100/100 [00:01<00:00, 58.34it/s]
+Train Epoch 23
+{
+    "Cosine_Loss": 1.1189722228050232,
+    "L1_Loss": 0.10357029519975186,
+    "L2_Loss": 0.20715559020638466,
+    "Loss": 34.04145435333252,
+    "Policy_Grad_Norms": 0.9999999907287044,
+    "Time_Data_Loading": 0.0027939558029174806,
+    "Time_Epoch": 0.028578861554463705,
+    "Time_Log_Info": 6.754398345947266e-05,
+    "Time_Process_Batch": 0.00025672117869059244,
+    "Time_Train_Batch": 0.02539906899134318
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 203.79it/s]
+Validation Epoch 23
+{
+    "Cosine_Loss": 1.1301297008991242,
+    "L1_Loss": 0.10040655471384526,
+    "L2_Loss": 0.20082734674215316,
+    "Loss": 35.47557373046875,
+    "Time_Data_Loading": 0.0005443811416625977,
+    "Time_Epoch": 0.001652228832244873,
+    "Time_Log_Info": 1.4074643452962239e-05,
+    "Time_Process_Batch": 5.104541778564453e-05,
+    "Time_Train_Batch": 0.0010236740112304688
+}
+
+Epoch 23 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 56.64it/s] 12%|#2        | 12/100 [00:00<00:01, 57.55it/s] 18%|#8        | 18/100 [00:00<00:01, 57.27it/s] 24%|##4       | 24/100 [00:00<00:01, 57.67it/s] 30%|###       | 30/100 [00:00<00:01, 57.88it/s] 36%|###6      | 36/100 [00:00<00:01, 58.01it/s] 42%|####2     | 42/100 [00:00<00:01, 57.80it/s] 48%|####8     | 48/100 [00:00<00:00, 57.67it/s] 54%|#####4    | 54/100 [00:00<00:00, 57.53it/s] 60%|######    | 60/100 [00:01<00:00, 57.64it/s] 66%|######6   | 66/100 [00:01<00:00, 57.41it/s] 72%|#######2  | 72/100 [00:01<00:00, 57.54it/s] 78%|#######8  | 78/100 [00:01<00:00, 57.53it/s] 84%|########4 | 84/100 [00:01<00:00, 57.74it/s] 90%|######### | 90/100 [00:01<00:00, 57.99it/s] 96%|#########6| 96/100 [00:01<00:00, 58.50it/s]100%|##########| 100/100 [00:01<00:00, 57.88it/s]
+Train Epoch 24
+{
+    "Cosine_Loss": 1.1103632843494415,
+    "L1_Loss": 0.10368789561092853,
+    "L2_Loss": 0.20739077180624008,
+    "Loss": 33.87006664276123,
+    "Policy_Grad_Norms": 0.99999998767945,
+    "Time_Data_Loading": 0.002836799621582031,
+    "Time_Epoch": 0.028807477156321207,
+    "Time_Log_Info": 6.824334462483724e-05,
+    "Time_Process_Batch": 0.0002590099970499674,
+    "Time_Train_Batch": 0.02558053731918335
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 208.21it/s]
+Validation Epoch 24
+{
+    "Cosine_Loss": 1.1246609151363374,
+    "L1_Loss": 0.10063984617590904,
+    "L2_Loss": 0.20129323825240136,
+    "Loss": 35.69538745880127,
+    "Time_Data_Loading": 0.0005231062571207682,
+    "Time_Epoch": 0.0016202092170715331,
+    "Time_Log_Info": 1.6196568806966147e-05,
+    "Time_Process_Batch": 4.9118200937906904e-05,
+    "Time_Train_Batch": 0.001010119915008545
+}
+
+Epoch 24 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 58.08it/s] 12%|#2        | 12/100 [00:00<00:01, 58.94it/s] 18%|#8        | 18/100 [00:00<00:01, 59.20it/s] 24%|##4       | 24/100 [00:00<00:01, 59.42it/s] 30%|###       | 30/100 [00:00<00:01, 59.57it/s] 36%|###6      | 36/100 [00:00<00:01, 59.33it/s] 42%|####2     | 42/100 [00:00<00:00, 59.48it/s] 49%|####9     | 49/100 [00:00<00:00, 59.71it/s] 55%|#####5    | 55/100 [00:00<00:00, 59.58it/s] 61%|######1   | 61/100 [00:01<00:00, 59.62it/s] 67%|######7   | 67/100 [00:01<00:00, 57.86it/s] 73%|#######3  | 73/100 [00:01<00:00, 58.06it/s] 79%|#######9  | 79/100 [00:01<00:00, 58.15it/s] 85%|########5 | 85/100 [00:01<00:00, 58.23it/s] 91%|#########1| 91/100 [00:01<00:00, 58.28it/s] 97%|#########7| 97/100 [00:01<00:00, 58.57it/s]100%|##########| 100/100 [00:01<00:00, 58.85it/s]
+Train Epoch 25
+{
+    "Cosine_Loss": 1.1096498215198516,
+    "L1_Loss": 0.10368921503424644,
+    "L2_Loss": 0.2073933218419552,
+    "Loss": 33.293248329162594,
+    "Policy_Grad_Norms": 1.000000000658141,
+    "Time_Data_Loading": 0.0027801116307576497,
+    "Time_Epoch": 0.02832996447881063,
+    "Time_Log_Info": 6.702740987141927e-05,
+    "Time_Process_Batch": 0.0002567291259765625,
+    "Time_Train_Batch": 0.02516423463821411
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 208.88it/s]
+Validation Epoch 25
+{
+    "Cosine_Loss": 1.1323338747024536,
+    "L1_Loss": 0.10064441971480846,
+    "L2_Loss": 0.20130397826433183,
+    "Loss": 35.60717658996582,
+    "Time_Data_Loading": 0.0005224982897440593,
+    "Time_Epoch": 0.0016131202379862468,
+    "Time_Log_Info": 2.795855204264323e-05,
+    "Time_Process_Batch": 4.874467849731445e-05,
+    "Time_Train_Batch": 0.0009941418965657553
+}
+
+Epoch 25 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 58.71it/s] 12%|#2        | 12/100 [00:00<00:01, 59.40it/s] 18%|#8        | 18/100 [00:00<00:01, 59.37it/s] 24%|##4       | 24/100 [00:00<00:01, 59.05it/s] 30%|###       | 30/100 [00:00<00:01, 58.84it/s] 36%|###6      | 36/100 [00:00<00:01, 58.94it/s] 42%|####2     | 42/100 [00:00<00:00, 58.78it/s] 48%|####8     | 48/100 [00:00<00:00, 58.96it/s] 55%|#####5    | 55/100 [00:00<00:00, 59.35it/s] 61%|######1   | 61/100 [00:01<00:00, 59.48it/s] 67%|######7   | 67/100 [00:01<00:00, 59.48it/s] 73%|#######3  | 73/100 [00:01<00:00, 59.14it/s] 79%|#######9  | 79/100 [00:01<00:00, 59.08it/s] 85%|########5 | 85/100 [00:01<00:00, 58.47it/s] 91%|#########1| 91/100 [00:01<00:00, 58.47it/s] 97%|#########7| 97/100 [00:01<00:00, 58.50it/s]100%|##########| 100/100 [00:01<00:00, 58.91it/s]
+Train Epoch 26
+{
+    "Cosine_Loss": 1.1095950710773468,
+    "L1_Loss": 0.10350367628037929,
+    "L2_Loss": 0.20702244341373444,
+    "Loss": 33.223071041107175,
+    "Policy_Grad_Norms": 1.0000000085184708,
+    "Time_Data_Loading": 0.002749645709991455,
+    "Time_Epoch": 0.028300472100575767,
+    "Time_Log_Info": 6.85572624206543e-05,
+    "Time_Process_Batch": 0.00025645891825358075,
+    "Time_Train_Batch": 0.02516438563664754
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 206.26it/s]
+Validation Epoch 26
+{
+    "Cosine_Loss": 1.1122253835201263,
+    "L1_Loss": 0.10057973116636276,
+    "L2_Loss": 0.20117257460951804,
+    "Loss": 35.375832080841064,
+    "Time_Data_Loading": 0.0005245884259541829,
+    "Time_Epoch": 0.0016308983167012533,
+    "Time_Log_Info": 1.3363361358642577e-05,
+    "Time_Process_Batch": 4.9006938934326175e-05,
+    "Time_Train_Batch": 0.001026785373687744
+}
+
+Epoch 26 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 57.66it/s] 12%|#2        | 12/100 [00:00<00:01, 58.46it/s] 18%|#8        | 18/100 [00:00<00:01, 58.65it/s] 24%|##4       | 24/100 [00:00<00:01, 58.66it/s] 30%|###       | 30/100 [00:00<00:01, 58.68it/s] 36%|###6      | 36/100 [00:00<00:01, 58.73it/s] 42%|####2     | 42/100 [00:00<00:00, 58.62it/s] 48%|####8     | 48/100 [00:00<00:00, 58.63it/s] 54%|#####4    | 54/100 [00:00<00:00, 58.74it/s] 60%|######    | 60/100 [00:01<00:00, 58.83it/s] 66%|######6   | 66/100 [00:01<00:00, 58.97it/s] 72%|#######2  | 72/100 [00:01<00:00, 58.89it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.78it/s] 84%|########4 | 84/100 [00:01<00:00, 58.67it/s] 90%|######### | 90/100 [00:01<00:00, 58.50it/s] 96%|#########6| 96/100 [00:01<00:00, 58.51it/s]100%|##########| 100/100 [00:01<00:00, 58.60it/s]
+Train Epoch 27
+{
+    "Cosine_Loss": 1.113313785791397,
+    "L1_Loss": 0.10354994527995587,
+    "L2_Loss": 0.2071148931980133,
+    "Loss": 33.010476150512694,
+    "Policy_Grad_Norms": 1.0000000091030397,
+    "Time_Data_Loading": 0.002779507637023926,
+    "Time_Epoch": 0.028453242778778077,
+    "Time_Log_Info": 6.7138671875e-05,
+    "Time_Process_Batch": 0.0002576192220052083,
+    "Time_Train_Batch": 0.025288709004720054
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 200.40it/s]
+Validation Epoch 27
+{
+    "Cosine_Loss": 1.1272832870483398,
+    "L1_Loss": 0.10063103102147579,
+    "L2_Loss": 0.20127579048275948,
+    "Loss": 35.22837829589844,
+    "Time_Data_Loading": 0.0005509416262308756,
+    "Time_Epoch": 0.0016745885213216146,
+    "Time_Log_Info": 1.5787283579508464e-05,
+    "Time_Process_Batch": 5.101362864176432e-05,
+    "Time_Train_Batch": 0.0010430455207824708
+}
+
+Epoch 27 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 57.05it/s] 12%|#2        | 12/100 [00:00<00:01, 57.74it/s] 18%|#8        | 18/100 [00:00<00:01, 58.16it/s] 24%|##4       | 24/100 [00:00<00:01, 57.99it/s] 30%|###       | 30/100 [00:00<00:01, 57.98it/s] 36%|###6      | 36/100 [00:00<00:01, 58.02it/s] 42%|####2     | 42/100 [00:00<00:00, 58.16it/s] 48%|####8     | 48/100 [00:00<00:00, 58.29it/s] 54%|#####4    | 54/100 [00:00<00:00, 58.50it/s] 60%|######    | 60/100 [00:01<00:00, 58.22it/s] 66%|######6   | 66/100 [00:01<00:00, 58.26it/s] 72%|#######2  | 72/100 [00:01<00:00, 58.20it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.40it/s] 84%|########4 | 84/100 [00:01<00:00, 58.42it/s] 90%|######### | 90/100 [00:01<00:00, 58.22it/s] 96%|#########6| 96/100 [00:01<00:00, 58.28it/s]100%|##########| 100/100 [00:01<00:00, 58.22it/s]
+Train Epoch 28
+{
+    "Cosine_Loss": 1.1080642938613892,
+    "L1_Loss": 0.10363221414387226,
+    "L2_Loss": 0.20727952510118486,
+    "Loss": 32.645297050476074,
+    "Policy_Grad_Norms": 1.0000000032641452,
+    "Time_Data_Loading": 0.0027967174847920735,
+    "Time_Epoch": 0.028637675444285075,
+    "Time_Log_Info": 6.74605369567871e-05,
+    "Time_Process_Batch": 0.00025795300801595054,
+    "Time_Train_Batch": 0.025453046957651774
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 210.59it/s]
+Validation Epoch 28
+{
+    "Cosine_Loss": 1.1282167851924896,
+    "L1_Loss": 0.1005699373781681,
+    "L2_Loss": 0.2011542797088623,
+    "Loss": 34.91088838577271,
+    "Time_Data_Loading": 0.0005273699760437011,
+    "Time_Epoch": 0.0016011754671732584,
+    "Time_Log_Info": 1.3418992360432942e-05,
+    "Time_Process_Batch": 5.031029383341472e-05,
+    "Time_Train_Batch": 0.0009894529978434245
+}
+
+Epoch 28 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 57.07it/s] 12%|#2        | 12/100 [00:00<00:01, 58.26it/s] 18%|#8        | 18/100 [00:00<00:01, 58.51it/s] 24%|##4       | 24/100 [00:00<00:01, 58.43it/s] 30%|###       | 30/100 [00:00<00:01, 58.56it/s] 36%|###6      | 36/100 [00:00<00:01, 58.55it/s] 42%|####2     | 42/100 [00:00<00:00, 58.53it/s] 48%|####8     | 48/100 [00:00<00:00, 58.38it/s] 54%|#####4    | 54/100 [00:00<00:00, 58.32it/s] 60%|######    | 60/100 [00:01<00:00, 58.37it/s] 66%|######6   | 66/100 [00:01<00:00, 58.39it/s] 72%|#######2  | 72/100 [00:01<00:00, 58.69it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.74it/s] 84%|########4 | 84/100 [00:01<00:00, 58.70it/s] 90%|######### | 90/100 [00:01<00:00, 58.65it/s] 96%|#########6| 96/100 [00:01<00:00, 58.62it/s]100%|##########| 100/100 [00:01<00:00, 58.47it/s]
+Train Epoch 29
+{
+    "Cosine_Loss": 1.112338274717331,
+    "L1_Loss": 0.10342633105814457,
+    "L2_Loss": 0.2068679866194725,
+    "Loss": 32.53992094039917,
+    "Policy_Grad_Norms": 0.9999999906699791,
+    "Time_Data_Loading": 0.002782718340555827,
+    "Time_Epoch": 0.028514989217122397,
+    "Time_Log_Info": 6.834268569946289e-05,
+    "Time_Process_Batch": 0.0002590537071228027,
+    "Time_Train_Batch": 0.025343628724416097
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 208.51it/s]
+Validation Epoch 29
+{
+    "Cosine_Loss": 1.1274869680404662,
+    "L1_Loss": 0.1005125142633915,
+    "L2_Loss": 0.20103858709335326,
+    "Loss": 34.52526979446411,
+    "Time_Data_Loading": 0.0005296826362609863,
+    "Time_Epoch": 0.0016166885693868,
+    "Time_Log_Info": 1.4380613962809246e-05,
+    "Time_Process_Batch": 5.1462650299072264e-05,
+    "Time_Train_Batch": 0.0010007222493489583
+}
+
+Epoch 29 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 58.05it/s] 12%|#2        | 12/100 [00:00<00:01, 58.70it/s] 18%|#8        | 18/100 [00:00<00:01, 58.85it/s] 24%|##4       | 24/100 [00:00<00:01, 59.04it/s] 30%|###       | 30/100 [00:00<00:01, 59.01it/s] 36%|###6      | 36/100 [00:00<00:01, 59.18it/s] 42%|####2     | 42/100 [00:00<00:00, 59.41it/s] 48%|####8     | 48/100 [00:00<00:00, 59.01it/s] 54%|#####4    | 54/100 [00:00<00:00, 58.75it/s] 60%|######    | 60/100 [00:01<00:00, 58.69it/s] 66%|######6   | 66/100 [00:01<00:00, 58.79it/s] 72%|#######2  | 72/100 [00:01<00:00, 58.89it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.93it/s] 84%|########4 | 84/100 [00:01<00:00, 59.08it/s] 90%|######### | 90/100 [00:01<00:00, 58.61it/s] 96%|#########6| 96/100 [00:01<00:00, 58.59it/s]100%|##########| 100/100 [00:01<00:00, 58.79it/s]
+Train Epoch 30
+{
+    "Cosine_Loss": 1.104812318086624,
+    "L1_Loss": 0.1036902341246605,
+    "L2_Loss": 0.2073957332968712,
+    "Loss": 32.08951429367065,
+    "Policy_Grad_Norms": 1.0000000151927952,
+    "Time_Data_Loading": 0.0027801076571146647,
+    "Time_Epoch": 0.02835822900136312,
+    "Time_Log_Info": 6.73373540242513e-05,
+    "Time_Process_Batch": 0.0002548893292744954,
+    "Time_Train_Batch": 0.025194998582204184
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 205.45it/s]
+Validation Epoch 30
+{
+    "Cosine_Loss": 1.1086506962776184,
+    "L1_Loss": 0.10077750310301781,
+    "L2_Loss": 0.20156980082392692,
+    "Loss": 34.53403482437134,
+    "Time_Data_Loading": 0.0005326191584269206,
+    "Time_Epoch": 0.00163726011912028,
+    "Time_Log_Info": 1.3792514801025391e-05,
+    "Time_Process_Batch": 5.1144758860270185e-05,
+    "Time_Train_Batch": 0.0010225415229797364
+}
+
+Epoch 30 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 57.55it/s] 12%|#2        | 12/100 [00:00<00:01, 57.94it/s] 18%|#8        | 18/100 [00:00<00:01, 57.93it/s] 24%|##4       | 24/100 [00:00<00:01, 57.75it/s] 30%|###       | 30/100 [00:00<00:01, 57.80it/s] 36%|###6      | 36/100 [00:00<00:01, 58.12it/s] 42%|####2     | 42/100 [00:00<00:00, 58.38it/s] 48%|####8     | 48/100 [00:00<00:00, 58.48it/s] 54%|#####4    | 54/100 [00:00<00:00, 58.76it/s] 60%|######    | 60/100 [00:01<00:00, 58.82it/s] 66%|######6   | 66/100 [00:01<00:00, 58.85it/s] 72%|#######2  | 72/100 [00:01<00:00, 58.88it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.29it/s] 84%|########4 | 84/100 [00:01<00:00, 58.43it/s] 90%|######### | 90/100 [00:01<00:00, 58.36it/s] 96%|#########6| 96/100 [00:01<00:00, 58.34it/s]100%|##########| 100/100 [00:01<00:00, 58.29it/s]
+Train Epoch 31
+{
+    "Cosine_Loss": 1.1070165145397186,
+    "L1_Loss": 0.10358175590634346,
+    "L2_Loss": 0.20717879503965378,
+    "Loss": 32.00558740615845,
+    "Policy_Grad_Norms": 0.9999999865375719,
+    "Time_Data_Loading": 0.0027889649073282877,
+    "Time_Epoch": 0.02860074440638224,
+    "Time_Log_Info": 6.846189498901367e-05,
+    "Time_Process_Batch": 0.0002601027488708496,
+    "Time_Train_Batch": 0.025422434012095135
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 208.62it/s]
+Validation Epoch 31
+{
+    "Cosine_Loss": 1.1123114764690398,
+    "L1_Loss": 0.10081510543823242,
+    "L2_Loss": 0.20164452046155928,
+    "Loss": 34.604093074798584,
+    "Time_Data_Loading": 0.0005306680997212728,
+    "Time_Epoch": 0.0016089161237080893,
+    "Time_Log_Info": 1.4086564381917318e-05,
+    "Time_Process_Batch": 5.0226847330729164e-05,
+    "Time_Train_Batch": 0.0010003447532653809
+}
+
+Epoch 31 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 58.83it/s] 12%|#2        | 12/100 [00:00<00:01, 59.06it/s] 18%|#8        | 18/100 [00:00<00:01, 58.61it/s] 24%|##4       | 24/100 [00:00<00:01, 58.66it/s] 30%|###       | 30/100 [00:00<00:01, 58.26it/s] 36%|###6      | 36/100 [00:00<00:01, 57.84it/s] 42%|####2     | 42/100 [00:00<00:01, 57.66it/s] 48%|####8     | 48/100 [00:00<00:00, 58.09it/s] 54%|#####4    | 54/100 [00:00<00:00, 56.95it/s] 60%|######    | 60/100 [00:01<00:00, 57.08it/s] 66%|######6   | 66/100 [00:01<00:00, 57.78it/s] 72%|#######2  | 72/100 [00:01<00:00, 57.85it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.08it/s] 84%|########4 | 84/100 [00:01<00:00, 58.40it/s] 90%|######### | 90/100 [00:01<00:00, 58.77it/s] 96%|#########6| 96/100 [00:01<00:00, 59.03it/s]100%|##########| 100/100 [00:01<00:00, 58.30it/s]
+Train Epoch 32
+{
+    "Cosine_Loss": 1.1068748408555984,
+    "L1_Loss": 0.10341925889253617,
+    "L2_Loss": 0.20685383662581444,
+    "Loss": 31.702364749908448,
+    "Policy_Grad_Norms": 0.9999999976743728,
+    "Time_Data_Loading": 0.0028477072715759276,
+    "Time_Epoch": 0.0285995880762736,
+    "Time_Log_Info": 6.883541742960611e-05,
+    "Time_Process_Batch": 0.00025974114735921225,
+    "Time_Train_Batch": 0.02536084254582723
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 198.22it/s]100%|##########| 20/20 [00:00<00:00, 197.95it/s]
+Validation Epoch 32
+{
+    "Cosine_Loss": 1.1119518280029297,
+    "L1_Loss": 0.10049642063677311,
+    "L2_Loss": 0.20100768506526948,
+    "Loss": 34.63698024749756,
+    "Time_Data_Loading": 0.0005522092183430989,
+    "Time_Epoch": 0.0016913851102193197,
+    "Time_Log_Info": 1.2652079264322917e-05,
+    "Time_Process_Batch": 5.879004796346029e-05,
+    "Time_Train_Batch": 0.0010554790496826172
+}
+
+Epoch 32 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 56.17it/s] 12%|#2        | 12/100 [00:00<00:01, 57.00it/s] 18%|#8        | 18/100 [00:00<00:01, 57.90it/s] 24%|##4       | 24/100 [00:00<00:01, 58.48it/s] 30%|###       | 30/100 [00:00<00:01, 58.58it/s] 36%|###6      | 36/100 [00:00<00:01, 58.72it/s] 42%|####2     | 42/100 [00:00<00:00, 58.40it/s] 48%|####8     | 48/100 [00:00<00:00, 58.47it/s] 54%|#####4    | 54/100 [00:00<00:00, 58.48it/s] 60%|######    | 60/100 [00:01<00:00, 58.51it/s] 66%|######6   | 66/100 [00:01<00:00, 58.61it/s] 72%|#######2  | 72/100 [00:01<00:00, 58.69it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.71it/s] 84%|########4 | 84/100 [00:01<00:00, 58.75it/s] 90%|######### | 90/100 [00:01<00:00, 58.47it/s] 96%|#########6| 96/100 [00:01<00:00, 58.34it/s]100%|##########| 100/100 [00:01<00:00, 58.34it/s]
+Train Epoch 33
+{
+    "Cosine_Loss": 1.1026143610477448,
+    "L1_Loss": 0.10339439123868942,
+    "L2_Loss": 0.20680428609251977,
+    "Loss": 31.388203048706053,
+    "Policy_Grad_Norms": 1.000000018893819,
+    "Time_Data_Loading": 0.002809874216715495,
+    "Time_Epoch": 0.02858060598373413,
+    "Time_Log_Info": 6.891091664632162e-05,
+    "Time_Process_Batch": 0.0002624948819478353,
+    "Time_Train_Batch": 0.025376602013905843
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 203.43it/s]
+Validation Epoch 33
+{
+    "Cosine_Loss": 1.1211638629436493,
+    "L1_Loss": 0.1005193568766117,
+    "L2_Loss": 0.20105359554290772,
+    "Loss": 34.82101573944092,
+    "Time_Data_Loading": 0.0005613485972086589,
+    "Time_Epoch": 0.0016470551490783691,
+    "Time_Log_Info": 1.375277837117513e-05,
+    "Time_Process_Batch": 5.098183949788412e-05,
+    "Time_Train_Batch": 0.0010100563367207846
+}
+
+Epoch 33 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 56.78it/s] 12%|#2        | 12/100 [00:00<00:01, 57.87it/s] 18%|#8        | 18/100 [00:00<00:01, 58.03it/s] 24%|##4       | 24/100 [00:00<00:01, 58.28it/s] 30%|###       | 30/100 [00:00<00:01, 58.51it/s] 36%|###6      | 36/100 [00:00<00:01, 58.42it/s] 42%|####2     | 42/100 [00:00<00:00, 58.25it/s] 48%|####8     | 48/100 [00:00<00:00, 58.17it/s] 54%|#####4    | 54/100 [00:00<00:00, 58.40it/s] 60%|######    | 60/100 [00:01<00:00, 58.62it/s] 66%|######6   | 66/100 [00:01<00:00, 58.69it/s] 72%|#######2  | 72/100 [00:01<00:00, 58.58it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.48it/s] 84%|########4 | 84/100 [00:01<00:00, 58.46it/s] 90%|######### | 90/100 [00:01<00:00, 58.51it/s] 96%|#########6| 96/100 [00:01<00:00, 58.61it/s]100%|##########| 100/100 [00:01<00:00, 58.42it/s]
+Train Epoch 34
+{
+    "Cosine_Loss": 1.0998079597949981,
+    "L1_Loss": 0.10353254087269306,
+    "L2_Loss": 0.20708028525114058,
+    "Loss": 31.203855113983153,
+    "Policy_Grad_Norms": 1.000000026322975,
+    "Time_Data_Loading": 0.002779726187388102,
+    "Time_Epoch": 0.028539415200551352,
+    "Time_Log_Info": 6.78698221842448e-05,
+    "Time_Process_Batch": 0.0002566337585449219,
+    "Time_Train_Batch": 0.025374174118041992
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 204.95it/s]
+Validation Epoch 34
+{
+    "Cosine_Loss": 1.10785254240036,
+    "L1_Loss": 0.10051687508821487,
+    "L2_Loss": 0.20104775726795196,
+    "Loss": 34.54917106628418,
+    "Time_Data_Loading": 0.0005375623703002929,
+    "Time_Epoch": 0.001645378271738688,
+    "Time_Log_Info": 1.2814998626708984e-05,
+    "Time_Process_Batch": 5.1025549570719404e-05,
+    "Time_Train_Batch": 0.001022640864054362
+}
+
+Epoch 34 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 57.63it/s] 12%|#2        | 12/100 [00:00<00:01, 58.21it/s] 18%|#8        | 18/100 [00:00<00:01, 58.35it/s] 24%|##4       | 24/100 [00:00<00:01, 58.46it/s] 30%|###       | 30/100 [00:00<00:01, 58.70it/s] 36%|###6      | 36/100 [00:00<00:01, 58.56it/s] 42%|####2     | 42/100 [00:00<00:00, 58.40it/s] 48%|####8     | 48/100 [00:00<00:00, 58.57it/s] 54%|#####4    | 54/100 [00:00<00:00, 58.61it/s] 60%|######    | 60/100 [00:01<00:00, 58.44it/s] 66%|######6   | 66/100 [00:01<00:00, 58.31it/s] 72%|#######2  | 72/100 [00:01<00:00, 58.19it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.19it/s] 84%|########4 | 84/100 [00:01<00:00, 58.15it/s] 90%|######### | 90/100 [00:01<00:00, 58.17it/s] 96%|#########6| 96/100 [00:01<00:00, 58.57it/s]100%|##########| 100/100 [00:01<00:00, 58.44it/s]
+Train Epoch 35
+{
+    "Cosine_Loss": 1.0971936452388764,
+    "L1_Loss": 0.1034870433807373,
+    "L2_Loss": 0.20698966205120087,
+    "Loss": 31.10981756210327,
+    "Policy_Grad_Norms": 0.9999999975834462,
+    "Time_Data_Loading": 0.0028246243794759116,
+    "Time_Epoch": 0.02853321631749471,
+    "Time_Log_Info": 6.775061289469401e-05,
+    "Time_Process_Batch": 0.0002682646115620931,
+    "Time_Train_Batch": 0.025308863321940104
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 203.44it/s]
+Validation Epoch 35
+{
+    "Cosine_Loss": 1.1164665699005127,
+    "L1_Loss": 0.10066905282437802,
+    "L2_Loss": 0.20135274529457092,
+    "Loss": 34.44286317825318,
+    "Time_Data_Loading": 0.0005434632301330566,
+    "Time_Epoch": 0.0016541322072347005,
+    "Time_Log_Info": 1.3315677642822266e-05,
+    "Time_Process_Batch": 5.161364873250325e-05,
+    "Time_Train_Batch": 0.0010277152061462403
+}
+
+Epoch 35 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 57.51it/s] 12%|#2        | 12/100 [00:00<00:01, 58.02it/s] 18%|#8        | 18/100 [00:00<00:01, 58.03it/s] 24%|##4       | 24/100 [00:00<00:01, 58.29it/s] 30%|###       | 30/100 [00:00<00:01, 57.93it/s] 36%|###6      | 36/100 [00:00<00:01, 58.08it/s] 42%|####2     | 42/100 [00:00<00:00, 58.12it/s] 48%|####8     | 48/100 [00:00<00:00, 58.35it/s] 54%|#####4    | 54/100 [00:00<00:00, 58.16it/s] 60%|######    | 60/100 [00:01<00:00, 58.13it/s] 66%|######6   | 66/100 [00:01<00:00, 58.19it/s] 72%|#######2  | 72/100 [00:01<00:00, 58.16it/s] 78%|#######8  | 78/100 [00:01<00:00, 57.89it/s] 84%|########4 | 84/100 [00:01<00:00, 57.81it/s] 90%|######### | 90/100 [00:01<00:00, 57.97it/s] 96%|#########6| 96/100 [00:01<00:00, 58.06it/s]100%|##########| 100/100 [00:01<00:00, 58.07it/s]
+Train Epoch 36
+{
+    "Cosine_Loss": 1.0957545924186707,
+    "L1_Loss": 0.10361471734941005,
+    "L2_Loss": 0.20724495083093644,
+    "Loss": 30.754240283966066,
+    "Policy_Grad_Norms": 1.0000000058342629,
+    "Time_Data_Loading": 0.002833553155263265,
+    "Time_Epoch": 0.02870972951253255,
+    "Time_Log_Info": 6.805260976155599e-05,
+    "Time_Process_Batch": 0.0002594749132792155,
+    "Time_Train_Batch": 0.025487168629964193
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 202.85it/s]
+Validation Epoch 36
+{
+    "Cosine_Loss": 1.1144068896770478,
+    "L1_Loss": 0.10053776428103448,
+    "L2_Loss": 0.20109081789851188,
+    "Loss": 34.209585666656494,
+    "Time_Data_Loading": 0.0005446990331013997,
+    "Time_Epoch": 0.0016571402549743653,
+    "Time_Log_Info": 1.5807151794433593e-05,
+    "Time_Process_Batch": 4.94082768758138e-05,
+    "Time_Train_Batch": 0.0010307947794596353
+}
+
+Epoch 36 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 57.13it/s] 12%|#2        | 12/100 [00:00<00:01, 57.53it/s] 18%|#8        | 18/100 [00:00<00:01, 57.82it/s] 24%|##4       | 24/100 [00:00<00:01, 58.06it/s] 30%|###       | 30/100 [00:00<00:01, 58.25it/s] 36%|###6      | 36/100 [00:00<00:01, 58.28it/s] 42%|####2     | 42/100 [00:00<00:00, 58.25it/s] 48%|####8     | 48/100 [00:00<00:00, 58.13it/s] 54%|#####4    | 54/100 [00:00<00:00, 58.16it/s] 60%|######    | 60/100 [00:01<00:00, 58.37it/s] 66%|######6   | 66/100 [00:01<00:00, 58.46it/s] 72%|#######2  | 72/100 [00:01<00:00, 58.35it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.29it/s] 84%|########4 | 84/100 [00:01<00:00, 58.23it/s] 90%|######### | 90/100 [00:01<00:00, 58.10it/s] 96%|#########6| 96/100 [00:01<00:00, 58.06it/s]100%|##########| 100/100 [00:01<00:00, 58.14it/s]
+Train Epoch 37
+{
+    "Cosine_Loss": 1.0935283702611924,
+    "L1_Loss": 0.1034428745508194,
+    "L2_Loss": 0.20690142452716828,
+    "Loss": 30.595820083618165,
+    "Policy_Grad_Norms": 1.00000002940645,
+    "Time_Data_Loading": 0.002789946397145589,
+    "Time_Epoch": 0.028678528467814126,
+    "Time_Log_Info": 6.854534149169922e-05,
+    "Time_Process_Batch": 0.000260317325592041,
+    "Time_Train_Batch": 0.025497798124949136
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 207.04it/s]
+Validation Epoch 37
+{
+    "Cosine_Loss": 1.1058680176734925,
+    "L1_Loss": 0.10046219490468503,
+    "L2_Loss": 0.20093930810689925,
+    "Loss": 34.56480760574341,
+    "Time_Data_Loading": 0.0005327781041463216,
+    "Time_Epoch": 0.001625521977742513,
+    "Time_Log_Info": 1.2938181559244791e-05,
+    "Time_Process_Batch": 4.897117614746094e-05,
+    "Time_Train_Batch": 0.0010128855705261231
+}
+
+Epoch 37 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 57.15it/s] 12%|#2        | 12/100 [00:00<00:01, 58.08it/s] 18%|#8        | 18/100 [00:00<00:01, 57.93it/s] 24%|##4       | 24/100 [00:00<00:01, 57.89it/s] 30%|###       | 30/100 [00:00<00:01, 58.02it/s] 36%|###6      | 36/100 [00:00<00:01, 57.98it/s] 42%|####2     | 42/100 [00:00<00:01, 57.97it/s] 48%|####8     | 48/100 [00:00<00:00, 57.70it/s] 54%|#####4    | 54/100 [00:00<00:00, 57.66it/s] 60%|######    | 60/100 [00:01<00:00, 57.54it/s] 66%|######6   | 66/100 [00:01<00:00, 57.40it/s] 72%|#######2  | 72/100 [00:01<00:00, 57.26it/s] 78%|#######8  | 78/100 [00:01<00:00, 57.59it/s] 84%|########4 | 84/100 [00:01<00:00, 57.66it/s] 90%|######### | 90/100 [00:01<00:00, 57.68it/s] 96%|#########6| 96/100 [00:01<00:00, 57.81it/s]100%|##########| 100/100 [00:01<00:00, 57.73it/s]
+Train Epoch 38
+{
+    "Cosine_Loss": 1.0931173795461655,
+    "L1_Loss": 0.10352626763284206,
+    "L2_Loss": 0.20706841632723808,
+    "Loss": 30.16784185409546,
+    "Policy_Grad_Norms": 0.9999999988683481,
+    "Time_Data_Loading": 0.0028307874997456866,
+    "Time_Epoch": 0.028883683681488036,
+    "Time_Log_Info": 7.197062174479167e-05,
+    "Time_Process_Batch": 0.00025971730550130207,
+    "Time_Train_Batch": 0.02565817435582479
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 204.34it/s]
+Validation Epoch 38
+{
+    "Cosine_Loss": 1.0964866518974303,
+    "L1_Loss": 0.1003643587231636,
+    "L2_Loss": 0.20074309632182122,
+    "Loss": 34.99361457824707,
+    "Time_Data_Loading": 0.0005344907442728678,
+    "Time_Epoch": 0.0016457080841064454,
+    "Time_Log_Info": 2.8415520985921225e-05,
+    "Time_Process_Batch": 5.31156857808431e-05,
+    "Time_Train_Batch": 0.0010128060976664225
+}
+
+Epoch 38 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 57.40it/s] 12%|#2        | 12/100 [00:00<00:01, 57.63it/s] 18%|#8        | 18/100 [00:00<00:01, 58.10it/s] 24%|##4       | 24/100 [00:00<00:01, 58.21it/s] 30%|###       | 30/100 [00:00<00:01, 58.38it/s] 36%|###6      | 36/100 [00:00<00:01, 58.43it/s] 42%|####2     | 42/100 [00:00<00:00, 58.51it/s] 48%|####8     | 48/100 [00:00<00:00, 58.44it/s] 54%|#####4    | 54/100 [00:00<00:00, 58.32it/s] 60%|######    | 60/100 [00:01<00:00, 58.37it/s] 66%|######6   | 66/100 [00:01<00:00, 58.20it/s] 72%|#######2  | 72/100 [00:01<00:00, 58.11it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.14it/s] 84%|########4 | 84/100 [00:01<00:00, 58.01it/s] 90%|######### | 90/100 [00:01<00:00, 57.99it/s] 96%|#########6| 96/100 [00:01<00:00, 58.06it/s]100%|##########| 100/100 [00:01<00:00, 58.15it/s]
+Train Epoch 39
+{
+    "Cosine_Loss": 1.0808867019414903,
+    "L1_Loss": 0.10341647431254387,
+    "L2_Loss": 0.20684876665472984,
+    "Loss": 30.079621067047118,
+    "Policy_Grad_Norms": 1.0000000047972188,
+    "Time_Data_Loading": 0.002797683080037435,
+    "Time_Epoch": 0.0286744753519694,
+    "Time_Log_Info": 6.84817632039388e-05,
+    "Time_Process_Batch": 0.0002597451210021973,
+    "Time_Train_Batch": 0.025484526157379152
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 204.64it/s]
+Validation Epoch 39
+{
+    "Cosine_Loss": 1.0862709641456605,
+    "L1_Loss": 0.100400036200881,
+    "L2_Loss": 0.20081414058804511,
+    "Loss": 34.1706205368042,
+    "Time_Data_Loading": 0.0005354960759480794,
+    "Time_Epoch": 0.0016444722811381023,
+    "Time_Log_Info": 1.3407071431477865e-05,
+    "Time_Process_Batch": 4.951159159342448e-05,
+    "Time_Train_Batch": 0.0010279973347981771
+}
+
+Epoch 39 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 57.63it/s] 12%|#2        | 12/100 [00:00<00:01, 58.16it/s] 18%|#8        | 18/100 [00:00<00:01, 58.50it/s] 24%|##4       | 24/100 [00:00<00:01, 58.44it/s] 30%|###       | 30/100 [00:00<00:01, 58.63it/s] 36%|###6      | 36/100 [00:00<00:01, 58.73it/s] 42%|####2     | 42/100 [00:00<00:00, 58.71it/s] 48%|####8     | 48/100 [00:00<00:00, 58.57it/s] 54%|#####4    | 54/100 [00:00<00:00, 58.57it/s] 60%|######    | 60/100 [00:01<00:00, 58.21it/s] 66%|######6   | 66/100 [00:01<00:00, 57.97it/s] 72%|#######2  | 72/100 [00:01<00:00, 57.86it/s] 78%|#######8  | 78/100 [00:01<00:00, 57.71it/s] 84%|########4 | 84/100 [00:01<00:00, 57.60it/s] 90%|######### | 90/100 [00:01<00:00, 56.87it/s] 96%|#########6| 96/100 [00:01<00:00, 57.06it/s]100%|##########| 100/100 [00:01<00:00, 57.93it/s]
+Train Epoch 40
+{
+    "Cosine_Loss": 1.0859937733411789,
+    "L1_Loss": 0.10348722815513611,
+    "L2_Loss": 0.2069906386733055,
+    "Loss": 29.89344762802124,
+    "Policy_Grad_Norms": 0.9999999877496519,
+    "Time_Data_Loading": 0.002817368507385254,
+    "Time_Epoch": 0.028779494762420654,
+    "Time_Log_Info": 6.972153981526693e-05,
+    "Time_Process_Batch": 0.000258334477742513,
+    "Time_Train_Batch": 0.025572184721628824
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 206.09it/s]
+Validation Epoch 40
+{
+    "Cosine_Loss": 1.090749204158783,
+    "L1_Loss": 0.10064783543348313,
+    "L2_Loss": 0.20131053104996682,
+    "Loss": 35.52454452514648,
+    "Time_Data_Loading": 0.000535881519317627,
+    "Time_Epoch": 0.0016306519508361816,
+    "Time_Log_Info": 1.245737075805664e-05,
+    "Time_Process_Batch": 5.286137262980143e-05,
+    "Time_Train_Batch": 0.0010138114293416342
+}
+
+Epoch 40 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 57.71it/s] 12%|#2        | 12/100 [00:00<00:01, 58.11it/s] 18%|#8        | 18/100 [00:00<00:01, 58.31it/s] 24%|##4       | 24/100 [00:00<00:01, 58.40it/s] 30%|###       | 30/100 [00:00<00:01, 58.45it/s] 36%|###6      | 36/100 [00:00<00:01, 58.47it/s] 42%|####2     | 42/100 [00:00<00:00, 58.72it/s] 48%|####8     | 48/100 [00:00<00:00, 58.60it/s] 54%|#####4    | 54/100 [00:00<00:00, 58.80it/s] 60%|######    | 60/100 [00:01<00:00, 58.82it/s] 66%|######6   | 66/100 [00:01<00:00, 58.58it/s] 72%|#######2  | 72/100 [00:01<00:00, 58.42it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.58it/s] 84%|########4 | 84/100 [00:01<00:00, 58.58it/s] 90%|######### | 90/100 [00:01<00:00, 58.49it/s] 96%|#########6| 96/100 [00:01<00:00, 58.42it/s]100%|##########| 100/100 [00:01<00:00, 58.50it/s]
+Train Epoch 41
+{
+    "Cosine_Loss": 1.0781429105997085,
+    "L1_Loss": 0.10335026644170284,
+    "L2_Loss": 0.20671642929315567,
+    "Loss": 29.678461570739746,
+    "Policy_Grad_Norms": 1.0000000093625545,
+    "Time_Data_Loading": 0.0027775923411051434,
+    "Time_Epoch": 0.02850091060002645,
+    "Time_Log_Info": 6.841023763020833e-05,
+    "Time_Process_Batch": 0.00025861263275146485,
+    "Time_Train_Batch": 0.02533562183380127
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 200.10it/s]
+Validation Epoch 41
+{
+    "Cosine_Loss": 1.0916474878787994,
+    "L1_Loss": 0.10055273994803429,
+    "L2_Loss": 0.2011202372610569,
+    "Loss": 34.37351999282837,
+    "Time_Data_Loading": 0.0005527615547180175,
+    "Time_Epoch": 0.001674195130666097,
+    "Time_Log_Info": 1.2711683909098308e-05,
+    "Time_Process_Batch": 4.955132802327474e-05,
+    "Time_Train_Batch": 0.0010483582814534505
+}
+
+Epoch 41 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 58.32it/s] 12%|#2        | 12/100 [00:00<00:01, 57.99it/s] 18%|#8        | 18/100 [00:00<00:01, 57.63it/s] 24%|##4       | 24/100 [00:00<00:01, 58.03it/s] 30%|###       | 30/100 [00:00<00:01, 58.30it/s] 36%|###6      | 36/100 [00:00<00:01, 58.31it/s] 42%|####2     | 42/100 [00:00<00:00, 58.42it/s] 48%|####8     | 48/100 [00:00<00:00, 58.49it/s] 54%|#####4    | 54/100 [00:00<00:00, 58.67it/s] 60%|######    | 60/100 [00:01<00:00, 58.67it/s] 66%|######6   | 66/100 [00:01<00:00, 58.49it/s] 72%|#######2  | 72/100 [00:01<00:00, 58.46it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.16it/s] 84%|########4 | 84/100 [00:01<00:00, 58.30it/s] 90%|######### | 90/100 [00:01<00:00, 58.30it/s] 96%|#########6| 96/100 [00:01<00:00, 58.33it/s]100%|##########| 100/100 [00:01<00:00, 58.30it/s]
+Train Epoch 42
+{
+    "Cosine_Loss": 1.077352260351181,
+    "L1_Loss": 0.10340100847184658,
+    "L2_Loss": 0.20681808441877364,
+    "Loss": 29.443855113983155,
+    "Policy_Grad_Norms": 1.0000000030423615,
+    "Time_Data_Loading": 0.002822355429331462,
+    "Time_Epoch": 0.028596532344818116,
+    "Time_Log_Info": 6.852944691975912e-05,
+    "Time_Process_Batch": 0.0002588073412577311,
+    "Time_Train_Batch": 0.025385594367980956
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 201.18it/s]
+Validation Epoch 42
+{
+    "Cosine_Loss": 1.0802210092544555,
+    "L1_Loss": 0.10056110210716725,
+    "L2_Loss": 0.20113709419965745,
+    "Loss": 34.20928268432617,
+    "Time_Data_Loading": 0.0005382100741068522,
+    "Time_Epoch": 0.0016733725865681966,
+    "Time_Log_Info": 1.3470649719238281e-05,
+    "Time_Process_Batch": 5.102952321370443e-05,
+    "Time_Train_Batch": 0.0010515689849853516
+}
+
+Epoch 42 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 57.82it/s] 12%|#2        | 12/100 [00:00<00:01, 56.64it/s] 18%|#8        | 18/100 [00:00<00:01, 57.03it/s] 24%|##4       | 24/100 [00:00<00:01, 57.53it/s] 30%|###       | 30/100 [00:00<00:01, 57.75it/s] 36%|###6      | 36/100 [00:00<00:01, 58.09it/s] 42%|####2     | 42/100 [00:00<00:00, 58.32it/s] 48%|####8     | 48/100 [00:00<00:00, 58.51it/s] 54%|#####4    | 54/100 [00:00<00:00, 58.54it/s] 60%|######    | 60/100 [00:01<00:00, 58.55it/s] 66%|######6   | 66/100 [00:01<00:00, 58.55it/s] 72%|#######2  | 72/100 [00:01<00:00, 58.39it/s] 78%|#######8  | 78/100 [00:01<00:00, 57.97it/s] 84%|########4 | 84/100 [00:01<00:00, 57.88it/s] 90%|######### | 90/100 [00:01<00:00, 57.89it/s] 96%|#########6| 96/100 [00:01<00:00, 58.19it/s]100%|##########| 100/100 [00:01<00:00, 58.06it/s]
+Train Epoch 43
+{
+    "Cosine_Loss": 1.0681453567743302,
+    "L1_Loss": 0.10336360670626163,
+    "L2_Loss": 0.20674351543188096,
+    "Loss": 29.145760383605957,
+    "Policy_Grad_Norms": 1.000000003741622,
+    "Time_Data_Loading": 0.0028165459632873537,
+    "Time_Epoch": 0.02871720790863037,
+    "Time_Log_Info": 6.908973058064779e-05,
+    "Time_Process_Batch": 0.00025899410247802733,
+    "Time_Train_Batch": 0.025510557492574058
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 201.99it/s]
+Validation Epoch 43
+{
+    "Cosine_Loss": 1.0874142527580262,
+    "L1_Loss": 0.10054503828287124,
+    "L2_Loss": 0.20110497251152992,
+    "Loss": 34.23597164154053,
+    "Time_Data_Loading": 0.0005462090174357096,
+    "Time_Epoch": 0.0016611576080322265,
+    "Time_Log_Info": 1.4420350392659505e-05,
+    "Time_Process_Batch": 5.744695663452148e-05,
+    "Time_Train_Batch": 0.0010297815004984537
+}
+
+Epoch 43 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 57.59it/s] 12%|#2        | 12/100 [00:00<00:01, 58.35it/s] 18%|#8        | 18/100 [00:00<00:01, 58.00it/s] 24%|##4       | 24/100 [00:00<00:01, 57.59it/s] 30%|###       | 30/100 [00:00<00:01, 57.59it/s] 36%|###6      | 36/100 [00:00<00:01, 57.68it/s] 42%|####2     | 42/100 [00:00<00:01, 57.90it/s] 48%|####8     | 48/100 [00:00<00:00, 58.18it/s] 54%|#####4    | 54/100 [00:00<00:00, 58.26it/s] 60%|######    | 60/100 [00:01<00:00, 58.26it/s] 66%|######6   | 66/100 [00:01<00:00, 57.99it/s] 72%|#######2  | 72/100 [00:01<00:00, 58.18it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.09it/s] 84%|########4 | 84/100 [00:01<00:00, 58.26it/s] 90%|######### | 90/100 [00:01<00:00, 58.17it/s] 96%|#########6| 96/100 [00:01<00:00, 57.95it/s]100%|##########| 100/100 [00:01<00:00, 57.97it/s]
+Train Epoch 44
+{
+    "Cosine_Loss": 1.0668935132026673,
+    "L1_Loss": 0.10333288297057151,
+    "L2_Loss": 0.2066823399066925,
+    "Loss": 29.0636106300354,
+    "Policy_Grad_Norms": 1.0000000049629962,
+    "Time_Data_Loading": 0.002798608938852946,
+    "Time_Epoch": 0.028761259714762368,
+    "Time_Log_Info": 6.817181905110677e-05,
+    "Time_Process_Batch": 0.00025758743286132815,
+    "Time_Train_Batch": 0.025574346383412678
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 199.41it/s]100%|##########| 20/20 [00:00<00:00, 199.16it/s]
+Validation Epoch 44
+{
+    "Cosine_Loss": 1.072195726633072,
+    "L1_Loss": 0.10045540183782578,
+    "L2_Loss": 0.2009257674217224,
+    "Loss": 34.30528573989868,
+    "Time_Data_Loading": 0.0005512197812398274,
+    "Time_Epoch": 0.0016855438550313314,
+    "Time_Log_Info": 1.2993812561035156e-05,
+    "Time_Process_Batch": 5.213022232055664e-05,
+    "Time_Train_Batch": 0.0010533412297566733
+}
+
+Epoch 44 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 57.09it/s] 12%|#2        | 12/100 [00:00<00:01, 57.92it/s] 18%|#8        | 18/100 [00:00<00:01, 57.78it/s] 24%|##4       | 24/100 [00:00<00:01, 58.01it/s] 30%|###       | 30/100 [00:00<00:01, 58.31it/s] 36%|###6      | 36/100 [00:00<00:01, 58.42it/s] 42%|####2     | 42/100 [00:00<00:00, 58.60it/s] 48%|####8     | 48/100 [00:00<00:00, 58.46it/s] 54%|#####4    | 54/100 [00:00<00:00, 58.43it/s] 60%|######    | 60/100 [00:01<00:00, 58.46it/s] 66%|######6   | 66/100 [00:01<00:00, 58.50it/s] 72%|#######2  | 72/100 [00:01<00:00, 58.68it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.77it/s] 84%|########4 | 84/100 [00:01<00:00, 58.88it/s] 90%|######### | 90/100 [00:01<00:00, 58.41it/s] 96%|#########6| 96/100 [00:01<00:00, 58.18it/s]100%|##########| 100/100 [00:01<00:00, 58.32it/s]
+Train Epoch 45
+{
+    "Cosine_Loss": 1.0654221045970917,
+    "L1_Loss": 0.10340655788779259,
+    "L2_Loss": 0.2068297530710697,
+    "Loss": 28.77259738922119,
+    "Policy_Grad_Norms": 0.9999999774389802,
+    "Time_Data_Loading": 0.0027787446975708007,
+    "Time_Epoch": 0.028589522838592528,
+    "Time_Log_Info": 6.908973058064779e-05,
+    "Time_Process_Batch": 0.00025908152262369793,
+    "Time_Train_Batch": 0.025420224666595458
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 200.77it/s]
+Validation Epoch 45
+{
+    "Cosine_Loss": 1.0801915585994721,
+    "L1_Loss": 0.10053156986832619,
+    "L2_Loss": 0.20107937157154082,
+    "Loss": 34.1847261428833,
+    "Time_Data_Loading": 0.0005411942799886068,
+    "Time_Epoch": 0.0016752719879150391,
+    "Time_Log_Info": 1.298983891805013e-05,
+    "Time_Process_Batch": 5.034208297729492e-05,
+    "Time_Train_Batch": 0.0010532100995381674
+}
+
+Epoch 45 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 57.59it/s] 12%|#2        | 12/100 [00:00<00:01, 57.95it/s] 18%|#8        | 18/100 [00:00<00:01, 58.30it/s] 24%|##4       | 24/100 [00:00<00:01, 58.24it/s] 30%|###       | 30/100 [00:00<00:01, 58.31it/s] 36%|###6      | 36/100 [00:00<00:01, 58.48it/s] 42%|####2     | 42/100 [00:00<00:00, 58.60it/s] 48%|####8     | 48/100 [00:00<00:00, 58.73it/s] 54%|#####4    | 54/100 [00:00<00:00, 58.74it/s] 60%|######    | 60/100 [00:01<00:00, 58.52it/s] 66%|######6   | 66/100 [00:01<00:00, 58.48it/s] 72%|#######2  | 72/100 [00:01<00:00, 58.49it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.64it/s] 84%|########4 | 84/100 [00:01<00:00, 58.66it/s] 90%|######### | 90/100 [00:01<00:00, 57.94it/s] 96%|#########6| 96/100 [00:01<00:00, 57.96it/s]100%|##########| 100/100 [00:01<00:00, 58.31it/s]
+Train Epoch 46
+{
+    "Cosine_Loss": 1.0533448553085327,
+    "L1_Loss": 0.10349933296442032,
+    "L2_Loss": 0.20701559409499168,
+    "Loss": 28.470431003570557,
+    "Policy_Grad_Norms": 1.0000000068566492,
+    "Time_Data_Loading": 0.0027862707773844402,
+    "Time_Epoch": 0.02859278122584025,
+    "Time_Log_Info": 6.805658340454101e-05,
+    "Time_Process_Batch": 0.0002562443415323893,
+    "Time_Train_Batch": 0.02542080481847127
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 203.64it/s]
+Validation Epoch 46
+{
+    "Cosine_Loss": 1.0674195528030395,
+    "L1_Loss": 0.10041345730423927,
+    "L2_Loss": 0.20084269419312478,
+    "Loss": 34.29971799850464,
+    "Time_Data_Loading": 0.0005469481150309245,
+    "Time_Epoch": 0.001645338535308838,
+    "Time_Log_Info": 1.2969970703125e-05,
+    "Time_Process_Batch": 4.980564117431641e-05,
+    "Time_Train_Batch": 0.001024619738260905
+}
+
+Epoch 46 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 57.74it/s] 12%|#2        | 12/100 [00:00<00:01, 58.38it/s] 18%|#8        | 18/100 [00:00<00:01, 58.57it/s] 24%|##4       | 24/100 [00:00<00:01, 58.16it/s] 30%|###       | 30/100 [00:00<00:01, 58.33it/s] 36%|###6      | 36/100 [00:00<00:01, 58.49it/s] 42%|####2     | 42/100 [00:00<00:00, 58.73it/s] 48%|####8     | 48/100 [00:00<00:00, 58.92it/s] 54%|#####4    | 54/100 [00:00<00:00, 58.96it/s] 60%|######    | 60/100 [00:01<00:00, 58.64it/s] 66%|######6   | 66/100 [00:01<00:00, 58.26it/s] 72%|#######2  | 72/100 [00:01<00:00, 58.35it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.57it/s] 84%|########4 | 84/100 [00:01<00:00, 58.66it/s] 90%|######### | 90/100 [00:01<00:00, 58.66it/s] 96%|#########6| 96/100 [00:01<00:00, 58.61it/s]100%|##########| 100/100 [00:01<00:00, 58.55it/s]
+Train Epoch 47
+{
+    "Cosine_Loss": 1.055036302804947,
+    "L1_Loss": 0.10335998311638832,
+    "L2_Loss": 0.20673655182123185,
+    "Loss": 28.454965438842773,
+    "Policy_Grad_Norms": 0.9999999914312323,
+    "Time_Data_Loading": 0.0027796467145284015,
+    "Time_Epoch": 0.028478499253590903,
+    "Time_Log_Info": 6.713072458902995e-05,
+    "Time_Process_Batch": 0.0002557039260864258,
+    "Time_Train_Batch": 0.02531386216481527
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 208.25it/s]
+Validation Epoch 47
+{
+    "Cosine_Loss": 1.074730908870697,
+    "L1_Loss": 0.10028136223554611,
+    "L2_Loss": 0.20057829543948175,
+    "Loss": 33.98148260116577,
+    "Time_Data_Loading": 0.0005272905031840007,
+    "Time_Epoch": 0.001617765426635742,
+    "Time_Log_Info": 1.4118353525797526e-05,
+    "Time_Process_Batch": 5.0139427185058596e-05,
+    "Time_Train_Batch": 0.0010065793991088866
+}
+
+Epoch 47 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 58.16it/s] 12%|#2        | 12/100 [00:00<00:01, 58.34it/s] 18%|#8        | 18/100 [00:00<00:01, 58.34it/s] 24%|##4       | 24/100 [00:00<00:01, 57.94it/s] 30%|###       | 30/100 [00:00<00:01, 57.20it/s] 36%|###6      | 36/100 [00:00<00:01, 57.43it/s] 42%|####2     | 42/100 [00:00<00:01, 57.68it/s] 48%|####8     | 48/100 [00:00<00:00, 57.71it/s] 54%|#####4    | 54/100 [00:00<00:00, 57.66it/s] 60%|######    | 60/100 [00:01<00:00, 57.51it/s] 66%|######6   | 66/100 [00:01<00:00, 57.58it/s] 72%|#######2  | 72/100 [00:01<00:00, 57.69it/s] 78%|#######8  | 78/100 [00:01<00:00, 57.82it/s] 84%|########4 | 84/100 [00:01<00:00, 57.84it/s] 90%|######### | 90/100 [00:01<00:00, 57.71it/s] 96%|#########6| 96/100 [00:01<00:00, 57.21it/s]100%|##########| 100/100 [00:01<00:00, 57.62it/s]
+Train Epoch 48
+{
+    "Cosine_Loss": 1.051597890853882,
+    "L1_Loss": 0.1034097520262003,
+    "L2_Loss": 0.2068362982571125,
+    "Loss": 28.19689998626709,
+    "Policy_Grad_Norms": 1.0000000113863734,
+    "Time_Data_Loading": 0.0028224110603332518,
+    "Time_Epoch": 0.028935110569000243,
+    "Time_Log_Info": 6.985664367675781e-05,
+    "Time_Process_Batch": 0.0002601822217305501,
+    "Time_Train_Batch": 0.02571861743927002
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 197.41it/s]100%|##########| 20/20 [00:00<00:00, 197.15it/s]
+Validation Epoch 48
+{
+    "Cosine_Loss": 1.0540904074907302,
+    "L1_Loss": 0.10049890577793122,
+    "L2_Loss": 0.20101385191082954,
+    "Loss": 34.98191709518433,
+    "Time_Data_Loading": 0.0005663116772969564,
+    "Time_Epoch": 0.0017051378885904948,
+    "Time_Log_Info": 1.233816146850586e-05,
+    "Time_Process_Batch": 6.453593571980794e-05,
+    "Time_Train_Batch": 0.0010434627532958985
+}
+
+Epoch 48 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 57.20it/s] 12%|#2        | 12/100 [00:00<00:01, 57.09it/s] 18%|#8        | 18/100 [00:00<00:01, 56.95it/s] 24%|##4       | 24/100 [00:00<00:01, 57.52it/s] 30%|###       | 30/100 [00:00<00:01, 57.46it/s] 36%|###6      | 36/100 [00:00<00:01, 57.93it/s] 42%|####2     | 42/100 [00:00<00:01, 57.86it/s] 48%|####8     | 48/100 [00:00<00:00, 57.77it/s] 54%|#####4    | 54/100 [00:00<00:00, 57.88it/s] 60%|######    | 60/100 [00:01<00:00, 58.22it/s] 66%|######6   | 66/100 [00:01<00:00, 58.28it/s] 72%|#######2  | 72/100 [00:01<00:00, 58.45it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.51it/s] 84%|########4 | 84/100 [00:01<00:00, 58.46it/s] 90%|######### | 90/100 [00:01<00:00, 58.47it/s] 96%|#########6| 96/100 [00:01<00:00, 58.49it/s]100%|##########| 100/100 [00:01<00:00, 58.04it/s]
+Train Epoch 49
+{
+    "Cosine_Loss": 1.0449430149793626,
+    "L1_Loss": 0.10330607198178768,
+    "L2_Loss": 0.20662938818335533,
+    "Loss": 27.836557426452636,
+    "Policy_Grad_Norms": 0.9999999887320017,
+    "Time_Data_Loading": 0.002812548478444417,
+    "Time_Epoch": 0.028724563121795655,
+    "Time_Log_Info": 6.800095240275064e-05,
+    "Time_Process_Batch": 0.0002580126126607259,
+    "Time_Train_Batch": 0.0255237619082133
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 207.54it/s]
+Validation Epoch 49
+{
+    "Cosine_Loss": 1.0487995743751526,
+    "L1_Loss": 0.10033299550414085,
+    "L2_Loss": 0.2006814584136009,
+    "Loss": 34.767104148864746,
+    "Time_Data_Loading": 0.0005252917607625325,
+    "Time_Epoch": 0.001626153786977132,
+    "Time_Log_Info": 1.3279914855957032e-05,
+    "Time_Process_Batch": 5.3270657857259115e-05,
+    "Time_Train_Batch": 0.0010119080543518066
+}
+
+Epoch 49 Memory Usage: 3661 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 57.68it/s] 12%|#2        | 12/100 [00:00<00:01, 58.10it/s] 18%|#8        | 18/100 [00:00<00:01, 58.44it/s] 24%|##4       | 24/100 [00:00<00:01, 58.68it/s] 30%|###       | 30/100 [00:00<00:01, 58.27it/s] 36%|###6      | 36/100 [00:00<00:01, 58.24it/s] 42%|####2     | 42/100 [00:00<00:00, 58.21it/s] 48%|####8     | 48/100 [00:00<00:00, 58.29it/s] 54%|#####4    | 54/100 [00:00<00:00, 58.36it/s] 60%|######    | 60/100 [00:01<00:00, 57.90it/s] 66%|######6   | 66/100 [00:01<00:00, 57.88it/s] 72%|#######2  | 72/100 [00:01<00:00, 57.84it/s] 78%|#######8  | 78/100 [00:01<00:00, 58.02it/s] 84%|########4 | 84/100 [00:01<00:00, 58.15it/s] 90%|######### | 90/100 [00:01<00:00, 57.91it/s] 96%|#########6| 96/100 [00:01<00:00, 57.88it/s]100%|##########| 100/100 [00:01<00:00, 57.99it/s]
+Train Epoch 50
+{
+    "Cosine_Loss": 1.046046376824379,
+    "L1_Loss": 0.10330404691398144,
+    "L2_Loss": 0.20662510588765146,
+    "Loss": 27.932784366607667,
+    "Policy_Grad_Norms": 0.9999999917242319,
+    "Time_Data_Loading": 0.0028193354606628417,
+    "Time_Epoch": 0.028752446174621582,
+    "Time_Log_Info": 6.93678855895996e-05,
+    "Time_Process_Batch": 0.0002590775489807129,
+    "Time_Train_Batch": 0.025542815526326496
+}
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 202.62it/s]
+Validation Epoch 50
+{
+    "Cosine_Loss": 1.0575721740722657,
+    "L1_Loss": 0.10015076920390129,
+    "L2_Loss": 0.200316421687603,
+    "Loss": 34.69874219894409,
+    "Time_Data_Loading": 0.0005284031232198079,
+    "Time_Epoch": 0.0016617814699808756,
+    "Time_Log_Info": 3.0402342478434245e-05,
+    "Time_Process_Batch": 5.045334498087565e-05,
+    "Time_Train_Batch": 0.0010333538055419921
+}
+video writes to /home/andrew/Desktop/robo_sims/robomimic/robomimic/../bet_trained_models/test/20221130053651/videos/Lift_epoch_50.mp4
+rollout: env=Lift, horizon=400, use_goals=False, num_episodes=10
+  0%|          | 0/10 [00:00<?, ?it/s]tensor([[-0.0044, -0.0047, -0.6553,  0.0131, -0.0389,  0.1998, -1.0088]],
+       device='cuda:0')
+post mlp tensor([[[-0.0395,  0.0557, -0.0289, -0.0141,  0.0682,  0.0221,  0.0155]]],
+       device='cuda:0')
+tensor([[ 0.0503,  0.0667, -0.4996,  0.0372, -0.0388,  0.1209, -0.9949]],
+       device='cuda:0')
+post mlp tensor([[[-0.0369,  0.0587, -0.0233, -0.0129,  0.0595,  0.0260,  0.0047]]],
+       device='cuda:0')
+tensor([[-0.0364,  0.0119, -0.6553,  0.0181, -0.0508,  0.1620, -1.0098]],
+       device='cuda:0')
+post mlp tensor([[[-0.0383,  0.0576, -0.0288, -0.0156,  0.0693,  0.0215,  0.0142]]],
+       device='cuda:0')
+tensor([[ 0.2465, -0.0926, -0.6218,  0.0302, -0.0375,  0.1423, -1.0090]],
+       device='cuda:0')
+post mlp tensor([[[-0.0392,  0.0447, -0.0218, -0.0097,  0.0635,  0.0303,  0.0103]]],
+       device='cuda:0')
+tensor([[-0.0248,  0.0040, -0.6664,  0.0182, -0.0543,  0.1478, -1.0082]],
+       device='cuda:0')
+post mlp tensor([[[-0.0380,  0.0567, -0.0284, -0.0158,  0.0701,  0.0218,  0.0142]]],
+       device='cuda:0')
+tensor([[ 0.0198,  0.1092, -0.3215,  0.0220, -0.0105,  0.0827, -0.9968]],
+       device='cuda:0')
+post mlp tensor([[[-0.0357,  0.0631, -0.0180, -0.0144,  0.0505,  0.0306, -0.0017]]],
+       device='cuda:0')
+tensor([[-2.2127e-02,  2.3353e-04, -6.6574e-01,  1.8617e-02, -5.2625e-02,
+          1.4308e-01, -1.0081e+00]], device='cuda:0')
+post mlp tensor([[[-0.0379,  0.0564, -0.0282, -0.0160,  0.0701,  0.0222,  0.0142]]],
+       device='cuda:0')
+tensor([[-0.1926,  0.2045, -0.4667,  0.0279, -0.0185,  0.0591, -1.0049]],
+       device='cuda:0')
+post mlp tensor([[[-0.0364,  0.0716, -0.0284, -0.0181,  0.0636,  0.0230,  0.0039]]],
+       device='cuda:0')
+tensor([[ 0.0470,  0.0694, -0.4721,  0.0280, -0.0554,  0.0328, -0.9977]],
+       device='cuda:0')
+post mlp tensor([[[-0.0348,  0.0594, -0.0198, -0.0154,  0.0594,  0.0280,  0.0014]]],
+       device='cuda:0')
+tensor([[ 0.0175,  0.1006, -0.3211,  0.0207, -0.0087,  0.0799, -0.9973]],
+       device='cuda:0')
+post mlp tensor([[[-0.0356,  0.0627, -0.0178, -0.0148,  0.0506,  0.0309, -0.0014]]],
+       device='cuda:0')
+tensor([[-0.1967,  0.1975, -0.4640,  0.0280, -0.0175,  0.0540, -1.0045]],
+       device='cuda:0')
+post mlp tensor([[[-0.0362,  0.0714, -0.0282, -0.0185,  0.0636,  0.0233,  0.0040]]],
+       device='cuda:0')
+tensor([[ 0.0459,  0.0687, -0.4716,  0.0281, -0.0558,  0.0274, -0.9978]],
+       device='cuda:0')
+post mlp tensor([[[-0.0346,  0.0594, -0.0197, -0.0156,  0.0595,  0.0281,  0.0013]]],
+       device='cuda:0')
+tensor([[ 0.1992,  0.0163, -0.8260,  0.0267, -0.0523,  0.0891, -1.0026]],
+       device='cuda:0')
+post mlp tensor([[[-0.0403,  0.0470, -0.0299, -0.0107,  0.0794,  0.0254,  0.0155]]],
+       device='cuda:0')
+tensor([[-0.1978,  0.1953, -0.4627,  0.0279, -0.0172,  0.0523, -1.0044]],
+       device='cuda:0')
+post mlp tensor([[[-0.0361,  0.0713, -0.0280, -0.0187,  0.0636,  0.0234,  0.0040]]],
+       device='cuda:0')
+tensor([[-2.1378e-02,  6.6705e-04, -6.6306e-01,  2.2033e-02, -5.1255e-02,
+          1.3155e-01, -1.0079e+00]], device='cuda:0')
+post mlp tensor([[[-0.0376,  0.0563, -0.0280, -0.0162,  0.0702,  0.0226,  0.0138]]],
+       device='cuda:0')
+tensor([[-0.0212,  0.0013, -0.6630,  0.0222, -0.0512,  0.1311, -1.0079]],
+       device='cuda:0')
+post mlp tensor([[[-0.0376,  0.0564, -0.0280, -0.0162,  0.0702,  0.0227,  0.0138]]],
+       device='cuda:0')
+tensor([[-0.0210,  0.0018, -0.6630,  0.0224, -0.0511,  0.1304, -1.0079]],
+       device='cuda:0')
+post mlp tensor([[[-0.0376,  0.0564, -0.0280, -0.0162,  0.0702,  0.0227,  0.0137]]],
+       device='cuda:0')
+tensor([[-0.1981,  0.1937, -0.4613,  0.0278, -0.0170,  0.0510, -1.0041]],
+       device='cuda:0')
+post mlp tensor([[[-0.0360,  0.0713, -0.0279, -0.0188,  0.0635,  0.0235,  0.0040]]],
+       device='cuda:0')
+tensor([[-0.0208,  0.0031, -0.6629,  0.0229, -0.0509,  0.1293, -1.0078]],
+       device='cuda:0')
+post mlp tensor([[[-0.0376,  0.0564, -0.0280, -0.0162,  0.0702,  0.0227,  0.0137]]],
+       device='cuda:0')
+tensor([[ 0.0451,  0.0710, -0.4710,  0.0280, -0.0565,  0.0201, -0.9979]],
+       device='cuda:0')
+post mlp tensor([[[-0.0345,  0.0595, -0.0196, -0.0158,  0.0596,  0.0282,  0.0010]]],
+       device='cuda:0')
+tensor([[ 0.0450,  0.0714, -0.4709,  0.0280, -0.0566,  0.0194, -0.9980]],
+       device='cuda:0')
+post mlp tensor([[[-0.0345,  0.0595, -0.0195, -0.0158,  0.0596,  0.0282,  0.0010]]],
+       device='cuda:0')
+tensor([[-0.0204,  0.0050, -0.6629,  0.0234, -0.0508,  0.1281, -1.0078]],
+       device='cuda:0')
+post mlp tensor([[[-0.0376,  0.0565, -0.0281, -0.0162,  0.0703,  0.0227,  0.0136]]],
+       device='cuda:0')
+tensor([[-0.1977,  0.1924, -0.4598,  0.0276, -0.0168,  0.0498, -1.0039]],
+       device='cuda:0')
+post mlp tensor([[[-0.0360,  0.0712, -0.0278, -0.0188,  0.0634,  0.0236,  0.0039]]],
+       device='cuda:0')
+tensor([[ 1.6300e-01,  7.8034e-02,  6.7304e-01, -8.1302e-04,  6.7281e-02,
+          1.4025e-02,  1.0081e+00]], device='cuda:0')
+post mlp tensor([[[ 0.0142, -0.0210,  0.0767, -0.0175, -0.0131, -0.0322, -0.0176]]],
+       device='cuda:0')
+tensor([[-0.0199,  0.0069, -0.6629,  0.0239, -0.0506,  0.1270, -1.0078]],
+       device='cuda:0')
+post mlp tensor([[[-0.0376,  0.0565, -0.0281, -0.0161,  0.0703,  0.0227,  0.0135]]],
+       device='cuda:0')
+tensor([[-4.1960e-04,  1.2615e-01,  9.8559e-01, -2.1082e-02,  1.9401e-01,
+         -6.3494e-02,  1.0049e+00]], device='cuda:0')
+post mlp tensor([[[ 0.0101, -0.0098,  0.0874, -0.0339, -0.0233, -0.0216, -0.0175]]],
+       device='cuda:0')
+tensor([[-0.0198,  0.0078, -0.6630,  0.0242, -0.0506,  0.1270, -1.0078]],
+       device='cuda:0')
+post mlp tensor([[[-0.0376,  0.0565, -0.0282, -0.0161,  0.0703,  0.0227,  0.0135]]],
+       device='cuda:0')
+tensor([[ 0.0447,  0.0739, -0.4709,  0.0280, -0.0568,  0.0166, -0.9979]],
+       device='cuda:0')
+post mlp tensor([[[-0.0345,  0.0596, -0.0195, -0.0158,  0.0597,  0.0283,  0.0009]]],
+       device='cuda:0')
+tensor([[ 0.0151,  0.0965, -0.3185,  0.0198, -0.0069,  0.0739, -0.9978]],
+       device='cuda:0')
+post mlp tensor([[[-0.0355,  0.0626, -0.0175, -0.0151,  0.0506,  0.0313, -0.0014]]],
+       device='cuda:0')
+tensor([[-0.0195,  0.0088, -0.6633,  0.0241, -0.0505,  0.1271, -1.0078]],
+       device='cuda:0')
+post mlp tensor([[[-0.0377,  0.0566, -0.0282, -0.0161,  0.0704,  0.0227,  0.0135]]],
+       device='cuda:0')
+tensor([[ 1.6200e-01,  8.0500e-02,  6.7325e-01, -6.2698e-04,  6.7122e-02,
+          1.3489e-02,  1.0081e+00]], device='cuda:0')
+post mlp tensor([[[ 0.0142, -0.0209,  0.0766, -0.0175, -0.0132, -0.0323, -0.0177]]],
+       device='cuda:0')
+tensor([[ 0.0152,  0.0970, -0.3184,  0.0197, -0.0067,  0.0733, -0.9978]],
+       device='cuda:0')
+post mlp tensor([[[-0.0355,  0.0626, -0.0175, -0.0151,  0.0506,  0.0313, -0.0014]]],
+       device='cuda:0')
+tensor([[ 0.0452,  0.0751, -0.4710,  0.0278, -0.0566,  0.0160, -0.9979]],
+       device='cuda:0')
+post mlp tensor([[[-0.0345,  0.0597, -0.0195, -0.0158,  0.0597,  0.0283,  0.0008]]],
+       device='cuda:0')
+tensor([[ 1.2561e-01, -1.4669e-02, -5.0575e-03,  1.3747e-04,  3.3959e-02,
+          7.8066e-02, -1.0059e+00]], device='cuda:0')
+post mlp tensor([[[-0.0336,  0.0577, -0.0024, -0.0155,  0.0316,  0.0422, -0.0104]]],
+       device='cuda:0')
+tensor([[-0.1956,  0.1945, -0.4593,  0.0278, -0.0170,  0.0507, -1.0038]],
+       device='cuda:0')
+post mlp tensor([[[-0.0360,  0.0713, -0.0278, -0.0187,  0.0633,  0.0235,  0.0038]]],
+       device='cuda:0')
+tensor([[ 0.1150, -0.0100,  0.4263, -0.0564,  0.1769, -0.1067,  0.9936]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0123, -0.0286,  0.0799, -0.0217,  0.0023, -0.0159,  0.0014]]],
+       device='cuda:0')
+tensor([[ 0.0157,  0.0989, -0.3182,  0.0200, -0.0068,  0.0730, -0.9978]],
+       device='cuda:0')
+post mlp tensor([[[-0.0355,  0.0627, -0.0176, -0.0151,  0.0506,  0.0313, -0.0015]]],
+       device='cuda:0')
+tensor([[-0.0184,  0.0133, -0.6650,  0.0240, -0.0507,  0.1284, -1.0079]],
+       device='cuda:0')
+post mlp tensor([[[-0.0378,  0.0567, -0.0283, -0.0159,  0.0705,  0.0226,  0.0134]]],
+       device='cuda:0')
+tensor([[-0.0180,  0.0138, -0.6649,  0.0241, -0.0505,  0.1281, -1.0079]],
+       device='cuda:0')
+post mlp tensor([[[-0.0378,  0.0567, -0.0284, -0.0159,  0.0705,  0.0226,  0.0134]]],
+       device='cuda:0')
+tensor([[-0.1941,  0.1965, -0.4595,  0.0274, -0.0170,  0.0517, -1.0037]],
+       device='cuda:0')
+post mlp tensor([[[-0.0361,  0.0713, -0.0279, -0.0186,  0.0633,  0.0235,  0.0038]]],
+       device='cuda:0')
+tensor([[-0.1653,  0.0428, -0.2815, -0.0069,  0.0132,  0.0333, -0.9974]],
+       device='cuda:0')
+post mlp tensor([[[-0.0336,  0.0656, -0.0168, -0.0225,  0.0519,  0.0317,  0.0028]]],
+       device='cuda:0')
+tensor([[ 0.0464,  0.0783, -0.4713,  0.0273, -0.0568,  0.0135, -0.9978]],
+       device='cuda:0')
+post mlp tensor([[[-0.0345,  0.0598, -0.0195, -0.0158,  0.0598,  0.0283,  0.0007]]],
+       device='cuda:0')
+tensor([[-0.0701,  0.1767, -0.5285,  0.0111, -0.0836,  0.0149,  1.0101]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0328, -0.0274,  0.0371,  0.0008,  0.0567, -0.0503,  0.0174]]],
+       device='cuda:0')
+tensor([[-0.0699,  0.1756, -0.5267,  0.0107, -0.0832,  0.0146,  1.0101]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0328, -0.0274,  0.0373,  0.0008,  0.0565, -0.0502,  0.0174]]],
+       device='cuda:0')
+tensor([[ 0.1999,  0.0192, -0.8243,  0.0280, -0.0511,  0.0742, -1.0021]],
+       device='cuda:0')
+post mlp tensor([[[-0.0400,  0.0470, -0.0297, -0.0110,  0.0796,  0.0259,  0.0151]]],
+       device='cuda:0')
+tensor([[ 0.0139,  0.0953, -0.3167,  0.0191, -0.0056,  0.0695, -0.9980]],
+       device='cuda:0')
+post mlp tensor([[[-0.0355,  0.0626, -0.0174, -0.0153,  0.0506,  0.0315, -0.0014]]],
+       device='cuda:0')
+tensor([[ 0.0453,  0.0789, -0.4709,  0.0274, -0.0572,  0.0083, -0.9980]],
+       device='cuda:0')
+post mlp tensor([[[-0.0344,  0.0598, -0.0194, -0.0160,  0.0599,  0.0284,  0.0006]]],
+       device='cuda:0')
+tensor([[ 0.0452,  0.0790, -0.4708,  0.0274, -0.0572,  0.0080, -0.9980]],
+       device='cuda:0')
+post mlp tensor([[[-0.0344,  0.0598, -0.0194, -0.0160,  0.0599,  0.0284,  0.0006]]],
+       device='cuda:0')
+tensor([[-0.0496,  0.3038,  1.0242, -0.0610,  0.2595, -0.1445,  0.9907]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0075, -0.0015,  0.0868, -0.0383, -0.0227, -0.0158, -0.0188]]],
+       device='cuda:0')
+tensor([[-0.1956,  0.1893, -0.4560,  0.0273, -0.0165,  0.0471, -1.0033]],
+       device='cuda:0')
+post mlp tensor([[[-0.0359,  0.0711, -0.0275, -0.0189,  0.0632,  0.0238,  0.0038]]],
+       device='cuda:0')
+tensor([[-0.1624,  0.0411, -0.2780, -0.0066,  0.0125,  0.0342, -0.9977]],
+       device='cuda:0')
+post mlp tensor([[[-0.0336,  0.0655, -0.0166, -0.0224,  0.0516,  0.0318,  0.0026]]],
+       device='cuda:0')
+tensor([[-0.1623,  0.0410, -0.2780, -0.0066,  0.0125,  0.0342, -0.9977]],
+       device='cuda:0')
+post mlp tensor([[[-0.0336,  0.0655, -0.0166, -0.0224,  0.0516,  0.0318,  0.0026]]],
+       device='cuda:0')
+tensor([[-0.1953,  0.1893, -0.4557,  0.0273, -0.0165,  0.0471, -1.0032]],
+       device='cuda:0')
+post mlp tensor([[[-0.0359,  0.0711, -0.0275, -0.0189,  0.0632,  0.0238,  0.0038]]],
+       device='cuda:0')
+tensor([[-0.1952,  0.1893, -0.4558,  0.0272, -0.0164,  0.0471, -1.0032]],
+       device='cuda:0')
+post mlp tensor([[[-0.0359,  0.0710, -0.0275, -0.0189,  0.0632,  0.0238,  0.0038]]],
+       device='cuda:0')
+tensor([[ 0.0457,  0.0807, -0.4709,  0.0271, -0.0573,  0.0061, -0.9979]],
+       device='cuda:0')
+post mlp tensor([[[-0.0343,  0.0599, -0.0194, -0.0160,  0.0600,  0.0285,  0.0005]]],
+       device='cuda:0')
+tensor([[ 0.0134,  0.0946, -0.3158,  0.0188, -0.0051,  0.0672, -0.9981]],
+       device='cuda:0')
+post mlp tensor([[[-0.0354,  0.0626, -0.0173, -0.0154,  0.0506,  0.0316, -0.0014]]],
+       device='cuda:0')
+tensor([[ 0.1539,  0.1709,  1.0140, -0.0745,  0.2305, -0.0292,  0.9987]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0065, -0.0172,  0.0878, -0.0309, -0.0241, -0.0190, -0.0205]]],
+       device='cuda:0')
+tensor([[-0.1610,  0.0393, -0.2766, -0.0066,  0.0125,  0.0347, -0.9977]],
+       device='cuda:0')
+post mlp tensor([[[-0.0336,  0.0654, -0.0165, -0.0224,  0.0515,  0.0319,  0.0026]]],
+       device='cuda:0')
+tensor([[-0.0501,  0.3038,  1.0247, -0.0594,  0.2579, -0.1428,  0.9915]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0076, -0.0015,  0.0867, -0.0382, -0.0228, -0.0161, -0.0189]]],
+       device='cuda:0')
+tensor([[-0.0153,  0.0224, -0.6652,  0.0274, -0.0493,  0.1193, -1.0076]],
+       device='cuda:0')
+post mlp tensor([[[-0.0377,  0.0569, -0.0285, -0.0159,  0.0707,  0.0228,  0.0130]]],
+       device='cuda:0')
+tensor([[-0.1940,  0.1903, -0.4552,  0.0276, -0.0166,  0.0478, -1.0030]],
+       device='cuda:0')
+post mlp tensor([[[-0.0359,  0.0711, -0.0275, -0.0188,  0.0631,  0.0238,  0.0037]]],
+       device='cuda:0')
+tensor([[-0.0150,  0.0236, -0.6659,  0.0269, -0.0495,  0.1208, -1.0077]],
+       device='cuda:0')
+post mlp tensor([[[-0.0378,  0.0570, -0.0285, -0.0158,  0.0708,  0.0228,  0.0130]]],
+       device='cuda:0')
+tensor([[ 0.2017,  0.0260, -0.8218,  0.0273, -0.0499,  0.0697, -1.0017]],
+       device='cuda:0')
+post mlp tensor([[[-0.0400,  0.0472, -0.0296, -0.0109,  0.0796,  0.0261,  0.0149]]],
+       device='cuda:0')
+tensor([[ 0.1111, -0.0028,  0.4264, -0.0538,  0.1691, -0.1032,  0.9936]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0127, -0.0279,  0.0794, -0.0214,  0.0021, -0.0168,  0.0008]]],
+       device='cuda:0')
+tensor([[ 0.1558,  0.1705,  1.0144, -0.0753,  0.2296, -0.0289,  0.9986]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0065, -0.0173,  0.0878, -0.0309, -0.0242, -0.0190, -0.0205]]],
+       device='cuda:0')
+tensor([[-0.1936,  0.1902, -0.4549,  0.0270, -0.0164,  0.0475, -1.0030]],
+       device='cuda:0')
+post mlp tensor([[[-0.0359,  0.0710, -0.0274, -0.0188,  0.0631,  0.0238,  0.0038]]],
+       device='cuda:0')
+tensor([[-0.1942,  0.1885, -0.4542,  0.0271, -0.0163,  0.0467, -1.0029]],
+       device='cuda:0')
+post mlp tensor([[[-0.0358,  0.0710, -0.0274, -0.0189,  0.0631,  0.0239,  0.0038]]],
+       device='cuda:0')
+tensor([[-0.0045,  0.1303,  0.9875, -0.0202,  0.1973, -0.0625,  1.0041]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0100, -0.0096,  0.0873, -0.0340, -0.0233, -0.0215, -0.0174]]],
+       device='cuda:0')
+tensor([[ 0.2211, -0.1134, -0.6292,  0.0402, -0.0439,  0.1033, -1.0088]],
+       device='cuda:0')
+post mlp tensor([[[-0.0375,  0.0444, -0.0213, -0.0117,  0.0648,  0.0308,  0.0101]]],
+       device='cuda:0')
+tensor([[-0.1948,  0.1871, -0.4540,  0.0272, -0.0161,  0.0459, -1.0028]],
+       device='cuda:0')
+post mlp tensor([[[-0.0358,  0.0709, -0.0273, -0.0190,  0.0631,  0.0239,  0.0038]]],
+       device='cuda:0')
+tensor([[-0.0583,  0.1706, -0.5153,  0.0080, -0.0830,  0.0112,  1.0101]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0324, -0.0278,  0.0379,  0.0006,  0.0556, -0.0497,  0.0169]]],
+       device='cuda:0')
+tensor([[-0.1948,  0.1864, -0.4536,  0.0272, -0.0161,  0.0455, -1.0028]],
+       device='cuda:0')
+post mlp tensor([[[-0.0358,  0.0709, -0.0273, -0.0190,  0.0630,  0.0239,  0.0038]]],
+       device='cuda:0')
+tensor([[-0.1948,  0.1862, -0.4535,  0.0271, -0.0161,  0.0453, -1.0028]],
+       device='cuda:0')
+post mlp tensor([[[-0.0358,  0.0709, -0.0273, -0.0190,  0.0630,  0.0239,  0.0038]]],
+       device='cuda:0')
+tensor([[ 0.0465,  0.0850, -0.4713,  0.0268, -0.0573, -0.0013, -0.9980]],
+       device='cuda:0')
+post mlp tensor([[[-0.0343,  0.0600, -0.0193, -0.0161,  0.0602,  0.0286,  0.0003]]],
+       device='cuda:0')
+tensor([[ 0.0125,  0.0930, -0.3144,  0.0184, -0.0039,  0.0635, -0.9983]],
+       device='cuda:0')
+post mlp tensor([[[-0.0354,  0.0625, -0.0172, -0.0156,  0.0507,  0.0319, -0.0014]]],
+       device='cuda:0')
+tensor([[ 0.4350,  0.2945,  0.9862,  0.0306,  0.2820, -0.0314,  0.9756]],
+       device='cuda:0')
+post mlp tensor([[[-0.0012, -0.0290,  0.0822, -0.0209, -0.0245, -0.0178, -0.0304]]],
+       device='cuda:0')
+tensor([[-0.1577,  0.0359, -0.2735, -0.0064,  0.0125,  0.0353, -0.9978]],
+       device='cuda:0')
+post mlp tensor([[[-0.0335,  0.0652, -0.0163, -0.0224,  0.0512,  0.0320,  0.0025]]],
+       device='cuda:0')
+tensor([[-0.1940,  0.1850, -0.4525,  0.0272, -0.0162,  0.0447, -1.0026]],
+       device='cuda:0')
+post mlp tensor([[[-0.0357,  0.0709, -0.0272, -0.0191,  0.0630,  0.0240,  0.0038]]],
+       device='cuda:0')
+tensor([[ 0.0458,  0.0864, -0.4710,  0.0271, -0.0573, -0.0028, -0.9980]],
+       device='cuda:0')
+post mlp tensor([[[-0.0343,  0.0600, -0.0193, -0.0161,  0.0602,  0.0286,  0.0002]]],
+       device='cuda:0')
+tensor([[ 0.0460,  0.0869, -0.4711,  0.0270, -0.0573, -0.0030, -0.9980]],
+       device='cuda:0')
+post mlp tensor([[[-0.0343,  0.0601, -0.0193, -0.0161,  0.0602,  0.0286,  0.0002]]],
+       device='cuda:0')
+tensor([[ 0.0468,  0.0875, -0.4713,  0.0267, -0.0573, -0.0025, -0.9979]],
+       device='cuda:0')
+post mlp tensor([[[-0.0343,  0.0600, -0.0193, -0.0160,  0.0602,  0.0286,  0.0002]]],
+       device='cuda:0')
+tensor([[ 0.1052, -0.0016,  0.4270, -0.0525,  0.1655, -0.1009,  0.9936]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0129, -0.0274,  0.0792, -0.0213,  0.0020, -0.0172,  0.0007]]],
+       device='cuda:0')
+tensor([[-0.1928,  0.1858, -0.4523,  0.0269, -0.0161,  0.0450, -1.0025]],
+       device='cuda:0')
+post mlp tensor([[[-0.0358,  0.0708, -0.0272, -0.0190,  0.0629,  0.0240,  0.0037]]],
+       device='cuda:0')
+tensor([[ 0.2211, -0.1126, -0.6286,  0.0409, -0.0436,  0.0979, -1.0088]],
+       device='cuda:0')
+post mlp tensor([[[-0.0374,  0.0444, -0.0212, -0.0119,  0.0649,  0.0309,  0.0099]]],
+       device='cuda:0')
+tensor([[-0.1937,  0.1828, -0.4511,  0.0270, -0.0160,  0.0435, -1.0024]],
+       device='cuda:0')
+post mlp tensor([[[-0.0357,  0.0708, -0.0270, -0.0191,  0.0629,  0.0241,  0.0038]]],
+       device='cuda:0')
+tensor([[-0.1557,  0.0337, -0.2711, -0.0062,  0.0126,  0.0358, -0.9979]],
+       device='cuda:0')
+post mlp tensor([[[-0.0335,  0.0651, -0.0162, -0.0224,  0.0510,  0.0321,  0.0025]]],
+       device='cuda:0')
+tensor([[-0.0506,  0.1645, -0.5049,  0.0057, -0.0825,  0.0084,  1.0101]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0322, -0.0281,  0.0386,  0.0004,  0.0548, -0.0493,  0.0166]]],
+       device='cuda:0')
+tensor([[-0.1938,  0.1810, -0.4503,  0.0269, -0.0159,  0.0426, -1.0023]],
+       device='cuda:0')
+post mlp tensor([[[-0.0356,  0.0707, -0.0269, -0.0192,  0.0628,  0.0242,  0.0038]]],
+       device='cuda:0')
+tensor([[-0.0497,  0.1635, -0.5033,  0.0054, -0.0823,  0.0080,  1.0101]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0322, -0.0281,  0.0387,  0.0004,  0.0546, -0.0492,  0.0166]]],
+       device='cuda:0')
+tensor([[-0.0102,  0.0329, -0.6662,  0.0306, -0.0473,  0.1079, -1.0072]],
+       device='cuda:0')
+post mlp tensor([[[-0.0377,  0.0571, -0.0286, -0.0158,  0.0711,  0.0232,  0.0125]]],
+       device='cuda:0')
+tensor([[-0.1937,  0.1797, -0.4494,  0.0269, -0.0158,  0.0420, -1.0022]],
+       device='cuda:0')
+post mlp tensor([[[-0.0356,  0.0706, -0.0269, -0.0193,  0.0628,  0.0242,  0.0038]]],
+       device='cuda:0')
+tensor([[ 0.0463,  0.0893, -0.4710,  0.0264, -0.0578, -0.0114, -0.9981]],
+       device='cuda:0')
+post mlp tensor([[[-3.4128e-02,  6.0107e-02, -1.9153e-02, -1.6245e-02,  6.0392e-02,
+           2.8827e-02, -4.9040e-05]]], device='cuda:0')
+tensor([[-0.1751,  0.6034,  0.9919, -0.0568,  0.2041, -0.1203,  0.9945]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0119,  0.0150,  0.0730, -0.0316, -0.0210, -0.0260, -0.0262]]],
+       device='cuda:0')
+tensor([[-0.1929,  0.1792, -0.4491,  0.0269, -0.0160,  0.0416, -1.0021]],
+       device='cuda:0')
+post mlp tensor([[[-0.0356,  0.0706, -0.0268, -0.0193,  0.0628,  0.0242,  0.0037]]],
+       device='cuda:0')
+tensor([[ 0.0461,  0.0899, -0.4708,  0.0266, -0.0577, -0.0113, -0.9981]],
+       device='cuda:0')
+post mlp tensor([[[-3.4133e-02,  6.0140e-02, -1.9175e-02, -1.6237e-02,  6.0386e-02,
+           2.8820e-02, -6.4644e-05]]], device='cuda:0')
+tensor([[ 0.0109,  0.0911, -0.3123,  0.0182, -0.0031,  0.0590, -0.9985]],
+       device='cuda:0')
+post mlp tensor([[[-0.0353,  0.0625, -0.0170, -0.0158,  0.0507,  0.0321, -0.0015]]],
+       device='cuda:0')
+tensor([[ 0.0063, -0.0130, -0.4024,  0.0170, -0.0338,  0.0631, -1.0014]],
+       device='cuda:0')
+post mlp tensor([[[-0.0343,  0.0579, -0.0172, -0.0177,  0.0548,  0.0302,  0.0032]]],
+       device='cuda:0')
+tensor([[-0.0066,  0.1343,  0.9890, -0.0199,  0.1980, -0.0622,  1.0036]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0100, -0.0093,  0.0871, -0.0340, -0.0233, -0.0215, -0.0175]]],
+       device='cuda:0')
+tensor([[ 0.1053,  0.0030,  0.4269, -0.0511,  0.1602, -0.0987,  0.9938]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0131, -0.0270,  0.0789, -0.0211,  0.0019, -0.0178,  0.0002]]],
+       device='cuda:0')
+tensor([[-0.0100,  0.0394, -0.6695,  0.0301, -0.0484,  0.1117, -1.0073]],
+       device='cuda:0')
+post mlp tensor([[[-0.0379,  0.0573, -0.0289, -0.0155,  0.0713,  0.0229,  0.0125]]],
+       device='cuda:0')
+tensor([[ 0.2039,  0.0347, -0.8178,  0.0275, -0.0473,  0.0577, -1.0012]],
+       device='cuda:0')
+post mlp tensor([[[-0.0400,  0.0474, -0.0294, -0.0110,  0.0796,  0.0267,  0.0144]]],
+       device='cuda:0')
+tensor([[ 0.0103, -0.0065, -0.4054,  0.0157, -0.0341,  0.0630, -1.0015]],
+       device='cuda:0')
+post mlp tensor([[[-0.0345,  0.0581, -0.0173, -0.0175,  0.0550,  0.0302,  0.0031]]],
+       device='cuda:0')
+tensor([[ 0.1528,  0.1744,  1.0146, -0.0743,  0.2330, -0.0302,  0.9982]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0064, -0.0171,  0.0877, -0.0310, -0.0241, -0.0188, -0.0204]]],
+       device='cuda:0')
+tensor([[ 0.2044,  0.0346, -0.8178,  0.0277, -0.0472,  0.0553, -1.0011]],
+       device='cuda:0')
+post mlp tensor([[[-0.0399,  0.0474, -0.0294, -0.0111,  0.0797,  0.0268,  0.0144]]],
+       device='cuda:0')
+tensor([[-0.0401,  0.1679, -0.5052,  0.0056, -0.0850,  0.0068,  1.0101]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0320, -0.0285,  0.0384,  0.0007,  0.0547, -0.0494,  0.0161]]],
+       device='cuda:0')
+tensor([[ 0.0921, -0.0570, -0.2911,  0.0038, -0.0248,  0.0880, -1.0054]],
+       device='cuda:0')
+post mlp tensor([[[-0.0345,  0.0550, -0.0114, -0.0158,  0.0464,  0.0342, -0.0004]]],
+       device='cuda:0')
+tensor([[-0.0503,  0.3039,  1.0261, -0.0521,  0.2515, -0.1339,  0.9942]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0079, -0.0015,  0.0862, -0.0376, -0.0231, -0.0171, -0.0194]]],
+       device='cuda:0')
+tensor([[ 0.2022,  0.0273, -0.8190,  0.0295, -0.0473,  0.0501, -1.0013]],
+       device='cuda:0')
+post mlp tensor([[[-0.0397,  0.0471, -0.0293, -0.0114,  0.0798,  0.0270,  0.0145]]],
+       device='cuda:0')
+tensor([[0.1434, 0.1003, 0.6801, 0.0028, 0.0688, 0.0051, 1.0086]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0143, -0.0192,  0.0764, -0.0180, -0.0134, -0.0324, -0.0180]]],
+       device='cuda:0')
+tensor([[-0.0084,  0.0399, -0.6685,  0.0317, -0.0472,  0.1050, -1.0070]],
+       device='cuda:0')
+post mlp tensor([[[-0.0378,  0.0572, -0.0288, -0.0157,  0.0714,  0.0232,  0.0123]]],
+       device='cuda:0')
+tensor([[ 0.1462,  0.1782,  1.0139, -0.0718,  0.2378, -0.0319,  0.9982]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0064, -0.0169,  0.0876, -0.0311, -0.0239, -0.0185, -0.0201]]],
+       device='cuda:0')
+tensor([[ 0.1192, -0.0031,  0.0126, -0.0050,  0.0318,  0.0470, -1.0045]],
+       device='cuda:0')
+post mlp tensor([[[-0.0328,  0.0584, -0.0010, -0.0164,  0.0313,  0.0428, -0.0119]]],
+       device='cuda:0')
+tensor([[ 0.1483,  0.1770,  1.0141, -0.0727,  0.2365, -0.0314,  0.9982]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0064, -0.0169,  0.0876, -0.0311, -0.0239, -0.0186, -0.0202]]],
+       device='cuda:0')
+tensor([[ 0.2494,  0.0088, -0.2762,  0.0079, -0.0294,  0.1235, -0.9950]],
+       device='cuda:0')
+post mlp tensor([[[-0.0367,  0.0537, -0.0102, -0.0089,  0.0430,  0.0344, -0.0047]]],
+       device='cuda:0')
+tensor([[-0.0082,  0.0419, -0.6710,  0.0305, -0.0481,  0.1101, -1.0072]],
+       device='cuda:0')
+post mlp tensor([[[-0.0379,  0.0573, -0.0289, -0.0155,  0.0714,  0.0229,  0.0124]]],
+       device='cuda:0')
+tensor([[ 0.4367,  0.2758,  0.9869,  0.0352,  0.2753, -0.0294,  0.9751]],
+       device='cuda:0')
+post mlp tensor([[[-0.0011, -0.0295,  0.0826, -0.0209, -0.0247, -0.0182, -0.0305]]],
+       device='cuda:0')
+tensor([[ 0.1306,  0.0049,  0.0099, -0.0052,  0.0347,  0.0482, -1.0044]],
+       device='cuda:0')
+post mlp tensor([[[-0.0332,  0.0584, -0.0011, -0.0159,  0.0314,  0.0431, -0.0120]]],
+       device='cuda:0')
+tensor([[-0.1021,  0.0498,  1.0144, -0.0912,  0.2246, -0.1277,  1.0206]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0102, -0.0069,  0.0951, -0.0426, -0.0225, -0.0154, -0.0099]]],
+       device='cuda:0')
+tensor([[-0.0074,  0.0454, -0.6746,  0.0280, -0.0497,  0.1206, -1.0075]],
+       device='cuda:0')
+post mlp tensor([[[-0.0382,  0.0575, -0.0292, -0.0151,  0.0714,  0.0224,  0.0126]]],
+       device='cuda:0')
+tensor([[ 0.0173,  0.1072, -0.3134,  0.0206, -0.0039,  0.0620, -0.9981]],
+       device='cuda:0')
+post mlp tensor([[[-0.0355,  0.0630, -0.0174, -0.0152,  0.0507,  0.0318, -0.0020]]],
+       device='cuda:0')
+tensor([[0.1487, 0.1218, 0.6762, 0.0024, 0.0627, 0.0055, 1.0079]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0144, -0.0185,  0.0755, -0.0173, -0.0134, -0.0332, -0.0189]]],
+       device='cuda:0')
+tensor([[-0.1786,  0.2123, -0.4602,  0.0282, -0.0188,  0.0624, -1.0031]],
+       device='cuda:0')
+post mlp tensor([[[-0.0364,  0.0715, -0.0282, -0.0175,  0.0630,  0.0231,  0.0032]]],
+       device='cuda:0')
+tensor([[ 0.0545,  0.1046, -0.4744,  0.0270, -0.0535,  0.0170, -0.9972]],
+       device='cuda:0')
+post mlp tensor([[[-0.0350,  0.0605, -0.0202, -0.0150,  0.0601,  0.0281,  0.0003]]],
+       device='cuda:0')
+tensor([[ 0.0199,  0.1148, -0.3135,  0.0216, -0.0048,  0.0640, -0.9978]],
+       device='cuda:0')
+post mlp tensor([[[-0.0356,  0.0632, -0.0176, -0.0149,  0.0506,  0.0316, -0.0023]]],
+       device='cuda:0')
+tensor([[-0.0608,  0.2996,  1.0237, -0.0639,  0.2329, -0.1438,  0.9943]],
+       device='cuda:0')
+post mlp tensor([[[ 8.5636e-03, -9.3970e-05,  8.6826e-02, -3.8236e-02, -2.3332e-02,
+          -1.7805e-02, -1.9783e-02]]], device='cuda:0')
+tensor([[-0.0051,  0.0503, -0.6785,  0.0248, -0.0512,  0.1338, -1.0078]],
+       device='cuda:0')
+post mlp tensor([[[-0.0386,  0.0577, -0.0296, -0.0146,  0.0714,  0.0219,  0.0129]]],
+       device='cuda:0')
+tensor([[ 0.0570,  0.1078, -0.4752,  0.0266, -0.0530,  0.0217, -0.9971]],
+       device='cuda:0')
+post mlp tensor([[[-0.0352,  0.0605, -0.0204, -0.0147,  0.0600,  0.0280,  0.0004]]],
+       device='cuda:0')
+tensor([[ 0.0014,  0.1512,  0.0142,  0.0320, -0.0217, -0.0256,  0.9984]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0241, -0.0195,  0.0549, -0.0066,  0.0217, -0.0406,  0.0005]]],
+       device='cuda:0')
+tensor([[ 0.6048,  0.1397, -0.8205,  0.0383,  0.0018,  0.1803, -1.0038]],
+       device='cuda:0')
+post mlp tensor([[[-0.0503,  0.0410, -0.0312,  0.0067,  0.0741,  0.0314,  0.0113]]],
+       device='cuda:0')
+tensor([[ 0.0198,  0.1167, -0.3127,  0.0215, -0.0047,  0.0625, -0.9977]],
+       device='cuda:0')
+post mlp tensor([[[-0.0355,  0.0633, -0.0176, -0.0149,  0.0506,  0.0316, -0.0024]]],
+       device='cuda:0')
+tensor([[ 0.2507,  0.0406, -0.2833,  0.0077, -0.0269,  0.1649, -0.9946]],
+       device='cuda:0')
+post mlp tensor([[[-0.0381,  0.0551, -0.0123, -0.0072,  0.0428,  0.0328, -0.0041]]],
+       device='cuda:0')
+tensor([[ 0.0575,  0.1078, -0.4753,  0.0256, -0.0538,  0.0151, -0.9971]],
+       device='cuda:0')
+post mlp tensor([[[-0.0351,  0.0605, -0.0202, -0.0149,  0.0601,  0.0282,  0.0002]]],
+       device='cuda:0')
+tensor([[-0.1771,  0.2141, -0.4600,  0.0275, -0.0188,  0.0638, -1.0031]],
+       device='cuda:0')
+post mlp tensor([[[-0.0365,  0.0715, -0.0282, -0.0174,  0.0629,  0.0231,  0.0032]]],
+       device='cuda:0')
+tensor([[-0.0037,  0.0515, -0.6776,  0.0267, -0.0498,  0.1245, -1.0076]],
+       device='cuda:0')
+post mlp tensor([[[-0.0384,  0.0576, -0.0294, -0.0148,  0.0715,  0.0222,  0.0127]]],
+       device='cuda:0')
+tensor([[-0.1102,  0.0562,  1.0154, -0.0882,  0.2189, -0.1277,  1.0211]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0105, -0.0060,  0.0948, -0.0426, -0.0227, -0.0160, -0.0103]]],
+       device='cuda:0')
+tensor([[-0.1788,  0.2077, -0.4575,  0.0273, -0.0182,  0.0593, -1.0027]],
+       device='cuda:0')
+post mlp tensor([[[-0.0363,  0.0713, -0.0279, -0.0177,  0.0629,  0.0234,  0.0032]]],
+       device='cuda:0')
+tensor([[-0.1524,  0.0268, -0.2731, -0.0069,  0.0161,  0.0336, -0.9971]],
+       device='cuda:0')
+post mlp tensor([[[-0.0335,  0.0646, -0.0160, -0.0225,  0.0511,  0.0325,  0.0028]]],
+       device='cuda:0')
+tensor([[ 0.1606,  0.1726,  1.0153, -0.0778,  0.2269, -0.0286,  0.9979]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0065, -0.0172,  0.0878, -0.0307, -0.0243, -0.0191, -0.0209]]],
+       device='cuda:0')
+tensor([[ 0.0152,  0.1052, -0.3112,  0.0192, -0.0022,  0.0557, -0.9983]],
+       device='cuda:0')
+post mlp tensor([[[-0.0354,  0.0629, -0.0172, -0.0155,  0.0507,  0.0321, -0.0020]]],
+       device='cuda:0')
+tensor([[ 0.0148,  0.1036, -0.3112,  0.0190, -0.0019,  0.0553, -0.9983]],
+       device='cuda:0')
+post mlp tensor([[[-0.0354,  0.0628, -0.0171, -0.0155,  0.0507,  0.0321, -0.0019]]],
+       device='cuda:0')
+tensor([[ 0.1556,  0.1749,  1.0149, -0.0758,  0.2312, -0.0298,  0.9979]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0065, -0.0171,  0.0877, -0.0309, -0.0241, -0.0189, -0.0206]]],
+       device='cuda:0')
+tensor([[-0.0553,  0.3024,  1.0257, -0.0548,  0.2409, -0.1345,  0.9956]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0083, -0.0009,  0.0862, -0.0377, -0.0233, -0.0179, -0.0197]]],
+       device='cuda:0')
+tensor([[-0.0031,  0.0525, -0.6765,  0.0304, -0.0483,  0.1117, -1.0071]],
+       device='cuda:0')
+post mlp tensor([[[-0.0382,  0.0575, -0.0293, -0.0151,  0.0718,  0.0227,  0.0123]]],
+       device='cuda:0')
+tensor([[-0.1815,  0.1984, -0.4542,  0.0280, -0.0178,  0.0543, -1.0023]],
+       device='cuda:0')
+post mlp tensor([[[-0.0361,  0.0710, -0.0275, -0.0181,  0.0627,  0.0236,  0.0033]]],
+       device='cuda:0')
+tensor([[ 0.0163,  0.1051, -0.3119,  0.0202, -0.0022,  0.0576, -0.9983]],
+       device='cuda:0')
+post mlp tensor([[[-0.0354,  0.0629, -0.0172, -0.0154,  0.0507,  0.0320, -0.0020]]],
+       device='cuda:0')
+tensor([[ 0.2138,  0.0571, -0.8098,  0.0242, -0.0426,  0.0586, -1.0004]],
+       device='cuda:0')
+post mlp tensor([[[-0.0405,  0.0481, -0.0295, -0.0103,  0.0792,  0.0270,  0.0138]]],
+       device='cuda:0')
+tensor([[-0.1192,  0.0559,  1.0160, -0.0857,  0.2167, -0.1269,  1.0207]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0107, -0.0055,  0.0946, -0.0427, -0.0227, -0.0162, -0.0102]]],
+       device='cuda:0')
+tensor([[ 0.2159,  0.0616, -0.8089,  0.0234, -0.0422,  0.0608, -1.0003]],
+       device='cuda:0')
+post mlp tensor([[[-0.0406,  0.0482, -0.0295, -0.0101,  0.0791,  0.0269,  0.0138]]],
+       device='cuda:0')
+tensor([[-0.0011,  0.0564, -0.6792,  0.0281, -0.0492,  0.1204, -1.0074]],
+       device='cuda:0')
+post mlp tensor([[[-0.0385,  0.0577, -0.0295, -0.0147,  0.0718,  0.0223,  0.0125]]],
+       device='cuda:0')
+tensor([[ 0.0569,  0.1095, -0.4752,  0.0257, -0.0540,  0.0039, -0.9973]],
+       device='cuda:0')
+post mlp tensor([[[-3.4877e-02,  6.0528e-02, -1.9963e-02, -1.5155e-02,  6.0398e-02,
+           2.8463e-02, -2.5437e-05]]], device='cuda:0')
+tensor([[-0.1231,  0.0558,  1.0161, -0.0840,  0.2146, -0.1263,  1.0206]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0108, -0.0052,  0.0945, -0.0427, -0.0228, -0.0164, -0.0102]]],
+       device='cuda:0')
+tensor([[ 0.2155,  0.0601, -0.8093,  0.0239, -0.0420,  0.0571, -1.0003]],
+       device='cuda:0')
+post mlp tensor([[[-0.0405,  0.0482, -0.0295, -0.0103,  0.0792,  0.0270,  0.0137]]],
+       device='cuda:0')
+tensor([[ 0.6063,  0.1354, -0.8258,  0.0403, -0.0016,  0.1518, -1.0041]],
+       device='cuda:0')
+post mlp tensor([[[-0.0495,  0.0404, -0.0306,  0.0059,  0.0749,  0.0322,  0.0108]]],
+       device='cuda:0')
+tensor([[-0.1262,  0.0549,  1.0162, -0.0831,  0.2140, -0.1259,  1.0203]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0109, -0.0050,  0.0944, -0.0427, -0.0227, -0.0165, -0.0102]]],
+       device='cuda:0')
+tensor([[ 0.0563,  0.1092, -0.4749,  0.0256, -0.0544, -0.0018, -0.9974]],
+       device='cuda:0')
+post mlp tensor([[[-0.0348,  0.0605, -0.0198, -0.0153,  0.0605,  0.0286, -0.0001]]],
+       device='cuda:0')
+tensor([[ 0.0566,  0.1094, -0.4750,  0.0255, -0.0543, -0.0018, -0.9974]],
+       device='cuda:0')
+post mlp tensor([[[-0.0348,  0.0605, -0.0198, -0.0153,  0.0605,  0.0286, -0.0001]]],
+       device='cuda:0')
+tensor([[ 0.0568,  0.1097, -0.4751,  0.0255, -0.0542, -0.0014, -0.9974]],
+       device='cuda:0')
+post mlp tensor([[[-0.0348,  0.0605, -0.0198, -0.0153,  0.0605,  0.0286, -0.0001]]],
+       device='cuda:0')
+tensor([[ 0.0565,  0.1099, -0.4749,  0.0257, -0.0540, -0.0012, -0.9974]],
+       device='cuda:0')
+post mlp tensor([[[-0.0348,  0.0605, -0.0199, -0.0153,  0.0605,  0.0286, -0.0001]]],
+       device='cuda:0')
+tensor([[ 0.2159,  0.0606, -0.8084,  0.0242, -0.0413,  0.0559, -1.0003]],
+       device='cuda:0')
+post mlp tensor([[[-0.0405,  0.0482, -0.0295, -0.0103,  0.0792,  0.0271,  0.0137]]],
+       device='cuda:0')
+tensor([[ 1.5832e-04,  6.0111e-02, -6.8114e-01,  2.9084e-02, -4.9313e-02,
+          1.1796e-01, -1.0071e+00]], device='cuda:0')
+post mlp tensor([[[-0.0385,  0.0577, -0.0296, -0.0147,  0.0719,  0.0223,  0.0124]]],
+       device='cuda:0')
+tensor([[ 5.6157e-04,  6.1134e-02, -6.8164e-01,  2.8683e-02, -4.9490e-02,
+          1.1968e-01, -1.0072e+00]], device='cuda:0')
+post mlp tensor([[[-0.0385,  0.0578, -0.0297, -0.0146,  0.0719,  0.0222,  0.0124]]],
+       device='cuda:0')
+tensor([[ 0.2454, -0.0778, -0.6231,  0.0341, -0.0369,  0.0855, -1.0081]],
+       device='cuda:0')
+post mlp tensor([[[-0.0381,  0.0451, -0.0210, -0.0109,  0.0647,  0.0318,  0.0089]]],
+       device='cuda:0')
+tensor([[-0.0611,  0.2998,  1.0242, -0.0582,  0.2279, -0.1362,  0.9965]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0088, -0.0001,  0.0863, -0.0377, -0.0235, -0.0187, -0.0201]]],
+       device='cuda:0')
+tensor([[ 0.0178,  0.1131, -0.3100,  0.0201, -0.0018,  0.0541, -0.9980]],
+       device='cuda:0')
+post mlp tensor([[[-0.0354,  0.0631, -0.0172, -0.0153,  0.0507,  0.0321, -0.0023]]],
+       device='cuda:0')
+tensor([[ 6.0241e-02,  1.1451e-01, -4.7613e-01,  2.4570e-02, -5.3724e-02,
+          7.5396e-04, -9.9721e-01]], device='cuda:0')
+post mlp tensor([[[-0.0349,  0.0606, -0.0199, -0.0151,  0.0605,  0.0286, -0.0002]]],
+       device='cuda:0')
+tensor([[ 0.0595,  0.1139, -0.4758,  0.0247, -0.0539, -0.0017, -0.9973]],
+       device='cuda:0')
+post mlp tensor([[[-0.0349,  0.0606, -0.0199, -0.0152,  0.0606,  0.0286, -0.0002]]],
+       device='cuda:0')
+tensor([[ 0.0584,  0.1134, -0.4754,  0.0251, -0.0538, -0.0036, -0.9973]],
+       device='cuda:0')
+post mlp tensor([[[-0.0348,  0.0606, -0.0199, -0.0152,  0.0606,  0.0287, -0.0003]]],
+       device='cuda:0')
+tensor([[ 0.0577,  0.1133, -0.4751,  0.0256, -0.0536, -0.0036, -0.9974]],
+       device='cuda:0')
+post mlp tensor([[[-0.0348,  0.0606, -0.0199, -0.0153,  0.0606,  0.0287, -0.0003]]],
+       device='cuda:0')
+tensor([[ 0.0578,  0.1140, -0.4752,  0.0258, -0.0533, -0.0021, -0.9974]],
+       device='cuda:0')
+post mlp tensor([[[-0.0348,  0.0606, -0.0199, -0.0152,  0.0606,  0.0286, -0.0002]]],
+       device='cuda:0')
+tensor([[-0.0191,  0.1421,  0.9872, -0.0213,  0.1763, -0.0700,  1.0014]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0108, -0.0072,  0.0869, -0.0342, -0.0238, -0.0228, -0.0186]]],
+       device='cuda:0')
+tensor([[-0.0620,  0.2994,  1.0246, -0.0568,  0.2267, -0.1342,  0.9971]],
+       device='cuda:0')
+post mlp tensor([[[ 8.8977e-03, -7.7192e-05,  8.6240e-02, -3.7636e-02, -2.3571e-02,
+          -1.8874e-02, -2.0174e-02]]], device='cuda:0')
+tensor([[-0.0627,  0.2990,  1.0242, -0.0574,  0.2249, -0.1347,  0.9972]],
+       device='cuda:0')
+post mlp tensor([[[ 8.9643e-03,  2.8688e-05,  8.6265e-02, -3.7654e-02, -2.3598e-02,
+          -1.8971e-02, -2.0220e-02]]], device='cuda:0')
+tensor([[ 0.0613,  0.1187, -0.4766,  0.0255, -0.0524,  0.0057, -0.9972]],
+       device='cuda:0')
+post mlp tensor([[[-0.0351,  0.0607, -0.0202, -0.0148,  0.0605,  0.0285, -0.0001]]],
+       device='cuda:0')
+tensor([[ 0.0617,  0.1192, -0.4768,  0.0254, -0.0523,  0.0062, -0.9972]],
+       device='cuda:0')
+post mlp tensor([[[-0.0351,  0.0607, -0.0202, -0.0148,  0.0605,  0.0284, -0.0001]]],
+       device='cuda:0')
+tensor([[ 0.0272,  0.0196, -0.4129,  0.0145, -0.0325,  0.0584, -1.0013]],
+       device='cuda:0')
+post mlp tensor([[[-0.0350,  0.0585, -0.0178, -0.0166,  0.0555,  0.0302,  0.0025]]],
+       device='cuda:0')
+tensor([[ 0.2233,  0.0770, -0.8026,  0.0220, -0.0386,  0.0601, -0.9998]],
+       device='cuda:0')
+post mlp tensor([[[-0.0410,  0.0487, -0.0296, -0.0097,  0.0787,  0.0272,  0.0133]]],
+       device='cuda:0')
+tensor([[ 0.0624,  0.1196, -0.4771,  0.0252, -0.0521,  0.0063, -0.9971]],
+       device='cuda:0')
+post mlp tensor([[[-0.0352,  0.0607, -0.0202, -0.0147,  0.0605,  0.0285, -0.0001]]],
+       device='cuda:0')
+tensor([[ 0.1441, -0.1544,  1.0307,  0.0019,  0.2315, -0.0138,  0.9940]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0067, -0.0288,  0.0962, -0.0338, -0.0246, -0.0156, -0.0133]]],
+       device='cuda:0')
+tensor([[ 0.0627,  0.1197, -0.4771,  0.0249, -0.0523,  0.0037, -0.9972]],
+       device='cuda:0')
+post mlp tensor([[[-0.0351,  0.0607, -0.0202, -0.0148,  0.0606,  0.0285, -0.0002]]],
+       device='cuda:0')
+tensor([[ 0.0059,  0.0693, -0.6843,  0.0291, -0.0487,  0.1189, -1.0070]],
+       device='cuda:0')
+post mlp tensor([[[-0.0387,  0.0579, -0.0299, -0.0143,  0.0722,  0.0222,  0.0122]]],
+       device='cuda:0')
+tensor([[ 1.3912e-01,  1.4785e-01,  6.7750e-01,  5.1709e-03,  6.0615e-02,
+         -3.2786e-05,  1.0076e+00]], device='cuda:0')
+post mlp tensor([[[ 0.0145, -0.0170,  0.0747, -0.0173, -0.0134, -0.0338, -0.0196]]],
+       device='cuda:0')
+tensor([[-0.0095,  0.1842, -0.5117,  0.0058, -0.0949,  0.0029,  1.0093]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0316, -0.0296,  0.0375,  0.0016,  0.0548, -0.0503,  0.0145]]],
+       device='cuda:0')
+tensor([[ 0.1169, -0.0406, -0.2982,  0.0011, -0.0263,  0.0783, -1.0037]],
+       device='cuda:0')
+post mlp tensor([[[-0.0347,  0.0549, -0.0111, -0.0150,  0.0467,  0.0345, -0.0011]]],
+       device='cuda:0')
+tensor([[-0.1732,  0.2117, -0.4572,  0.0282, -0.0189,  0.0656, -1.0022]],
+       device='cuda:0')
+post mlp tensor([[[-0.0365,  0.0713, -0.0280, -0.0173,  0.0626,  0.0232,  0.0031]]],
+       device='cuda:0')
+tensor([[-0.0086,  0.1849, -0.5125,  0.0059, -0.0953,  0.0028,  1.0093]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0316, -0.0296,  0.0374,  0.0016,  0.0548, -0.0503,  0.0145]]],
+       device='cuda:0')
+tensor([[ 1.8576e-02,  1.1379e-01, -3.0897e-01,  2.0631e-02, -9.6844e-04,
+          5.2196e-02, -9.9807e-01]], device='cuda:0')
+post mlp tensor([[[-0.0354,  0.0631, -0.0172, -0.0153,  0.0507,  0.0322, -0.0024]]],
+       device='cuda:0')
+tensor([[-0.0079,  0.1837, -0.5114,  0.0057, -0.0952,  0.0024,  1.0093]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0316, -0.0297,  0.0375,  0.0016,  0.0548, -0.0503,  0.0144]]],
+       device='cuda:0')
+tensor([[ 6.0749e-03,  1.4084e-01, -1.4567e-01, -1.9815e-04, -1.4253e-02,
+         -3.6761e-02,  9.9981e-01]], device='cuda:0')
+post mlp tensor([[[ 0.0252, -0.0243,  0.0521, -0.0055,  0.0319, -0.0391,  0.0074]]],
+       device='cuda:0')
+tensor([[ 0.0627,  0.1200, -0.4772,  0.0246, -0.0526, -0.0019, -0.9972]],
+       device='cuda:0')
+post mlp tensor([[[-0.0350,  0.0607, -0.0200, -0.0150,  0.0607,  0.0287, -0.0003]]],
+       device='cuda:0')
+tensor([[-0.1739,  0.2067, -0.4553,  0.0277, -0.0186,  0.0621, -1.0020]],
+       device='cuda:0')
+post mlp tensor([[[-0.0363,  0.0712, -0.0278, -0.0175,  0.0626,  0.0234,  0.0031]]],
+       device='cuda:0')
+tensor([[ 1.6935e-02,  1.1014e-01, -3.0852e-01,  1.9798e-02, -3.1254e-04,
+          4.9744e-02, -9.9820e-01]], device='cuda:0')
+post mlp tensor([[[-0.0353,  0.0630, -0.0171, -0.0155,  0.0507,  0.0324, -0.0023]]],
+       device='cuda:0')
+tensor([[ 0.0157,  0.1436,  0.0206,  0.0303, -0.0200, -0.0241,  0.9992]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0237, -0.0205,  0.0554, -0.0065,  0.0212, -0.0403,  0.0002]]],
+       device='cuda:0')
+tensor([[-0.1540,  0.0561,  1.0179, -0.0734,  0.2039, -0.1222,  1.0191]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0116, -0.0030,  0.0937, -0.0429, -0.0230, -0.0176, -0.0102]]],
+       device='cuda:0')
+tensor([[ 1.5868e-02,  1.0684e-01, -3.0842e-01,  1.9353e-02,  1.5492e-04,
+          4.8544e-02, -9.9832e-01]], device='cuda:0')
+post mlp tensor([[[-0.0353,  0.0629, -0.0170, -0.0156,  0.0507,  0.0325, -0.0022]]],
+       device='cuda:0')
+tensor([[ 0.0604,  0.1173, -0.4763,  0.0246, -0.0535, -0.0119, -0.9974]],
+       device='cuda:0')
+post mlp tensor([[[-0.0347,  0.0606, -0.0197, -0.0153,  0.0608,  0.0289, -0.0005]]],
+       device='cuda:0')
+tensor([[-0.1753,  0.1978, -0.4523,  0.0278, -0.0182,  0.0569, -1.0017]],
+       device='cuda:0')
+post mlp tensor([[[-0.0361,  0.0709, -0.0274, -0.0179,  0.0625,  0.0237,  0.0032]]],
+       device='cuda:0')
+tensor([[ 0.1404,  0.0288,  0.0200, -0.0100,  0.0387,  0.0218, -1.0032]],
+       device='cuda:0')
+post mlp tensor([[[-0.0330,  0.0590, -0.0002, -0.0160,  0.0314,  0.0440, -0.0134]]],
+       device='cuda:0')
+tensor([[ 1.6406e-02,  1.0682e-01, -3.0868e-01,  1.9812e-02,  8.2649e-05,
+          4.9262e-02, -9.9833e-01]], device='cuda:0')
+post mlp tensor([[[-0.0353,  0.0629, -0.0170, -0.0156,  0.0507,  0.0325, -0.0022]]],
+       device='cuda:0')
+tensor([[ 0.1529, -0.1498,  1.0337,  0.0020,  0.2375, -0.0132,  0.9947]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0063, -0.0294,  0.0962, -0.0337, -0.0246, -0.0154, -0.0134]]],
+       device='cuda:0')
+tensor([[ 1.7468e-02,  1.0963e-01, -3.0862e-01,  2.0176e-02, -6.3762e-05,
+          4.9802e-02, -9.9826e-01]], device='cuda:0')
+post mlp tensor([[[-0.0353,  0.0630, -0.0171, -0.0155,  0.0507,  0.0324, -0.0023]]],
+       device='cuda:0')
+tensor([[ 1.7859e-02,  1.1088e-01, -3.0852e-01,  2.0332e-02, -1.3921e-04,
+          4.9986e-02, -9.9822e-01]], device='cuda:0')
+post mlp tensor([[[-0.0354,  0.0630, -0.0171, -0.0154,  0.0507,  0.0324, -0.0023]]],
+       device='cuda:0')
+tensor([[ 0.0628,  0.1217, -0.4772,  0.0250, -0.0521, -0.0043, -0.9973]],
+       device='cuda:0')
+post mlp tensor([[[-0.0350,  0.0607, -0.0200, -0.0150,  0.0608,  0.0288, -0.0004]]],
+       device='cuda:0')
+tensor([[ 0.1477,  0.0363,  0.0186, -0.0103,  0.0420,  0.0220, -1.0031]],
+       device='cuda:0')
+post mlp tensor([[[-0.0332,  0.0590, -0.0004, -0.0157,  0.0315,  0.0442, -0.0134]]],
+       device='cuda:0')
+tensor([[ 0.1483,  0.0369,  0.0186, -0.0104,  0.0423,  0.0218, -1.0031]],
+       device='cuda:0')
+post mlp tensor([[[-0.0333,  0.0590, -0.0004, -0.0156,  0.0315,  0.0443, -0.0134]]],
+       device='cuda:0')
+tensor([[ 0.0643,  0.1233, -0.4778,  0.0247, -0.0517, -0.0031, -0.9972]],
+       device='cuda:0')
+post mlp tensor([[[-0.0351,  0.0607, -0.0201, -0.0149,  0.0608,  0.0287, -0.0004]]],
+       device='cuda:0')
+tensor([[-0.0210,  0.1452,  0.9870, -0.0210,  0.1721, -0.0701,  1.0003]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0110, -0.0068,  0.0868, -0.0341, -0.0239, -0.0231, -0.0189]]],
+       device='cuda:0')
+tensor([[ 0.2249,  0.0792, -0.8000,  0.0231, -0.0361,  0.0481, -0.9995]],
+       device='cuda:0')
+post mlp tensor([[[-0.0408,  0.0486, -0.0293, -0.0099,  0.0789,  0.0278,  0.0130]]],
+       device='cuda:0')
+tensor([[-0.1865,  0.5614,  0.9989, -0.0554,  0.1998, -0.1106,  0.9899]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0122,  0.0148,  0.0740, -0.0325, -0.0214, -0.0259, -0.0251]]],
+       device='cuda:0')
+tensor([[ 0.0650,  0.1246, -0.4781,  0.0245, -0.0517, -0.0050, -0.9972]],
+       device='cuda:0')
+post mlp tensor([[[-0.0351,  0.0608, -0.0201, -0.0149,  0.0608,  0.0288, -0.0004]]],
+       device='cuda:0')
+tensor([[ 0.1479,  0.0381,  0.0198, -0.0108,  0.0424,  0.0192, -1.0030]],
+       device='cuda:0')
+post mlp tensor([[[-0.0332,  0.0591, -0.0003, -0.0157,  0.0315,  0.0443, -0.0135]]],
+       device='cuda:0')
+tensor([[-0.0210,  0.1461,  0.9873, -0.0209,  0.1726, -0.0696,  1.0002]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0110, -0.0068,  0.0867, -0.0341, -0.0239, -0.0231, -0.0189]]],
+       device='cuda:0')
+tensor([[-0.1668,  0.0605,  1.0193, -0.0698,  0.1993, -0.1211,  1.0190]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0120, -0.0020,  0.0933, -0.0430, -0.0231, -0.0182, -0.0103]]],
+       device='cuda:0')
+tensor([[ 0.0194,  0.1496,  0.0190,  0.0309, -0.0244, -0.0228,  0.9996]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0238, -0.0204,  0.0550, -0.0062,  0.0212, -0.0408, -0.0002]]],
+       device='cuda:0')
+tensor([[ 0.1516, -0.1515,  1.0344,  0.0059,  0.2354, -0.0111,  0.9944]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0064, -0.0293,  0.0960, -0.0336, -0.0247, -0.0156, -0.0136]]],
+       device='cuda:0')
+tensor([[ 0.0653,  0.1252, -0.4785,  0.0246, -0.0514, -0.0065, -0.9972]],
+       device='cuda:0')
+post mlp tensor([[[-0.0351,  0.0607, -0.0201, -0.0149,  0.0609,  0.0289, -0.0004]]],
+       device='cuda:0')
+tensor([[ 0.3928,  0.1668, -0.4700,  0.0093, -0.0237,  0.1701, -0.9920]],
+       device='cuda:0')
+post mlp tensor([[[-4.3282e-02,  5.4300e-02, -1.9600e-02, -6.4801e-06,  5.3337e-02,
+           3.0871e-02, -1.0483e-03]]], device='cuda:0')
+tensor([[ 1.8517e-02,  1.1176e-01, -3.0780e-01,  2.0519e-02,  6.7991e-04,
+          4.8494e-02, -9.9818e-01]], device='cuda:0')
+post mlp tensor([[[-0.0354,  0.0630, -0.0171, -0.0154,  0.0507,  0.0325, -0.0024]]],
+       device='cuda:0')
+tensor([[ 0.2256,  0.0799, -0.7985,  0.0234, -0.0351,  0.0450, -0.9995]],
+       device='cuda:0')
+post mlp tensor([[[-0.0407,  0.0486, -0.0293, -0.0100,  0.0788,  0.0280,  0.0129]]],
+       device='cuda:0')
+tensor([[ 0.0111,  0.0786, -0.6878,  0.0317, -0.0475,  0.1097, -1.0065]],
+       device='cuda:0')
+post mlp tensor([[[-0.0387,  0.0579, -0.0301, -0.0142,  0.0726,  0.0225,  0.0119]]],
+       device='cuda:0')
+tensor([[ 1.8386e-02,  1.1140e-01, -3.0777e-01,  2.0258e-02,  9.1837e-04,
+          4.7805e-02, -9.9820e-01]], device='cuda:0')
+post mlp tensor([[[-0.0353,  0.0630, -0.0170, -0.0155,  0.0507,  0.0325, -0.0024]]],
+       device='cuda:0')
+tensor([[-0.0625,  0.2991,  1.0259, -0.0527,  0.2228, -0.1252,  0.9991]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0091, -0.0001,  0.0858, -0.0372, -0.0237, -0.0196, -0.0204]]],
+       device='cuda:0')
+tensor([[ 0.0121,  0.0790, -0.6878,  0.0321, -0.0469,  0.1065, -1.0064]],
+       device='cuda:0')
+post mlp tensor([[[-0.0387,  0.0579, -0.0300, -0.0142,  0.0727,  0.0226,  0.0118]]],
+       device='cuda:0')
+tensor([[ 0.1451,  0.0369,  0.0222, -0.0115,  0.0418,  0.0147, -1.0029]],
+       device='cuda:0')
+post mlp tensor([[[-3.3055e-02,  5.9103e-02, -5.0722e-05, -1.5925e-02,  3.1444e-02,
+           4.4417e-02, -1.3672e-02]]], device='cuda:0')
+tensor([[-0.0188,  0.1480,  0.9884, -0.0204,  0.1767, -0.0676,  1.0001]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0108, -0.0070,  0.0866, -0.0340, -0.0238, -0.0229, -0.0188]]],
+       device='cuda:0')
+tensor([[-0.0619,  0.2993,  1.0261, -0.0506,  0.2238, -0.1229,  0.9995]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0091, -0.0003,  0.0856, -0.0370, -0.0237, -0.0197, -0.0204]]],
+       device='cuda:0')
+tensor([[-0.1730,  0.1998, -0.4531,  0.0284, -0.0185,  0.0609, -1.0015]],
+       device='cuda:0')
+post mlp tensor([[[-0.0362,  0.0709, -0.0275, -0.0177,  0.0624,  0.0236,  0.0032]]],
+       device='cuda:0')
+tensor([[ 0.2249,  0.0772, -0.7988,  0.0243, -0.0344,  0.0387, -0.9995]],
+       device='cuda:0')
+post mlp tensor([[[-0.0406,  0.0485, -0.0291, -0.0102,  0.0790,  0.0282,  0.0129]]],
+       device='cuda:0')
+tensor([[ 0.0174,  0.1086, -0.3073,  0.0200,  0.0016,  0.0459, -0.9982]],
+       device='cuda:0')
+post mlp tensor([[[-0.0353,  0.0629, -0.0169, -0.0156,  0.0508,  0.0327, -0.0023]]],
+       device='cuda:0')
+tensor([[ 0.1573,  0.1809,  1.0146, -0.0773,  0.2294, -0.0292,  0.9972]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0065, -0.0169,  0.0875, -0.0307, -0.0242, -0.0191, -0.0209]]],
+       device='cuda:0')
+tensor([[ 0.0666,  0.1257, -0.4790,  0.0239, -0.0514, -0.0138, -0.9973]],
+       device='cuda:0')
+post mlp tensor([[[-0.0350,  0.0607, -0.0199, -0.0151,  0.0611,  0.0291, -0.0006]]],
+       device='cuda:0')
+tensor([[ 0.0135,  0.0808, -0.6886,  0.0331, -0.0464,  0.1024, -1.0061]],
+       device='cuda:0')
+post mlp tensor([[[-0.0386,  0.0579, -0.0300, -0.0143,  0.0729,  0.0228,  0.0117]]],
+       device='cuda:0')
+tensor([[-0.1730,  0.1978, -0.4525,  0.0283, -0.0185,  0.0601, -1.0014]],
+       device='cuda:0')
+post mlp tensor([[[-0.0361,  0.0708, -0.0274, -0.0178,  0.0623,  0.0236,  0.0032]]],
+       device='cuda:0')
+tensor([[ 0.0657,  0.1252, -0.4786,  0.0242, -0.0515, -0.0169, -0.9974]],
+       device='cuda:0')
+post mlp tensor([[[-0.0349,  0.0607, -0.0198, -0.0152,  0.0611,  0.0292, -0.0006]]],
+       device='cuda:0')
+tensor([[ 0.4155, -0.1566, -0.0364,  0.0175,  0.0506,  0.2703, -1.0048]],
+       device='cuda:0')
+post mlp tensor([[[-0.0399,  0.0435, -0.0012, -0.0045,  0.0263,  0.0435, -0.0071]]],
+       device='cuda:0')
+tensor([[ 0.1551,  0.1821,  1.0144, -0.0762,  0.2309, -0.0293,  0.9972]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0065, -0.0168,  0.0875, -0.0308, -0.0241, -0.0190, -0.0208]]],
+       device='cuda:0')
+tensor([[ 0.0174,  0.1275, -0.1501, -0.0011, -0.0132, -0.0343,  0.9996]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0251, -0.0254,  0.0523, -0.0053,  0.0320, -0.0387,  0.0077]]],
+       device='cuda:0')
+tensor([[ 0.1543,  0.1828,  1.0141, -0.0759,  0.2313, -0.0297,  0.9973]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0065, -0.0168,  0.0874, -0.0308, -0.0241, -0.0190, -0.0208]]],
+       device='cuda:0')
+tensor([[ 0.0163,  0.1057, -0.3067,  0.0196,  0.0023,  0.0436, -0.9983]],
+       device='cuda:0')
+post mlp tensor([[[-0.0352,  0.0628, -0.0168, -0.0158,  0.0508,  0.0328, -0.0022]]],
+       device='cuda:0')
+tensor([[ 8.0991e-03,  1.6442e-01, -4.9024e-01,  3.5748e-04, -9.4939e-02,
+         -4.6807e-03,  1.0094e+00]], device='cuda:0')
+post mlp tensor([[[ 0.0312, -0.0304,  0.0392,  0.0010,  0.0530, -0.0492,  0.0139]]],
+       device='cuda:0')
+tensor([[ 0.0669,  0.1268, -0.4791,  0.0240, -0.0512, -0.0176, -0.9974]],
+       device='cuda:0')
+post mlp tensor([[[-0.0349,  0.0607, -0.0198, -0.0151,  0.0612,  0.0292, -0.0007]]],
+       device='cuda:0')
+tensor([[ 0.4160, -0.1566, -0.0364,  0.0170,  0.0510,  0.2677, -1.0047]],
+       device='cuda:0')
+post mlp tensor([[[-0.0399,  0.0434, -0.0011, -0.0045,  0.0263,  0.0436, -0.0071]]],
+       device='cuda:0')
+tensor([[ 0.1555,  0.1826,  1.0142, -0.0766,  0.2307, -0.0295,  0.9972]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0065, -0.0168,  0.0875, -0.0308, -0.0241, -0.0190, -0.0208]]],
+       device='cuda:0')
+tensor([[-0.1726,  0.1974, -0.4525,  0.0285, -0.0185,  0.0607, -1.0013]],
+       device='cuda:0')
+post mlp tensor([[[-0.0361,  0.0708, -0.0274, -0.0178,  0.0623,  0.0236,  0.0032]]],
+       device='cuda:0')
+tensor([[ 0.0173,  0.1075, -0.3068,  0.0198,  0.0024,  0.0440, -0.9983]],
+       device='cuda:0')
+post mlp tensor([[[-0.0353,  0.0628, -0.0169, -0.0157,  0.0508,  0.0328, -0.0023]]],
+       device='cuda:0')
+tensor([[ 0.0172,  0.1073, -0.3068,  0.0198,  0.0025,  0.0438, -0.9983]],
+       device='cuda:0')
+post mlp tensor([[[-0.0353,  0.0628, -0.0168, -0.0157,  0.0508,  0.0328, -0.0023]]],
+       device='cuda:0')
+tensor([[ 9.6332e-03,  1.6550e-01, -4.9195e-01,  5.3327e-04, -9.5726e-02,
+         -4.9321e-03,  1.0094e+00]], device='cuda:0')
+post mlp tensor([[[ 0.0312, -0.0304,  0.0391,  0.0011,  0.0531, -0.0493,  0.0139]]],
+       device='cuda:0')
+tensor([[ 0.0157,  0.0841, -0.6904,  0.0340, -0.0460,  0.0993, -1.0059]],
+       device='cuda:0')
+post mlp tensor([[[-0.0386,  0.0579, -0.0301, -0.0142,  0.0731,  0.0228,  0.0116]]],
+       device='cuda:0')
+tensor([[ 0.2266,  0.0791, -0.7970,  0.0247, -0.0325,  0.0319, -0.9994]],
+       device='cuda:0')
+post mlp tensor([[[-0.0405,  0.0484, -0.0290, -0.0103,  0.0790,  0.0286,  0.0127]]],
+       device='cuda:0')
+tensor([[ 0.2528, -0.0682, -0.6141,  0.0362, -0.0322,  0.0624, -1.0076]],
+       device='cuda:0')
+post mlp tensor([[[-0.0379,  0.0452, -0.0204, -0.0111,  0.0646,  0.0330,  0.0080]]],
+       device='cuda:0')
+tensor([[-0.1730,  0.1923, -0.4507,  0.0280, -0.0182,  0.0580, -1.0011]],
+       device='cuda:0')
+post mlp tensor([[[-0.0360,  0.0706, -0.0271, -0.0180,  0.0622,  0.0238,  0.0033]]],
+       device='cuda:0')
+tensor([[ 0.0153,  0.1038, -0.3057,  0.0185,  0.0033,  0.0400, -0.9983]],
+       device='cuda:0')
+post mlp tensor([[[-0.0352,  0.0627, -0.0166, -0.0159,  0.0508,  0.0330, -0.0022]]],
+       device='cuda:0')
+tensor([[ 0.0142,  0.1012, -0.3054,  0.0180,  0.0036,  0.0386, -0.9984]],
+       device='cuda:0')
+post mlp tensor([[[-0.0351,  0.0626, -0.0165, -0.0161,  0.0508,  0.0331, -0.0021]]],
+       device='cuda:0')
+tensor([[ 1.3123e-01,  3.0556e-02,  2.9050e-02, -1.2920e-02,  3.6249e-02,
+          6.2903e-04, -1.0024e+00]], device='cuda:0')
+post mlp tensor([[[-0.0324,  0.0593,  0.0006, -0.0168,  0.0314,  0.0444, -0.0141]]],
+       device='cuda:0')
+tensor([[ 0.2453, -0.0793, -0.6126,  0.0396, -0.0342,  0.0554, -1.0076]],
+       device='cuda:0')
+post mlp tensor([[[-0.0374,  0.0449, -0.0201, -0.0117,  0.0647,  0.0331,  0.0079]]],
+       device='cuda:0')
+tensor([[-0.0563,  0.3001,  1.0273, -0.0392,  0.2288, -0.1088,  1.0008]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0090, -0.0011,  0.0848, -0.0362, -0.0237, -0.0202, -0.0205]]],
+       device='cuda:0')
+tensor([[-0.1988,  0.0487,  1.0193, -0.0579,  0.1899, -0.1120,  1.0157]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0128, -0.0002,  0.0926, -0.0432, -0.0231, -0.0191, -0.0098]]],
+       device='cuda:0')
+tensor([[-0.1846,  0.5479,  0.9989, -0.0538,  0.2228, -0.1000,  0.9909]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0116,  0.0131,  0.0740, -0.0325, -0.0208, -0.0244, -0.0234]]],
+       device='cuda:0')
+tensor([[ 0.0227,  0.0118, -0.4027,  0.0217, -0.0298,  0.0440, -1.0004]],
+       device='cuda:0')
+post mlp tensor([[[-0.0344,  0.0583, -0.0172, -0.0172,  0.0553,  0.0309,  0.0021]]],
+       device='cuda:0')
+tensor([[-0.1288, -0.0018, -0.2516, -0.0014,  0.0160,  0.0384, -0.9974]],
+       device='cuda:0')
+post mlp tensor([[[-0.0331,  0.0630, -0.0145, -0.0223,  0.0493,  0.0336,  0.0022]]],
+       device='cuda:0')
+tensor([[ 0.1717, -0.1394,  1.0390,  0.0071,  0.2447, -0.0074,  0.9956]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0057, -0.0304,  0.0958, -0.0331, -0.0248, -0.0154, -0.0141]]],
+       device='cuda:0')
+tensor([[ 0.6203, -0.1951, -0.4024,  0.0038,  0.0407,  0.1144, -0.9966]],
+       device='cuda:0')
+post mlp tensor([[[-0.0423,  0.0309, -0.0052, -0.0012,  0.0458,  0.0467,  0.0013]]],
+       device='cuda:0')
+tensor([[ 0.0673,  0.1264, -0.4792,  0.0233, -0.0513, -0.0326, -0.9976]],
+       device='cuda:0')
+post mlp tensor([[[-0.0346,  0.0606, -0.0195, -0.0155,  0.0615,  0.0297, -0.0009]]],
+       device='cuda:0')
+tensor([[-0.1728,  0.1819, -0.4473,  0.0282, -0.0182,  0.0537, -1.0007]],
+       device='cuda:0')
+post mlp tensor([[[-0.0358,  0.0702, -0.0267, -0.0183,  0.0620,  0.0241,  0.0034]]],
+       device='cuda:0')
+tensor([[ 0.0270,  0.0183, -0.4067,  0.0201, -0.0296,  0.0440, -1.0005]],
+       device='cuda:0')
+post mlp tensor([[[-0.0346,  0.0583, -0.0174, -0.0170,  0.0555,  0.0309,  0.0020]]],
+       device='cuda:0')
+tensor([[-0.0597,  0.2991,  1.0273, -0.0429,  0.2240, -0.1108,  1.0012]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0092, -0.0007,  0.0850, -0.0363, -0.0238, -0.0204, -0.0205]]],
+       device='cuda:0')
+tensor([[ 0.0685,  0.1270, -0.4797,  0.0228, -0.0514, -0.0342, -0.9976]],
+       device='cuda:0')
+post mlp tensor([[[-0.0346,  0.0606, -0.0194, -0.0155,  0.0615,  0.0297, -0.0010]]],
+       device='cuda:0')
+tensor([[ 0.1454,  0.1885,  1.0130, -0.0716,  0.2375, -0.0305,  0.9974]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0064, -0.0164,  0.0871, -0.0309, -0.0238, -0.0187, -0.0204]]],
+       device='cuda:0')
+tensor([[ 0.2242,  0.0713, -0.7972,  0.0277, -0.0308,  0.0152, -0.9996]],
+       device='cuda:0')
+post mlp tensor([[[-0.0400,  0.0480, -0.0287, -0.0110,  0.0793,  0.0293,  0.0126]]],
+       device='cuda:0')
+tensor([[ 0.0680,  0.1265, -0.4794,  0.0230, -0.0513, -0.0365, -0.9977]],
+       device='cuda:0')
+post mlp tensor([[[-0.0346,  0.0605, -0.0194, -0.0156,  0.0616,  0.0298, -0.0010]]],
+       device='cuda:0')
+tensor([[ 0.0675,  0.1263, -0.4792,  0.0232, -0.0512, -0.0366, -0.9977]],
+       device='cuda:0')
+post mlp tensor([[[-0.0346,  0.0605, -0.0194, -0.0156,  0.0616,  0.0298, -0.0010]]],
+       device='cuda:0')
+tensor([[ 0.0185,  0.0883, -0.6920,  0.0377, -0.0442,  0.0821, -1.0047]],
+       device='cuda:0')
+post mlp tensor([[[-0.0383,  0.0577, -0.0300, -0.0145,  0.0736,  0.0234,  0.0112]]],
+       device='cuda:0')
+tensor([[ 0.5217,  0.1221, -0.3348, -0.0137,  0.0143,  0.0352, -0.9944]],
+       device='cuda:0')
+post mlp tensor([[[-0.0412,  0.0494, -0.0076, -0.0014,  0.0458,  0.0429, -0.0078]]],
+       device='cuda:0')
+tensor([[ 0.1689, -0.1420,  1.0399,  0.0111,  0.2428, -0.0058,  0.9955]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0058, -0.0303,  0.0957, -0.0330, -0.0248, -0.0157, -0.0142]]],
+       device='cuda:0')
+tensor([[-0.0611,  0.2984,  1.0270, -0.0430,  0.2213, -0.1100,  1.0015]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0093, -0.0006,  0.0849, -0.0363, -0.0239, -0.0206, -0.0206]]],
+       device='cuda:0')
+tensor([[ 0.4202,  0.1772,  0.9908,  0.0420,  0.2438, -0.0134,  0.9732]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0003, -0.0311,  0.0846, -0.0214, -0.0254, -0.0198, -0.0295]]],
+       device='cuda:0')
+tensor([[ 0.1218, -0.0525, -0.3048, -0.0052, -0.0286,  0.0502, -1.0052]],
+       device='cuda:0')
+post mlp tensor([[[-0.0343,  0.0542, -0.0101, -0.0158,  0.0475,  0.0354, -0.0012]]],
+       device='cuda:0')
+tensor([[ 0.1124,  0.0477,  0.4225, -0.0341,  0.1031, -0.0722,  0.9947]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0150, -0.0240,  0.0753, -0.0181,  0.0006, -0.0243, -0.0048]]],
+       device='cuda:0')
+tensor([[-0.2078,  0.0566,  1.0212, -0.0555,  0.1860, -0.1131,  1.0160]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0131,  0.0008,  0.0923, -0.0433, -0.0233, -0.0196, -0.0101]]],
+       device='cuda:0')
+tensor([[ 0.2284,  0.0802, -0.7938,  0.0263, -0.0294,  0.0198, -0.9994]],
+       device='cuda:0')
+post mlp tensor([[[-0.0403,  0.0483, -0.0288, -0.0105,  0.0791,  0.0293,  0.0124]]],
+       device='cuda:0')
+tensor([[ 0.0209,  0.0911, -0.6937,  0.0367, -0.0445,  0.0871, -1.0050]],
+       device='cuda:0')
+post mlp tensor([[[-0.0385,  0.0578, -0.0301, -0.0142,  0.0736,  0.0232,  0.0112]]],
+       device='cuda:0')
+tensor([[ 0.0715,  0.1308, -0.4810,  0.0229, -0.0500, -0.0299, -0.9975]],
+       device='cuda:0')
+post mlp tensor([[[-0.0348,  0.0606, -0.0196, -0.0153,  0.0615,  0.0297, -0.0009]]],
+       device='cuda:0')
+tensor([[ 0.0717,  0.1307, -0.4811,  0.0226, -0.0501, -0.0309, -0.9975]],
+       device='cuda:0')
+post mlp tensor([[[-0.0348,  0.0606, -0.0196, -0.0153,  0.0616,  0.0297, -0.0009]]],
+       device='cuda:0')
+tensor([[-0.0145,  0.1559,  0.9914, -0.0188,  0.1815, -0.0626,  0.9990]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0106, -0.0072,  0.0862, -0.0337, -0.0238, -0.0229, -0.0190]]],
+       device='cuda:0')
+tensor([[ 0.2281,  0.0784, -0.7942,  0.0267, -0.0290,  0.0164, -0.9993]],
+       device='cuda:0')
+post mlp tensor([[[-0.0402,  0.0482, -0.0287, -0.0107,  0.0792,  0.0294,  0.0124]]],
+       device='cuda:0')
+tensor([[-0.1723,  0.1799, -0.4472,  0.0285, -0.0183,  0.0544, -1.0006]],
+       device='cuda:0')
+post mlp tensor([[[-0.0357,  0.0701, -0.0266, -0.0183,  0.0620,  0.0241,  0.0034]]],
+       device='cuda:0')
+tensor([[ 0.0147,  0.0989, -0.3052,  0.0187,  0.0048,  0.0366, -0.9982]],
+       device='cuda:0')
+post mlp tensor([[[-0.0351,  0.0625, -0.0165, -0.0162,  0.0509,  0.0333, -0.0021]]],
+       device='cuda:0')
+tensor([[ 0.0146,  0.0988, -0.3051,  0.0186,  0.0049,  0.0362, -0.9982]],
+       device='cuda:0')
+post mlp tensor([[[-0.0351,  0.0625, -0.0165, -0.0162,  0.0509,  0.0333, -0.0021]]],
+       device='cuda:0')
+tensor([[ 0.6321, -0.1145, -0.8430, -0.0127,  0.0058,  0.1924, -0.9998]],
+       device='cuda:0')
+post mlp tensor([[[-0.0485,  0.0280, -0.0247,  0.0029,  0.0726,  0.0352,  0.0183]]],
+       device='cuda:0')
+tensor([[ 0.6210, -0.1926, -0.3929,  0.0054,  0.0441,  0.1094, -0.9971]],
+       device='cuda:0')
+post mlp tensor([[[-0.0422,  0.0311, -0.0049, -0.0013,  0.0454,  0.0472,  0.0009]]],
+       device='cuda:0')
+tensor([[ 0.1278,  0.1555,  0.6873,  0.0093,  0.0667, -0.0077,  1.0073]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0143, -0.0161,  0.0749, -0.0180, -0.0137, -0.0333, -0.0197]]],
+       device='cuda:0')
+tensor([[-0.1265, -0.0094, -0.2517, -0.0013,  0.0173,  0.0386, -0.9973]],
+       device='cuda:0')
+post mlp tensor([[[-0.0331,  0.0626, -0.0143, -0.0224,  0.0492,  0.0338,  0.0025]]],
+       device='cuda:0')
+tensor([[-0.0601,  0.2982,  1.0271, -0.0397,  0.2212, -0.1048,  1.0021]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0094, -0.0007,  0.0846, -0.0360, -0.0239, -0.0209, -0.0207]]],
+       device='cuda:0')
+tensor([[ 0.1439,  0.1909,  1.0123, -0.0706,  0.2373, -0.0301,  0.9974]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0065, -0.0163,  0.0869, -0.0308, -0.0238, -0.0188, -0.0204]]],
+       device='cuda:0')
+tensor([[ 0.0304,  0.1324,  0.0331,  0.0275, -0.0216, -0.0198,  1.0007]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0235, -0.0213,  0.0561, -0.0065,  0.0203, -0.0402, -0.0003]]],
+       device='cuda:0')
+tensor([[-0.1723,  0.1709, -0.4442,  0.0284, -0.0182,  0.0511, -1.0003]],
+       device='cuda:0')
+post mlp tensor([[[-0.0355,  0.0697, -0.0263, -0.0187,  0.0618,  0.0244,  0.0035]]],
+       device='cuda:0')
+tensor([[ 0.4120, -0.1735, -0.0371,  0.0139,  0.0434,  0.2282, -1.0045]],
+       device='cuda:0')
+post mlp tensor([[[-0.0386,  0.0428,  0.0007, -0.0058,  0.0268,  0.0445, -0.0079]]],
+       device='cuda:0')
+tensor([[ 0.2267,  0.0748, -0.7939,  0.0282, -0.0280,  0.0086, -0.9996]],
+       device='cuda:0')
+post mlp tensor([[[-0.0400,  0.0480, -0.0286, -0.0110,  0.0793,  0.0298,  0.0124]]],
+       device='cuda:0')
+tensor([[-0.0119,  0.1590,  0.9937, -0.0182,  0.1854, -0.0601,  0.9989]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0105, -0.0074,  0.0861, -0.0336, -0.0238, -0.0228, -0.0190]]],
+       device='cuda:0')
+tensor([[-0.0123,  0.1588,  0.9932, -0.0183,  0.1844, -0.0605,  0.9988]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0105, -0.0073,  0.0861, -0.0336, -0.0238, -0.0228, -0.0190]]],
+       device='cuda:0')
+tensor([[ 0.0290,  0.0204, -0.4073,  0.0216, -0.0285,  0.0400, -1.0003]],
+       device='cuda:0')
+post mlp tensor([[[-0.0345,  0.0583, -0.0174, -0.0170,  0.0556,  0.0310,  0.0019]]],
+       device='cuda:0')
+tensor([[ 0.5893,  0.1635, -0.8051,  0.0399, -0.0091,  0.0852, -1.0040]],
+       device='cuda:0')
+post mlp tensor([[[-0.0475,  0.0421, -0.0288,  0.0041,  0.0749,  0.0338,  0.0082]]],
+       device='cuda:0')
+tensor([[-0.0125,  0.1590,  0.9932, -0.0183,  0.1840, -0.0606,  0.9987]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0105, -0.0073,  0.0860, -0.0336, -0.0239, -0.0228, -0.0190]]],
+       device='cuda:0')
+tensor([[ 0.0144,  0.0974, -0.3046,  0.0185,  0.0055,  0.0344, -0.9982]],
+       device='cuda:0')
+post mlp tensor([[[-0.0351,  0.0624, -0.0164, -0.0163,  0.0509,  0.0334, -0.0021]]],
+       device='cuda:0')
+tensor([[ 0.0290,  0.0203, -0.4074,  0.0218, -0.0284,  0.0391, -1.0002]],
+       device='cuda:0')
+post mlp tensor([[[-0.0345,  0.0583, -0.0174, -0.0170,  0.0557,  0.0311,  0.0019]]],
+       device='cuda:0')
+tensor([[ 0.0143,  0.0971, -0.3046,  0.0184,  0.0057,  0.0340, -0.9982]],
+       device='cuda:0')
+post mlp tensor([[[-0.0351,  0.0624, -0.0164, -0.0163,  0.0509,  0.0334, -0.0021]]],
+       device='cuda:0')
+tensor([[ 0.1025,  0.0442,  0.4236, -0.0322,  0.0987, -0.0677,  0.9947]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0153, -0.0234,  0.0752, -0.0181,  0.0005, -0.0248, -0.0047]]],
+       device='cuda:0')
+tensor([[ 0.0281,  0.0191, -0.4066,  0.0223, -0.0284,  0.0388, -1.0002]],
+       device='cuda:0')
+post mlp tensor([[[-0.0345,  0.0583, -0.0174, -0.0170,  0.0556,  0.0311,  0.0019]]],
+       device='cuda:0')
+tensor([[ 0.0140,  0.0957, -0.3047,  0.0184,  0.0057,  0.0339, -0.9982]],
+       device='cuda:0')
+post mlp tensor([[[-0.0350,  0.0623, -0.0163, -0.0163,  0.0509,  0.0335, -0.0020]]],
+       device='cuda:0')
+tensor([[ 0.0247,  0.0938, -0.6961,  0.0388, -0.0430,  0.0742, -1.0041]],
+       device='cuda:0')
+post mlp tensor([[[-0.0383,  0.0576, -0.0300, -0.0144,  0.0740,  0.0237,  0.0110]]],
+       device='cuda:0')
+tensor([[ 0.2286,  0.0773, -0.7924,  0.0280, -0.0266,  0.0064, -0.9995]],
+       device='cuda:0')
+post mlp tensor([[[-0.0400,  0.0480, -0.0285, -0.0110,  0.0793,  0.0300,  0.0122]]],
+       device='cuda:0')
+tensor([[ 0.0142,  0.0964, -0.3045,  0.0184,  0.0059,  0.0333, -0.9981]],
+       device='cuda:0')
+post mlp tensor([[[-0.0350,  0.0623, -0.0163, -0.0163,  0.0509,  0.0335, -0.0020]]],
+       device='cuda:0')
+tensor([[ 0.2565, -0.0658, -0.6042,  0.0383, -0.0301,  0.0457, -1.0071]],
+       device='cuda:0')
+post mlp tensor([[[-0.0375,  0.0451, -0.0198, -0.0114,  0.0643,  0.0338,  0.0072]]],
+       device='cuda:0')
+tensor([[ 0.1771, -0.1366,  1.0424,  0.0150,  0.2446, -0.0019,  0.9960]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0056, -0.0307,  0.0953, -0.0327, -0.0250, -0.0159, -0.0147]]],
+       device='cuda:0')
+tensor([[ 0.1332,  0.0378,  0.0312, -0.0146,  0.0349, -0.0163, -1.0016]],
+       device='cuda:0')
+post mlp tensor([[[-0.0321,  0.0596,  0.0012, -0.0170,  0.0316,  0.0447, -0.0148]]],
+       device='cuda:0')
+tensor([[ 0.6031, -0.0152, -0.5484, -0.0402,  0.0077,  0.0995, -0.9967]],
+       device='cuda:0')
+post mlp tensor([[[-0.0450,  0.0385, -0.0123,  0.0007,  0.0557,  0.0411,  0.0042]]],
+       device='cuda:0')
+tensor([[ 0.0279,  0.0182, -0.4054,  0.0233, -0.0282,  0.0366, -1.0001]],
+       device='cuda:0')
+post mlp tensor([[[-0.0344,  0.0582, -0.0173, -0.0171,  0.0556,  0.0312,  0.0018]]],
+       device='cuda:0')
+tensor([[-0.0594,  0.2974,  1.0270, -0.0357,  0.2202, -0.0980,  1.0029]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0095, -0.0009,  0.0843, -0.0356, -0.0239, -0.0213, -0.0207]]],
+       device='cuda:0')
+tensor([[ 0.1393,  0.1949,  1.0112, -0.0680,  0.2396, -0.0304,  0.9975]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0065, -0.0161,  0.0867, -0.0309, -0.0237, -0.0188, -0.0203]]],
+       device='cuda:0')
+tensor([[ 0.1314,  0.0365,  0.0309, -0.0144,  0.0331, -0.0179, -1.0015]],
+       device='cuda:0')
+post mlp tensor([[[-0.0320,  0.0596,  0.0013, -0.0171,  0.0316,  0.0446, -0.0148]]],
+       device='cuda:0')
+tensor([[-0.1716,  0.1627, -0.4420,  0.0284, -0.0183,  0.0491, -1.0001]],
+       device='cuda:0')
+post mlp tensor([[[-0.0354,  0.0694, -0.0259, -0.0189,  0.0616,  0.0246,  0.0036]]],
+       device='cuda:0')
+tensor([[ 2.2836e-01,  7.4964e-02, -7.9203e-01,  2.9210e-02, -2.5616e-02,
+         -3.5033e-04, -9.9964e-01]], device='cuda:0')
+post mlp tensor([[[-0.0399,  0.0479, -0.0284, -0.0112,  0.0794,  0.0303,  0.0122]]],
+       device='cuda:0')
+tensor([[ 0.1394,  0.1952,  1.0110, -0.0681,  0.2393, -0.0305,  0.9975]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0065, -0.0161,  0.0867, -0.0308, -0.0237, -0.0188, -0.0203]]],
+       device='cuda:0')
+tensor([[-0.2304,  0.0535,  1.0218, -0.0469,  0.1776, -0.1061,  1.0138]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0137,  0.0023,  0.0916, -0.0434, -0.0234, -0.0205, -0.0099]]],
+       device='cuda:0')
+tensor([[-0.1714,  0.1626, -0.4421,  0.0284, -0.0183,  0.0493, -1.0001]],
+       device='cuda:0')
+post mlp tensor([[[-0.0354,  0.0694, -0.0259, -0.0189,  0.0616,  0.0246,  0.0036]]],
+       device='cuda:0')
+tensor([[ 0.0330,  0.1291,  0.0368,  0.0268, -0.0224, -0.0186,  1.0011]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0235, -0.0215,  0.0563, -0.0065,  0.0200, -0.0402, -0.0004]]],
+       device='cuda:0')
+tensor([[ 0.2287,  0.0753, -0.7916,  0.0293, -0.0252, -0.0018, -0.9996]],
+       device='cuda:0')
+post mlp tensor([[[-0.0399,  0.0479, -0.0284, -0.0112,  0.0794,  0.0304,  0.0121]]],
+       device='cuda:0')
+tensor([[ 0.0751,  0.1306, -0.4821,  0.0213, -0.0493, -0.0510, -0.9979]],
+       device='cuda:0')
+post mlp tensor([[[-0.0345,  0.0603, -0.0191, -0.0157,  0.0620,  0.0305, -0.0012]]],
+       device='cuda:0')
+tensor([[ 0.4118, -0.1785, -0.0384,  0.0122,  0.0413,  0.2087, -1.0042]],
+       device='cuda:0')
+post mlp tensor([[[-0.0381,  0.0425,  0.0015, -0.0064,  0.0271,  0.0451, -0.0082]]],
+       device='cuda:0')
+tensor([[ 0.1324,  0.0378,  0.0310, -0.0146,  0.0332, -0.0199, -1.0014]],
+       device='cuda:0')
+post mlp tensor([[[-0.0320,  0.0596,  0.0013, -0.0171,  0.0316,  0.0446, -0.0149]]],
+       device='cuda:0')
+tensor([[ 0.1327,  0.0381,  0.0310, -0.0147,  0.0333, -0.0202, -1.0014]],
+       device='cuda:0')
+post mlp tensor([[[-0.0320,  0.0596,  0.0013, -0.0171,  0.0317,  0.0447, -0.0149]]],
+       device='cuda:0')
+tensor([[ 0.2855,  0.0195, -0.2806, -0.0013, -0.0218,  0.0893, -0.9957]],
+       device='cuda:0')
+post mlp tensor([[[-0.0370,  0.0529, -0.0089, -0.0087,  0.0436,  0.0365, -0.0054]]],
+       device='cuda:0')
+tensor([[ 0.6201, -0.1971, -0.3834,  0.0069,  0.0450,  0.0952, -0.9977]],
+       device='cuda:0')
+post mlp tensor([[[-0.0418,  0.0309, -0.0041, -0.0017,  0.0450,  0.0479,  0.0003]]],
+       device='cuda:0')
+tensor([[ 0.0326,  0.1227, -0.4565, -0.0073, -0.0946, -0.0167,  1.0093]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0306, -0.0317,  0.0423, -0.0002,  0.0500, -0.0472,  0.0133]]],
+       device='cuda:0')
+tensor([[ 0.0134,  0.0927, -0.3038,  0.0180,  0.0067,  0.0299, -0.9980]],
+       device='cuda:0')
+post mlp tensor([[[-0.0349,  0.0622, -0.0161, -0.0165,  0.0509,  0.0337, -0.0020]]],
+       device='cuda:0')
+tensor([[ 0.2591, -0.0639, -0.5995,  0.0387, -0.0295,  0.0396, -1.0069]],
+       device='cuda:0')
+post mlp tensor([[[-0.0374,  0.0452, -0.0195, -0.0114,  0.0641,  0.0341,  0.0069]]],
+       device='cuda:0')
+tensor([[-0.2369,  0.0537,  1.0222, -0.0440,  0.1746, -0.1044,  1.0133]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0139,  0.0028,  0.0913, -0.0434, -0.0235, -0.0209, -0.0100]]],
+       device='cuda:0')
+tensor([[ 0.0126,  0.0909, -0.3034,  0.0176,  0.0068,  0.0285, -0.9980]],
+       device='cuda:0')
+post mlp tensor([[[-0.0349,  0.0621, -0.0161, -0.0166,  0.0510,  0.0337, -0.0019]]],
+       device='cuda:0')
+tensor([[ 0.0122,  0.0895, -0.3035,  0.0175,  0.0068,  0.0283, -0.9980]],
+       device='cuda:0')
+post mlp tensor([[[-0.0349,  0.0621, -0.0160, -0.0167,  0.0510,  0.0338, -0.0019]]],
+       device='cuda:0')
+tensor([[ 0.0120,  0.0886, -0.3036,  0.0176,  0.0068,  0.0283, -0.9979]],
+       device='cuda:0')
+post mlp tensor([[[-0.0349,  0.0620, -0.0160, -0.0167,  0.0510,  0.0338, -0.0019]]],
+       device='cuda:0')
+tensor([[ 0.0769,  0.1311, -0.4826,  0.0207, -0.0489, -0.0565, -0.9980]],
+       device='cuda:0')
+post mlp tensor([[[-0.0345,  0.0602, -0.0190, -0.0158,  0.0622,  0.0307, -0.0013]]],
+       device='cuda:0')
+tensor([[-0.0072,  0.1646,  0.9967, -0.0164,  0.1895, -0.0550,  0.9981]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0103, -0.0076,  0.0857, -0.0333, -0.0239, -0.0228, -0.0192]]],
+       device='cuda:0')
+tensor([[ 0.0773,  0.1316, -0.4827,  0.0207, -0.0487, -0.0558, -0.9980]],
+       device='cuda:0')
+post mlp tensor([[[-0.0345,  0.0602, -0.0190, -0.0158,  0.0622,  0.0307, -0.0013]]],
+       device='cuda:0')
+tensor([[ 0.0126,  0.0899, -0.3037,  0.0179,  0.0069,  0.0285, -0.9979]],
+       device='cuda:0')
+post mlp tensor([[[-0.0349,  0.0621, -0.0160, -0.0166,  0.0510,  0.0338, -0.0019]]],
+       device='cuda:0')
+tensor([[ 0.0306,  0.0998, -0.6995,  0.0411, -0.0415,  0.0606, -1.0029]],
+       device='cuda:0')
+post mlp tensor([[[-0.0382,  0.0575, -0.0300, -0.0145,  0.0745,  0.0241,  0.0107]]],
+       device='cuda:0')
+tensor([[ 0.2601, -0.0632, -0.5970,  0.0389, -0.0294,  0.0370, -1.0068]],
+       device='cuda:0')
+post mlp tensor([[[-0.0373,  0.0452, -0.0193, -0.0114,  0.0640,  0.0342,  0.0067]]],
+       device='cuda:0')
+tensor([[ 0.0950,  0.0460,  0.4231, -0.0282,  0.0857, -0.0589,  0.9949]],
+       device='cuda:0')
+post mlp tensor([[[ 0.0160, -0.0225,  0.0745, -0.0177,  0.0003, -0.0263, -0.0053]]],
+       device='cuda:0')
+  0%|          | 0/10 [00:07<?, ?it/s]
+Traceback (most recent call last):
+  File "robomimic/scripts/train.py", line 414, in <module>
+    main(args)
+  File "robomimic/scripts/train.py", line 365, in main
+    train(config, device=device)
+  File "robomimic/scripts/train.py", line 250, in train
+    all_rollout_logs, video_paths = TrainUtils.rollout_with_stats(
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/utils/train_utils.py", line 346, in rollout_with_stats
+    rollout_info = run_rollout(
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/utils/train_utils.py", line 213, in run_rollout
+    ac = policy(ob=ob_dict, goal=goal_dict)
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/algo/algo.py", line 476, in __call__
+    ac = self.policy.get_action(obs_dict=ob, goal_dict=goal)
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/algo/bet.py", line 275, in get_action
+    latents, offsets = self.nets["policy"].generate_latents(enc_obs_seq)
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/algo/bet_models/generators.py", line 157, in generate_latents
+    output, _ = self.model(obs_rep, None)
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/algo/bet_models/libraries/mingpt/model.py", line 240, in forward
+    x = self.blocks(x)
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/torch/nn/modules/container.py", line 141, in forward
+    input = module(input)
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/algo/bet_models/libraries/mingpt/model.py", line 123, in forward
+    x = x + self.mlp(self.ln2(x))
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/torch/nn/modules/container.py", line 141, in forward
+    input = module(input)
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/torch/nn/modules/linear.py", line 103, in forward
+    return F.linear(input, self.weight, self.bias)
+KeyboardInterrupt

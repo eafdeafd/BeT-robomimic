@@ -47,5 +47,5 @@ class BETConfig(BaseConfig):
         self.algo.discrete_input = False
 
         self.algo.loss.l2_weight = 1.0      # L2 loss weight
-        self.algo.loss.l1_weight = 0.0      # L1 loss weight
-        self.algo.loss.cos_weight = 0.0     # cosine loss weight
+        self.algo.loss.l1_weight = 0.2      # L1 loss weight
+        self.algo.loss.cos_weight = 0.5     # cosine loss weight

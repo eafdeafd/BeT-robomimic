@@ -149,7 +149,7 @@ def train(config, device):
         dataset=trainset,
         sampler=train_sampler,
         batch_size=config.train.batch_size,
-        shuffle=(train_sampler is None or betshuffle),
+        shuffle=True,
         num_workers=config.train.num_data_workers,
         drop_last=True
     )
@@ -163,7 +163,7 @@ def train(config, device):
             dataset=validset,
             sampler=valid_sampler,
             batch_size=config.train.batch_size,
-            shuffle=(valid_sampler is None or betshuffle),
+            shuffle=True,
             num_workers=num_workers,
             drop_last=True
         )

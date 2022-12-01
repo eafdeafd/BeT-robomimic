@@ -163,16 +163,21 @@ class MinGPT(Module):
             V=self.vocab_size,
             A=self.action_dim,
         )
+        # print("logits", logits, logits.size())
         probs = F.softmax(logits, dim=-1)
+        # print("probs", probs, probs.size())
         batch, seq, choices = probs.shape
         # Sample from the multinomial distribution, one per row.
         sampled_data = torch.multinomial(probs.view(-1, choices), num_samples=1)
+        # print("sampled_data", sampled_data, sampled_data.size())
         sampled_data = einops.rearrange(
             sampled_data, "(batch seq) 1 -> batch seq 1", batch=batch, seq=seq
         )
+        # print("sampled data 2", sampled_data, sampled_data.size())
         sampled_offsets = offsets[
             torch.arange(offsets.shape[0]), sampled_data.flatten()
         ].view(batch, seq, self.action_dim)
+        # print("sampled offsets", sampled_offsets, sampled_offsets.size())
         return (sampled_data, sampled_offsets)
 
     def output_shape(self, input_shape=None):

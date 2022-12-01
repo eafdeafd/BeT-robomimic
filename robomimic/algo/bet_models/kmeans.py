@@ -19,11 +19,11 @@ class KmeansDiscretizer():
         all_actions = []
         for d in train_loader:
             action = d["actions"]
-            all_actions.append(action.view(-1, action.shape[-1]))
-        all_actions = torch.cat(all_actions, dim=0)
-        self.all_actions = all_actions
+            for a in action:
+                all_actions.append(a[0])
+        self.all_actions = torch.stack(all_actions)
 
-    def fit(self, niter: int = 50, ncluster: int = 512) -> any:
+    def fit(self, niter: int = 100, ncluster: int = 512) -> any:
         assert self.all_actions is not None
         actions = self.all_actions
         self.action_dim = actions.shape[-1]

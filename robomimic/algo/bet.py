@@ -80,6 +80,10 @@ class BET(PolicyAlgo):
         # set up different observation groups for @MIMO_MLP
         input_obs_group_shapes = OrderedDict()
         input_obs_group_shapes["obs"] = OrderedDict(self.obs_shapes)
+
+        obs_dim = 0
+        for key in input_obs_group_shapes["obs"]:
+            obs_dim += input_obs_group_shapes["obs"][key][0]
         self.goal_shapes = OrderedDict()
         output_shapes = OrderedDict(action=(self.ac_dim,))
 
@@ -89,28 +93,18 @@ class BET(PolicyAlgo):
 
         self.input_obs_group_shapes = input_obs_group_shapes
         self.output_shapes = output_shapes
-
         self.nets = nn.ModuleDict()
 
         encoder_kwargs = ObsUtils.obs_encoder_kwargs_from_config(self.obs_config.encoder)
         # Encoder for all observation groups.
         # For low_dim, does nothing.
-        self.nets["encoder"] = ObsNets.ObservationBETGroupEncoder(
-            observation_group_shapes=input_obs_group_shapes,
-            encoder_kwargs=encoder_kwargs,
-        )
-        self.nets["ac_encoder"] = ObsNets.ObservationGroupEncoder(
-            observation_group_shapes=input_obs_group_shapes,
-            encoder_kwargs=encoder_kwargs,
-        )
-
         # flat encoder output dimension
-        mlp_input_dim = self.nets["encoder"].output_shape()[0]
+        mlp_input_dim = obs_dim
 
         self.nets["mlp"] = BaseNets.MLP(
             input_dim=self.ac_dim,
             output_dim=self.ac_dim,
-            layer_dims=[136, 544, 272],
+            layer_dims=[512, 512],
             layer_func=nn.Linear,
             activation=nn.Mish,
             output_activation=nn.Tanh, # make sure non-linearity is applied before decoder
@@ -134,10 +128,20 @@ class BET(PolicyAlgo):
             discrete_input=self.algo_config.discrete_input
         )
         self.optim = self.nets["policy"].get_optim()
+        self.mlpoptim = torch.optim.AdamW(self.nets["mlp"].parameters(), lr=0.001)
         self.nets = self.nets.float().to(self.device)
         self.action_encoder = torch.nn.Identity(self.ac_dim)
         self.window_size = self.algo_config.window_size
         self.history = deque(maxlen=self.algo_config.history_size)
+
+    def _flatten_obs_dict(self, obs):
+        obs_tensor = []
+        for key in self.input_obs_group_shapes["obs"]:
+            # print(key)
+            obs_tensor.append(obs[key])
+        # print(obs_tensor)
+        return torch.cat(obs_tensor, dim=-1)
+
 
     def process_batch_for_training(self, batch):
         """
@@ -154,6 +158,8 @@ class BET(PolicyAlgo):
                 will be used for training 
         """
         input_batch = batch
+        batch["obs"] = self._flatten_obs_dict(batch["obs"])
+        # print(batch["obs"])
         return TensorUtils.to_device(TensorUtils.to_float(input_batch), self.device)
 
     def train_on_batch(self, batch, epoch, validate=False):
@@ -181,7 +187,7 @@ class BET(PolicyAlgo):
             info = super(BET, self).train_on_batch(batch, epoch, validate=validate)
 
             losses = OrderedDict()
-            enc_outputs = self.nets["encoder"](self.algo_config.window_size, **{"obs":batch["obs"]})
+            enc_outputs = batch["obs"]
             # optional encoding here
             #self.action_encoder(enc_outputs)
             latent = self.discretizer.discretize(batch["actions"])
@@ -212,13 +218,13 @@ class BET(PolicyAlgo):
             if not validate:
                 step_info = OrderedDict()
                 
-                
+                self.mlpoptim.zero_grad()
                 self.optim.zero_grad(set_to_none=True)
                 loss.backward()
 
                 # gradient clipping
                 torch.nn.utils.clip_grad_norm_(self.nets["policy"].parameters(), self.optim_params.grad_norm_clip)
-
+                torch.nn.utils.clip_grad_norm_(self.nets["mlp"].parameters(), self.optim_params.grad_norm_clip)
                 # compute grad norms
                 grad_norms = 0.
                 for p in self.nets["policy"].parameters():
@@ -228,6 +234,7 @@ class BET(PolicyAlgo):
 
                 # step
                 self.optim.step()
+                self.mlpoptim.step()
                 
                 step_info["policy_grad_norms"] = grad_norms
                 info.update(step_info)
@@ -268,17 +275,24 @@ class BET(PolicyAlgo):
             action (torch.Tensor): action tensor
         """
         with TorchUtils.eval_mode(self.action_encoder, self.nets["policy"], self.nets["mlp"], no_grad=True):
-            enc_obs = self.nets["ac_encoder"](**{"obs":obs_dict})
+            # print("obs dict", obs_dict)
+            enc_obs = self._flatten_obs_dict(obs_dict)
+            # print(enc_obs)
             enc_obs = einops.repeat(enc_obs[0], "obs -> batch obs", batch=1)
             self.history.append(enc_obs)
             enc_obs_seq = torch.stack(tuple(self.history), dim=0)
+            # print("enc obs seq", enc_obs_seq)
             latents, offsets = self.nets["policy"].generate_latents(enc_obs_seq)
             action_latents = (latents[:, -1:, :], offsets[:, -1:, :])  # current obs is last obs
+            # print("action latents", action_latents)
             actions = self.discretizer.decode_actions(latent_action_batch=action_latents)
+            # print("action", actions)
+
             sampled_action = np.random.randint(len(actions))
             actions = actions[sampled_action]
             actions = einops.rearrange(actions, "1 action_dim -> 1 1 action_dim")
             actions = self.nets["mlp"](actions)
+            # print("mlp out actions", actions)
             actions = einops.rearrange(actions, "1 1 action_dim -> action_dim")
             return [actions]
         

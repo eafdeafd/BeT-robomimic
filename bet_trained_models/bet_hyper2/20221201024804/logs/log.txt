@@ -1,0 +1,100 @@
+
+============= Initialized Observation Utils with Obs Spec =============
+
+using obs modality: low_dim with keys: ['robot0_eef_quat', 'robot0_gripper_qpos', 'object', 'robot0_eef_pos']
+using obs modality: rgb with keys: []
+using obs modality: depth with keys: []
+using obs modality: scan with keys: []
+/home/andrew/Desktop/robo_sims/robomimic/robomimic/scripts
+
+============= Loaded Environment Metadata =============
+obs key object with shape (14,)
+obs key robot0_eef_pos with shape (3,)
+obs key robot0_eef_quat with shape (4,)
+obs key robot0_gripper_qpos with shape (2,)
+Created environment with name NutAssemblySquare
+Action size is 7
+NutAssemblySquare
+{
+    "camera_depths": false,
+    "camera_heights": 84,
+    "camera_widths": 84,
+    "control_freq": 20,
+    "controller_configs": {
+        "control_delta": true,
+        "damping": 1,
+        "damping_limits": [
+            0,
+            10
+        ],
+        "impedance_mode": "fixed",
+        "input_max": 1,
+        "input_min": -1,
+        "interpolation": null,
+        "kp": 150,
+        "kp_limits": [
+            0,
+            300
+        ],
+        "orientation_limits": null,
+        "output_max": [
+            0.05,
+            0.05,
+            0.05,
+            0.5,
+            0.5,
+            0.5
+        ],
+        "output_min": [
+            -0.05,
+            -0.05,
+            -0.05,
+            -0.5,
+            -0.5,
+            -0.5
+        ],
+        "position_limits": null,
+        "ramp_ratio": 0.2,
+        "type": "OSC_POSE",
+        "uncouple_pos_ori": true
+    },
+    "has_offscreen_renderer": true,
+    "has_renderer": false,
+    "ignore_done": true,
+    "render_gpu_device_id": 0,
+    "reward_shaping": false,
+    "robots": [
+        "Panda"
+    ],
+    "use_camera_obs": false,
+    "use_object_obs": true
+}
+
+run failed with error:
+
+
+Traceback (most recent call last):
+  File "train.py", line 365, in main
+    train(config, device=device)
+  File "train.py", line 115, in train
+    model = algo_factory(
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/algo/algo.py", line 72, in algo_factory
+    return algo_cls(
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/algo/bet.py", line 56, in __init__
+    super().__init__(algo_config, obs_config, global_config, obs_key_shapes, ac_dim, device)
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/algo/algo.py", line 126, in __init__
+    self._create_networks()
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/algo/bet.py", line 114, in _create_networks
+    self.nets["policy"] = MinGPT(
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/algo/bet_models/generators.py", line 57, in __init__
+    self.model = mingpt_model.GPT(config)
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/algo/bet_models/libraries/mingpt/model.py", line 142, in __init__
+    self.blocks = nn.Sequential(*[Block(config) for _ in range(config.n_layer)])
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/algo/bet_models/libraries/mingpt/model.py", line 142, in <listcomp>
+    self.blocks = nn.Sequential(*[Block(config) for _ in range(config.n_layer)])
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/algo/bet_models/libraries/mingpt/model.py", line 113, in __init__
+    self.attn = CausalSelfAttention(config)
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/algo/bet_models/libraries/mingpt/model.py", line 54, in __init__
+    assert config.n_embd % config.n_head == 0
+AssertionError
+

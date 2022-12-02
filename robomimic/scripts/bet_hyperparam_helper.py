@@ -55,16 +55,70 @@ def make_generator(config_file, script_file):
         key="algo.ae_bins",
         name="", 
         group=0, 
-        values=[8, 16, 32, 64, 128], 
+        values=[64, 96], 
     )
 
     generator.add_param(
         key="algo.ae_num_latents",
         name="", 
         group=0, 
-        values=[8, 16, 32, 64, 128], 
+        values=[64, 96], 
     )
 
+    generator.add_param(
+        key="algo.window_size",
+        name="", 
+        group=1, 
+        values=[1, 10, 50], 
+    )
+    generator.add_param(
+        key="algo.history_size",
+        name="", 
+        group=1, 
+        values=[1, 10, 50], 
+    )    
+
+    generator.add_param(
+        key="algo.offset_loss_scale",
+        name="", 
+        group=2, 
+        values=[0.1, 1, 10, 100], 
+    )
+
+    generator.add_param(
+        key="train.seq_length",
+        name="", 
+        group=1, 
+        values=[1, 10, 50], 
+    )    
+
+    generator.add_param(
+        key="algo.optim_params.lr",
+        name="", 
+        group=3, 
+        values=[.0001, .001, .00001], 
+    )    
+    
+    generator.add_param(
+        key="algo.n_layer",
+        name="", 
+        group=5, 
+        values=[4, 6, 12], 
+    )  
+
+    generator.add_param(
+        key="algo.n_head",
+        name="", 
+        group=5, 
+        values=[4, 6, 12], 
+    ) 
+
+    generator.add_param(
+        key="algo.n_embd",
+        name="", 
+        group=5, 
+        values=[72, 120, 240], 
+    ) 
     return generator
 
 

@@ -1,0 +1,723 @@
+
+============= Initialized Observation Utils with Obs Spec =============
+
+using obs modality: low_dim with keys: ['robot0_eef_quat', 'robot0_eef_pos', 'robot0_gripper_qpos', 'object']
+using obs modality: rgb with keys: []
+using obs modality: depth with keys: []
+using obs modality: scan with keys: []
+/home/andrew/Desktop/robo_sims/robomimic/robomimic/scripts
+
+============= Loaded Environment Metadata =============
+obs key object with shape (14,)
+obs key robot0_eef_pos with shape (3,)
+obs key robot0_eef_quat with shape (4,)
+obs key robot0_gripper_qpos with shape (2,)
+Created environment with name PickPlaceCan
+Action size is 7
+PickPlaceCan
+{
+    "camera_depths": false,
+    "camera_heights": 84,
+    "camera_widths": 84,
+    "control_freq": 20,
+    "controller_configs": {
+        "control_delta": true,
+        "damping": 1,
+        "damping_limits": [
+            0,
+            10
+        ],
+        "impedance_mode": "fixed",
+        "input_max": 1,
+        "input_min": -1,
+        "interpolation": null,
+        "kp": 150,
+        "kp_limits": [
+            0,
+            300
+        ],
+        "orientation_limits": null,
+        "output_max": [
+            0.05,
+            0.05,
+            0.05,
+            0.5,
+            0.5,
+            0.5
+        ],
+        "output_min": [
+            -0.05,
+            -0.05,
+            -0.05,
+            -0.5,
+            -0.5,
+            -0.5
+        ],
+        "position_limits": null,
+        "ramp_ratio": 0.2,
+        "type": "OSC_POSE",
+        "uncouple_pos_ori": true
+    },
+    "has_offscreen_renderer": true,
+    "has_renderer": false,
+    "ignore_done": true,
+    "render_gpu_device_id": 0,
+    "reward_shaping": false,
+    "robots": [
+        "Panda"
+    ],
+    "use_camera_obs": false,
+    "use_object_obs": true
+}
+
+
+============= Model Summary =============
+BET (
+  ModuleDict(
+    (mlp): MLP(
+        input_dim=7
+        output_dim=7
+        layer_dims=[512, 512]
+        layer_func=Linear
+        dropout=None
+        act=Mish
+        output_act=Tanh
+    )
+    (policy): MinGPT(
+      (model): GPT(
+        (tok_emb): Linear(in_features=26, out_features=72, bias=True)
+        (drop): Dropout(p=0.1, inplace=False)
+        (blocks): Sequential(
+          (0): Block(
+            (ln1): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=72, out_features=72, bias=True)
+              (query): Linear(in_features=72, out_features=72, bias=True)
+              (value): Linear(in_features=72, out_features=72, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=72, out_features=72, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=72, out_features=288, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=288, out_features=72, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (1): Block(
+            (ln1): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=72, out_features=72, bias=True)
+              (query): Linear(in_features=72, out_features=72, bias=True)
+              (value): Linear(in_features=72, out_features=72, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=72, out_features=72, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=72, out_features=288, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=288, out_features=72, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (2): Block(
+            (ln1): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=72, out_features=72, bias=True)
+              (query): Linear(in_features=72, out_features=72, bias=True)
+              (value): Linear(in_features=72, out_features=72, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=72, out_features=72, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=72, out_features=288, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=288, out_features=72, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (3): Block(
+            (ln1): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=72, out_features=72, bias=True)
+              (query): Linear(in_features=72, out_features=72, bias=True)
+              (value): Linear(in_features=72, out_features=72, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=72, out_features=72, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=72, out_features=288, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=288, out_features=72, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+        )
+        (ln_f): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+        (head): Linear(in_features=72, out_features=512, bias=False)
+      )
+    )
+  )
+)
+
+SequenceDataset: loading dataset into memory...
+  0%|          | 0/180 [00:00<?, ?it/s] 43%|####2     | 77/180 [00:00<00:00, 762.92it/s] 89%|########8 | 160/180 [00:00<00:00, 798.91it/s]100%|##########| 180/180 [00:00<00:00, 796.74it/s]
+SequenceDataset: caching get_item calls...
+  0%|          | 0/20883 [00:00<?, ?it/s]  6%|6         | 1339/20883 [00:00<00:01, 13387.36it/s] 13%|#2        | 2678/20883 [00:00<00:01, 13088.65it/s] 19%|#9        | 3988/20883 [00:00<00:01, 12483.91it/s] 26%|##5       | 5326/20883 [00:00<00:01, 12823.66it/s] 32%|###1      | 6677/20883 [00:00<00:01, 13064.54it/s] 38%|###8      | 8022/20883 [00:00<00:00, 13191.29it/s] 45%|####4     | 9386/20883 [00:00<00:00, 13336.30it/s] 51%|#####1    | 10739/20883 [00:00<00:00, 13396.70it/s] 58%|#####7    | 12089/20883 [00:00<00:00, 13427.18it/s] 64%|######4   | 13435/20883 [00:01<00:00, 13435.80it/s] 71%|#######   | 14788/20883 [00:01<00:00, 13462.38it/s] 77%|#######7  | 16135/20883 [00:01<00:00, 13435.36it/s] 84%|########3 | 17492/20883 [00:01<00:00, 13474.11it/s] 90%|######### | 18840/20883 [00:01<00:00, 13459.55it/s] 97%|#########6| 20187/20883 [00:01<00:00, 13452.26it/s]100%|##########| 20883/20883 [00:01<00:00, 13309.99it/s]
+SequenceDataset: loading dataset into memory...
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 836.88it/s]
+SequenceDataset: caching get_item calls...
+  0%|          | 0/2324 [00:00<?, ?it/s] 58%|#####8    | 1353/2324 [00:00<00:00, 13528.98it/s]100%|##########| 2324/2324 [00:00<00:00, 13613.23it/s]
+
+============= Training Dataset =============
+SequenceDataset (
+	path=/home/andrew/Desktop/robo_sims/robomimic/datasets/can/ph/low_dim.hdf5
+	obs_keys=('object', 'robot0_eef_pos', 'robot0_eef_quat', 'robot0_gripper_qpos')
+	seq_length=10
+	filter_key=train
+	frame_stack=1
+	pad_seq_length=True
+	pad_frame_stack=True
+	goal_mode=none
+	cache_mode=all
+	num_demos=180
+	num_sequences=20883
+)
+
+  0%|          | 0/100 [00:00<?, ?it/s]K-means clustering:   0%|          | 0/100 [00:00<?, ?it/s]K-means clustering:   5%|5         | 5/100 [00:00<00:02, 41.19it/s]K-means clustering:  10%|#         | 10/100 [00:00<00:02, 41.84it/s]K-means clustering:  15%|#5        | 15/100 [00:00<00:02, 42.08it/s]K-means clustering:  20%|##        | 20/100 [00:00<00:01, 42.92it/s]K-means clustering:  25%|##5       | 25/100 [00:00<00:01, 43.06it/s]K-means clustering:  30%|###       | 30/100 [00:00<00:01, 43.33it/s]K-means clustering:  35%|###5      | 35/100 [00:00<00:01, 44.37it/s]K-means clustering:  40%|####      | 40/100 [00:00<00:01, 45.41it/s]K-means clustering:  45%|####5     | 45/100 [00:01<00:01, 46.25it/s]K-means clustering:  51%|#####1    | 51/100 [00:01<00:01, 48.33it/s]K-means clustering:  57%|#####6    | 57/100 [00:01<00:00, 50.78it/s]K-means clustering:  63%|######3   | 63/100 [00:01<00:00, 52.00it/s]K-means clustering:  69%|######9   | 69/100 [00:01<00:00, 50.61it/s]K-means clustering:  75%|#######5  | 75/100 [00:01<00:00, 52.42it/s]K-means clustering:  81%|########1 | 81/100 [00:01<00:00, 53.35it/s]K-means clustering:  87%|########7 | 87/100 [00:01<00:00, 54.20it/s]K-means clustering:  93%|#########3| 93/100 [00:01<00:00, 50.20it/s]K-means clustering:  99%|#########9| 99/100 [00:02<00:00, 48.45it/s]K-means clustering: 100%|##########| 100/100 [00:02<00:00, 47.96it/s]
+  0%|          | 0/100 [00:00<?, ?it/s]  7%|7         | 7/100 [00:00<00:01, 66.86it/s] 14%|#4        | 14/100 [00:00<00:01, 66.45it/s] 22%|##2       | 22/100 [00:00<00:01, 69.15it/s] 30%|###       | 30/100 [00:00<00:00, 70.39it/s] 38%|###8      | 38/100 [00:00<00:00, 70.99it/s] 46%|####6     | 46/100 [00:00<00:00, 71.47it/s] 54%|#####4    | 54/100 [00:00<00:00, 71.57it/s] 62%|######2   | 62/100 [00:00<00:00, 71.52it/s] 70%|#######   | 70/100 [00:00<00:00, 71.54it/s] 78%|#######8  | 78/100 [00:01<00:00, 71.57it/s] 86%|########6 | 86/100 [00:01<00:00, 71.89it/s] 94%|#########3| 94/100 [00:01<00:00, 71.84it/s]100%|##########| 100/100 [00:01<00:00, 71.14it/s]
+Train Epoch 1
+{
+    "Cosine_Loss": 0.6224354460835457,
+    "L1_Loss": 0.10525923531502485,
+    "L2_Loss": 0.21838679194450378,
+    "Loss": 4.528081321716309,
+    "Policy_Grad_Norms": 0.9999993272835954,
+    "Time_Data_Loading": 0.002963562806447347,
+    "Time_Epoch": 0.023438294728597004,
+    "Time_Log_Info": 6.852944691975912e-05,
+    "Time_Process_Batch": 0.0004424254099527995,
+    "Time_Train_Batch": 0.019915743668874105
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 224.12it/s]
+Validation Epoch 1
+{
+    "Cosine_Loss": 0.4467919886112213,
+    "L1_Loss": 0.06867147497832775,
+    "L2_Loss": 0.14369115382432937,
+    "Loss": 4.122610473632813,
+    "Time_Data_Loading": 0.00027969280878702797,
+    "Time_Epoch": 0.0007584810256958008,
+    "Time_Log_Info": 5.936622619628906e-06,
+    "Time_Process_Batch": 3.9915243784586586e-05,
+    "Time_Train_Batch": 0.0004169940948486328
+}
+
+Epoch 1 Memory Usage: 3662 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 71.42it/s] 16%|#6        | 16/100 [00:00<00:01, 72.17it/s] 24%|##4       | 24/100 [00:00<00:01, 72.45it/s] 32%|###2      | 32/100 [00:00<00:00, 72.57it/s] 40%|####      | 40/100 [00:00<00:00, 72.58it/s] 48%|####8     | 48/100 [00:00<00:00, 72.36it/s] 56%|#####6    | 56/100 [00:00<00:00, 71.43it/s] 64%|######4   | 64/100 [00:00<00:00, 71.52it/s] 72%|#######2  | 72/100 [00:01<00:00, 71.78it/s] 80%|########  | 80/100 [00:01<00:00, 71.98it/s] 88%|########8 | 88/100 [00:01<00:00, 71.95it/s] 96%|#########6| 96/100 [00:01<00:00, 72.21it/s]100%|##########| 100/100 [00:01<00:00, 72.10it/s]
+Train Epoch 2
+{
+    "Cosine_Loss": 0.40261214584112165,
+    "L1_Loss": 0.059183556437492374,
+    "L2_Loss": 0.1243511565029621,
+    "Loss": 3.9106510734558104,
+    "Policy_Grad_Norms": 0.9999997964611955,
+    "Time_Data_Loading": 0.0029122352600097655,
+    "Time_Epoch": 0.023124885559082032,
+    "Time_Log_Info": 6.883939107259115e-05,
+    "Time_Process_Batch": 0.0004434943199157715,
+    "Time_Train_Batch": 0.019651750723520916
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 226.80it/s]
+Validation Epoch 2
+{
+    "Cosine_Loss": 0.3850158929824829,
+    "L1_Loss": 0.05321453586220741,
+    "L2_Loss": 0.1123424418270588,
+    "Loss": 3.7369322299957277,
+    "Time_Data_Loading": 0.000281830628712972,
+    "Time_Epoch": 0.0007492582003275554,
+    "Time_Log_Info": 5.93264897664388e-06,
+    "Time_Process_Batch": 4.027287165323893e-05,
+    "Time_Train_Batch": 0.0004056692123413086
+}
+
+Epoch 2 Memory Usage: 3662 MB
+
+
+============= New Training Run with Config =============
+{
+    "algo_name": "bet",
+    "experiment": {
+        "name": "bet_multitask",
+        "validate": true,
+        "logging": {
+            "terminal_output_to_txt": true,
+            "log_tb": true
+        },
+        "save": {
+            "enabled": true,
+            "every_n_seconds": null,
+            "every_n_epochs": 50,
+            "epochs": [],
+            "on_best_validation": false,
+            "on_best_rollout_return": false,
+            "on_best_rollout_success_rate": true
+        },
+        "epoch_every_n_steps": 100,
+        "validation_epoch_every_n_steps": 10,
+        "env": null,
+        "additional_envs": null,
+        "render": false,
+        "render_video": true,
+        "keep_all_videos": false,
+        "video_skip": 5,
+        "rollout": {
+            "enabled": true,
+            "n": 50,
+            "horizon": 400,
+            "rate": 500,
+            "warmstart": 0,
+            "terminate_on_success": true
+        }
+    },
+    "train": {
+        "data": "/home/andrew/Desktop/robo_sims/robomimic/datasets/square/ph/low_dim.hdf5",
+        "output_dir": "/home/andrew/Desktop/robo_sims/robomimic/bet_trained_models/bet_multitask",
+        "num_data_workers": 0,
+        "hdf5_cache_mode": "all",
+        "hdf5_use_swmr": true,
+        "hdf5_normalize_obs": false,
+        "hdf5_filter_key": null,
+        "seq_length": 10,
+        "dataset_keys": [
+            "actions",
+            "rewards",
+            "dones"
+        ],
+        "goal_mode": null,
+        "cuda": true,
+        "batch_size": 100,
+        "num_epochs": 2,
+        "seed": 1
+    },
+    "algo": {
+        "ae_bins": 64,
+        "ae_latent_dim": 1,
+        "ae_num_latents": 64,
+        "optim_params": {
+            "lr": 0.0001,
+            "wd": 0.01,
+            "betas": [
+                0.9,
+                0.95
+            ],
+            "grad_norm_clip": 1,
+            "seed": 42
+        },
+        "n_layer": 4,
+        "n_head": 4,
+        "n_embd": 72,
+        "window_size": 10,
+        "predict_offsets": true,
+        "offset_loss_scale": 0.5,
+        "focal_loss_gamma": 2.0,
+        "batch_size": 100,
+        "history_size": 10,
+        "discrete_input": false,
+        "loss": {
+            "l2_weight": 1.5,
+            "l1_weight": 0.2,
+            "cos_weight": 0.5
+        }
+    },
+    "observation": {
+        "modalities": {
+            "obs": {
+                "low_dim": [
+                    "robot0_eef_pos",
+                    "robot0_eef_quat",
+                    "robot0_gripper_qpos",
+                    "object"
+                ],
+                "rgb": [],
+                "depth": [],
+                "scan": []
+            },
+            "goal": {
+                "low_dim": [],
+                "rgb": [],
+                "depth": [],
+                "scan": []
+            }
+        },
+        "encoder": {
+            "low_dim": {
+                "core_class": null,
+                "core_kwargs": {},
+                "obs_randomizer_class": null,
+                "obs_randomizer_kwargs": {}
+            },
+            "rgb": {
+                "core_class": "VisualCore",
+                "core_kwargs": {
+                    "feature_dimension": 64,
+                    "flatten": true,
+                    "backbone_class": "ResNet18Conv",
+                    "backbone_kwargs": {
+                        "pretrained": false,
+                        "input_coord_conv": false
+                    },
+                    "pool_class": "SpatialSoftmax",
+                    "pool_kwargs": {
+                        "num_kp": 32,
+                        "learnable_temperature": false,
+                        "temperature": 1.0,
+                        "noise_std": 0.0,
+                        "output_variance": false
+                    }
+                },
+                "obs_randomizer_class": null,
+                "obs_randomizer_kwargs": {
+                    "crop_height": 76,
+                    "crop_width": 76,
+                    "num_crops": 1,
+                    "pos_enc": false
+                }
+            },
+            "depth": {
+                "core_class": "VisualCore",
+                "core_kwargs": {
+                    "feature_dimension": 64,
+                    "flatten": true,
+                    "backbone_class": "ResNet18Conv",
+                    "backbone_kwargs": {
+                        "pretrained": false,
+                        "input_coord_conv": false
+                    },
+                    "pool_class": "SpatialSoftmax",
+                    "pool_kwargs": {
+                        "num_kp": 32,
+                        "learnable_temperature": false,
+                        "temperature": 1.0,
+                        "noise_std": 0.0,
+                        "output_variance": false
+                    }
+                },
+                "obs_randomizer_class": null,
+                "obs_randomizer_kwargs": {
+                    "crop_height": 76,
+                    "crop_width": 76,
+                    "num_crops": 1,
+                    "pos_enc": false
+                }
+            },
+            "scan": {
+                "core_class": "ScanCore",
+                "core_kwargs": {
+                    "feature_dimension": 64,
+                    "flatten": true,
+                    "pool_class": "SpatialSoftmax",
+                    "pool_kwargs": {
+                        "num_kp": 32,
+                        "learnable_temperature": false,
+                        "temperature": 1.0,
+                        "noise_std": 0.0,
+                        "output_variance": false
+                    },
+                    "conv_activation": "relu",
+                    "conv_kwargs": {
+                        "out_channels": [
+                            32,
+                            64,
+                            64
+                        ],
+                        "kernel_size": [
+                            8,
+                            4,
+                            2
+                        ],
+                        "stride": [
+                            4,
+                            2,
+                            1
+                        ]
+                    }
+                },
+                "obs_randomizer_class": null,
+                "obs_randomizer_kwargs": {
+                    "crop_height": 76,
+                    "crop_width": 76,
+                    "num_crops": 1,
+                    "pos_enc": false
+                }
+            }
+        }
+    }
+}
+
+STDOUT will be forked to /home/andrew/Desktop/robo_sims/robomimic/bet_trained_models/bet_multitask/bet_multitask/20221201131948/logs/log.txt
+
+============= Initialized Observation Utils with Obs Spec =============
+
+using obs modality: low_dim with keys: ['robot0_eef_quat', 'robot0_eef_pos', 'robot0_gripper_qpos', 'object']
+using obs modality: rgb with keys: []
+using obs modality: depth with keys: []
+using obs modality: scan with keys: []
+/home/andrew/Desktop/robo_sims/robomimic/robomimic/scripts
+
+============= Loaded Environment Metadata =============
+obs key object with shape (14,)
+obs key robot0_eef_pos with shape (3,)
+obs key robot0_eef_quat with shape (4,)
+obs key robot0_gripper_qpos with shape (2,)
+Created environment with name NutAssemblySquare
+Action size is 7
+NutAssemblySquare
+{
+    "camera_depths": false,
+    "camera_heights": 84,
+    "camera_widths": 84,
+    "control_freq": 20,
+    "controller_configs": {
+        "control_delta": true,
+        "damping": 1,
+        "damping_limits": [
+            0,
+            10
+        ],
+        "impedance_mode": "fixed",
+        "input_max": 1,
+        "input_min": -1,
+        "interpolation": null,
+        "kp": 150,
+        "kp_limits": [
+            0,
+            300
+        ],
+        "orientation_limits": null,
+        "output_max": [
+            0.05,
+            0.05,
+            0.05,
+            0.5,
+            0.5,
+            0.5
+        ],
+        "output_min": [
+            -0.05,
+            -0.05,
+            -0.05,
+            -0.5,
+            -0.5,
+            -0.5
+        ],
+        "position_limits": null,
+        "ramp_ratio": 0.2,
+        "type": "OSC_POSE",
+        "uncouple_pos_ori": true
+    },
+    "has_offscreen_renderer": true,
+    "has_renderer": false,
+    "ignore_done": true,
+    "render_gpu_device_id": 0,
+    "reward_shaping": false,
+    "robots": [
+        "Panda"
+    ],
+    "use_camera_obs": false,
+    "use_object_obs": true
+}
+
+
+============= Model Summary =============
+BET (
+  ModuleDict(
+    (mlp): MLP(
+        input_dim=7
+        output_dim=7
+        layer_dims=[512, 512]
+        layer_func=Linear
+        dropout=None
+        act=Mish
+        output_act=Tanh
+    )
+    (policy): MinGPT(
+      (model): GPT(
+        (tok_emb): Linear(in_features=26, out_features=72, bias=True)
+        (drop): Dropout(p=0.1, inplace=False)
+        (blocks): Sequential(
+          (0): Block(
+            (ln1): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=72, out_features=72, bias=True)
+              (query): Linear(in_features=72, out_features=72, bias=True)
+              (value): Linear(in_features=72, out_features=72, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=72, out_features=72, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=72, out_features=288, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=288, out_features=72, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (1): Block(
+            (ln1): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=72, out_features=72, bias=True)
+              (query): Linear(in_features=72, out_features=72, bias=True)
+              (value): Linear(in_features=72, out_features=72, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=72, out_features=72, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=72, out_features=288, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=288, out_features=72, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (2): Block(
+            (ln1): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=72, out_features=72, bias=True)
+              (query): Linear(in_features=72, out_features=72, bias=True)
+              (value): Linear(in_features=72, out_features=72, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=72, out_features=72, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=72, out_features=288, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=288, out_features=72, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (3): Block(
+            (ln1): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=72, out_features=72, bias=True)
+              (query): Linear(in_features=72, out_features=72, bias=True)
+              (value): Linear(in_features=72, out_features=72, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=72, out_features=72, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=72, out_features=288, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=288, out_features=72, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+        )
+        (ln_f): LayerNorm((72,), eps=1e-05, elementwise_affine=True)
+        (head): Linear(in_features=72, out_features=512, bias=False)
+      )
+    )
+  )
+)
+
+SequenceDataset: loading dataset into memory...
+  0%|          | 0/180 [00:00<?, ?it/s] 43%|####2     | 77/180 [00:00<00:00, 767.28it/s] 89%|########8 | 160/180 [00:00<00:00, 803.94it/s]100%|##########| 180/180 [00:00<00:00, 801.88it/s]
+SequenceDataset: caching get_item calls...
+  0%|          | 0/27165 [00:00<?, ?it/s]  5%|4         | 1358/27165 [00:00<00:01, 13576.52it/s] 10%|9         | 2716/27165 [00:00<00:01, 13462.99it/s] 15%|#5        | 4093/27165 [00:00<00:01, 13601.80it/s] 20%|##        | 5454/27165 [00:00<00:01, 13585.65it/s] 25%|##5       | 6839/27165 [00:00<00:01, 13677.47it/s] 30%|###       | 8207/27165 [00:00<00:01, 13646.52it/s] 35%|###5      | 9584/27165 [00:00<00:01, 13686.18it/s] 40%|####      | 10959/27165 [00:00<00:01, 13704.08it/s] 45%|####5     | 12330/27165 [00:00<00:01, 13674.17it/s] 50%|#####     | 13698/27165 [00:01<00:00, 13643.22it/s] 55%|#####5    | 15071/27165 [00:01<00:00, 13668.48it/s] 61%|######    | 16441/27165 [00:01<00:00, 13676.71it/s] 66%|######5   | 17810/27165 [00:01<00:00, 13679.54it/s] 71%|#######   | 19178/27165 [00:01<00:00, 13640.82it/s] 76%|#######5  | 20557/27165 [00:01<00:00, 13684.96it/s] 81%|########  | 21926/27165 [00:01<00:00, 13641.88it/s] 86%|########5 | 23291/27165 [00:01<00:00, 13628.94it/s] 91%|######### | 24654/27165 [00:01<00:00, 13627.04it/s] 96%|#########5| 26017/27165 [00:01<00:00, 13439.67it/s]100%|##########| 27165/27165 [00:01<00:00, 13616.93it/s]
+SequenceDataset: loading dataset into memory...
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 828.52it/s]
+SequenceDataset: caching get_item calls...
+  0%|          | 0/2989 [00:00<?, ?it/s] 44%|####4     | 1330/2989 [00:00<00:00, 13295.29it/s] 91%|######### | 2709/2989 [00:00<00:00, 13584.36it/s]100%|##########| 2989/2989 [00:00<00:00, 13540.74it/s]
+
+============= Training Dataset =============
+SequenceDataset (
+	path=/home/andrew/Desktop/robo_sims/robomimic/datasets/square/ph/low_dim.hdf5
+	obs_keys=('object', 'robot0_eef_pos', 'robot0_eef_quat', 'robot0_gripper_qpos')
+	seq_length=10
+	filter_key=train
+	frame_stack=1
+	pad_seq_length=True
+	pad_frame_stack=True
+	goal_mode=none
+	cache_mode=all
+	num_demos=180
+	num_sequences=27165
+)
+
+  0%|          | 0/100 [00:00<?, ?it/s]K-means clustering:   0%|          | 0/100 [00:00<?, ?it/s]K-means clustering:   4%|4         | 4/100 [00:00<00:02, 34.51it/s]K-means clustering:   8%|8         | 8/100 [00:00<00:02, 34.45it/s]K-means clustering:  12%|#2        | 12/100 [00:00<00:02, 34.56it/s]K-means clustering:  16%|#6        | 16/100 [00:00<00:02, 34.82it/s]K-means clustering:  20%|##        | 20/100 [00:00<00:02, 34.94it/s]K-means clustering:  24%|##4       | 24/100 [00:00<00:02, 34.82it/s]K-means clustering:  28%|##8       | 28/100 [00:00<00:02, 34.89it/s]K-means clustering:  32%|###2      | 32/100 [00:00<00:01, 36.25it/s]K-means clustering:  36%|###6      | 36/100 [00:01<00:01, 36.22it/s]K-means clustering:  41%|####1     | 41/100 [00:01<00:01, 39.43it/s]K-means clustering:  46%|####6     | 46/100 [00:01<00:01, 41.87it/s]K-means clustering:  51%|#####1    | 51/100 [00:01<00:01, 43.38it/s]K-means clustering:  56%|#####6    | 56/100 [00:01<00:00, 44.55it/s]K-means clustering:  61%|######1   | 61/100 [00:01<00:00, 45.27it/s]K-means clustering:  66%|######6   | 66/100 [00:01<00:00, 45.87it/s]K-means clustering:  71%|#######1  | 71/100 [00:01<00:00, 46.30it/s]K-means clustering:  76%|#######6  | 76/100 [00:01<00:00, 46.38it/s]K-means clustering:  81%|########1 | 81/100 [00:01<00:00, 46.70it/s]K-means clustering:  86%|########6 | 86/100 [00:02<00:00, 44.78it/s]K-means clustering:  91%|#########1| 91/100 [00:02<00:00, 45.22it/s]K-means clustering:  96%|#########6| 96/100 [00:02<00:00, 45.42it/s]K-means clustering: 100%|##########| 100/100 [00:02<00:00, 41.71it/s]
+  0%|          | 0/100 [00:00<?, ?it/s]  7%|7         | 7/100 [00:00<00:01, 66.39it/s] 14%|#4        | 14/100 [00:00<00:01, 68.07it/s] 22%|##2       | 22/100 [00:00<00:01, 69.71it/s] 30%|###       | 30/100 [00:00<00:00, 71.08it/s] 38%|###8      | 38/100 [00:00<00:00, 71.56it/s] 46%|####6     | 46/100 [00:00<00:00, 71.80it/s] 54%|#####4    | 54/100 [00:00<00:00, 71.77it/s] 62%|######2   | 62/100 [00:00<00:00, 71.54it/s] 70%|#######   | 70/100 [00:00<00:00, 71.84it/s] 78%|#######8  | 78/100 [00:01<00:00, 71.82it/s] 86%|########6 | 86/100 [00:01<00:00, 71.41it/s] 94%|#########3| 94/100 [00:01<00:00, 71.69it/s]100%|##########| 100/100 [00:01<00:00, 71.29it/s]
+Train Epoch 1
+{
+    "Cosine_Loss": 0.6252250936627388,
+    "L1_Loss": 0.0738296851888299,
+    "L2_Loss": 0.15627123452723027,
+    "Loss": 4.473986611366272,
+    "Policy_Grad_Norms": 0.9999996752657286,
+    "Time_Data_Loading": 0.002972416083017985,
+    "Time_Epoch": 0.02338825464248657,
+    "Time_Log_Info": 6.898641586303711e-05,
+    "Time_Process_Batch": 0.00044983625411987305,
+    "Time_Train_Batch": 0.019844273726145428
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 210.80it/s]
+Validation Epoch 1
+{
+    "Cosine_Loss": 0.5515179514884949,
+    "L1_Loss": 0.05938863158226013,
+    "L2_Loss": 0.12695145159959792,
+    "Loss": 4.203185796737671,
+    "Time_Data_Loading": 0.00028869708379109703,
+    "Time_Epoch": 0.0008064866065979004,
+    "Time_Log_Info": 6.29425048828125e-06,
+    "Time_Process_Batch": 4.545450210571289e-05,
+    "Time_Train_Batch": 0.0004488666852315267
+}
+
+Epoch 1 Memory Usage: 3820 MB
+
+  0%|          | 0/100 [00:00<?, ?it/s]  8%|8         | 8/100 [00:00<00:01, 70.53it/s] 16%|#6        | 16/100 [00:00<00:01, 71.31it/s] 24%|##4       | 24/100 [00:00<00:01, 71.42it/s] 32%|###2      | 32/100 [00:00<00:00, 71.30it/s] 40%|####      | 40/100 [00:00<00:00, 71.19it/s] 48%|####8     | 48/100 [00:00<00:00, 71.44it/s] 56%|#####6    | 56/100 [00:00<00:00, 71.06it/s] 64%|######4   | 64/100 [00:00<00:00, 70.72it/s] 72%|#######2  | 72/100 [00:01<00:00, 70.83it/s] 80%|########  | 80/100 [00:01<00:00, 71.60it/s] 88%|########8 | 88/100 [00:01<00:00, 72.44it/s] 96%|#########6| 96/100 [00:01<00:00, 72.52it/s]100%|##########| 100/100 [00:01<00:00, 71.62it/s]
+Train Epoch 2
+{
+    "Cosine_Loss": 0.5167966383695602,
+    "L1_Loss": 0.052466941326856614,
+    "L2_Loss": 0.11184707775712013,
+    "Loss": 4.044186954498291,
+    "Policy_Grad_Norms": 0.9999998314121129,
+    "Time_Data_Loading": 0.0030043601989746095,
+    "Time_Epoch": 0.023282078901926677,
+    "Time_Log_Info": 6.937583287556967e-05,
+    "Time_Process_Batch": 0.00044693946838378904,
+    "Time_Train_Batch": 0.019710258642832438
+}
+  0%|          | 0/10 [00:00<?, ?it/s]100%|##########| 10/10 [00:00<00:00, 220.34it/s]
+Validation Epoch 2
+{
+    "Cosine_Loss": 0.4553313940763474,
+    "L1_Loss": 0.04845631904900074,
+    "L2_Loss": 0.10497879087924958,
+    "Loss": 3.9326752185821534,
+    "Time_Data_Loading": 0.00028071800867716473,
+    "Time_Epoch": 0.0007744749387105306,
+    "Time_Log_Info": 6.035963694254557e-06,
+    "Time_Process_Batch": 4.185040791829427e-05,
+    "Time_Train_Batch": 0.00042664210001627605
+}
+
+Epoch 2 Memory Usage: 3820 MB
+

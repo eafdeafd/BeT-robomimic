@@ -42,7 +42,7 @@ from robomimic.algo import algo_factory, RolloutPolicy
 from robomimic.utils.log_utils import PrintLogger, DataLogger
 
 
-def train(config, device):
+def train(config, device, input_model=None):
     """
     Train a model using the algorithm.
     """
@@ -118,7 +118,7 @@ def train(config, device):
         obs_key_shapes=shape_meta["all_shapes"],
         ac_dim=shape_meta["ac_dim"],
         device=device,
-    )
+    ) if input_model is None else input_model
     
     # save the config as a json file
     with open(os.path.join(log_dir, '..', 'config.json'), 'w') as outfile:
@@ -181,7 +181,7 @@ def train(config, device):
     valid_num_steps = config.experiment.validation_epoch_every_n_steps
 
     # this is for BET
-    if config.algo_name == "bet":
+    if config.algo_name == "bet" and input_model is None:
         model.create_and_seed_discretizer(train_loader)
         
 
@@ -314,6 +314,7 @@ def train(config, device):
 
     # terminate logging
     data_logger.close()
+    return model
 
 
 def main(args):

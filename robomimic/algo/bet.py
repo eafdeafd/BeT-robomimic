@@ -99,7 +99,8 @@ class BET(PolicyAlgo):
         # Encoder for all observation groups.
         # For low_dim, does nothing.
         # flat encoder output dimension
-        mlp_input_dim = obs_dim
+        self.multi_task = True
+        mlp_input_dim = obs_dim if not self.multi_task else 26
 
         self.nets["mlp"] = BaseNets.MLP(
             input_dim=self.ac_dim,
@@ -110,7 +111,7 @@ class BET(PolicyAlgo):
             output_activation=nn.Tanh, # make sure non-linearity is applied before decoder
         )
 
-
+        self.epoch = 0
         self.nets["policy"] = MinGPT(
             input_dim=mlp_input_dim,
             latent_dim=self.algo_config.ae_latent_dim,
@@ -129,18 +130,39 @@ class BET(PolicyAlgo):
         )
         self.optim = self.nets["policy"].get_optim()
         self.mlpoptim = torch.optim.AdamW(self.nets["mlp"].parameters(), lr=0.001)
+        self.mlpscheduler = torch.optim.lr_scheduler.CosineAnnealingLR(self.mlpoptim, T_max=1000, eta_min=0, last_epoch=-1, verbose=False)
+        self.gptscheduler = torch.optim.lr_scheduler.CosineAnnealingLR(self.optim, T_max=1000, eta_min=0, last_epoch=-1, verbose=False)
         self.nets = self.nets.float().to(self.device)
         self.action_encoder = torch.nn.Identity(self.ac_dim)
         self.window_size = self.algo_config.window_size
         self.history = deque(maxlen=self.algo_config.history_size)
 
+    def _format_input(self, obs):
+        x = None
+        if "lift" in self.global_config.train.data:
+            x = [0,0,0,0,1,0,0]
+        elif "can" in self.global_config.train.data:
+            x = [0,1,0]
+        elif "square" in self.global_config.train.data:
+            x = [0, 0, 1]
+
+        #for i in range(obs.size()[0]):
+        #    for j in range(obs.size()[1]):
+        #        obs[i][j] = torch.cat((obs[i][j], torch.tensor(np.array(x))))
+        x = torch.tensor(np.array(x))
+        x1 = obs.size()[0]
+        x2 = obs.size()[1]
+        x = x.repeat(x1, x2, 1).to(self.device) if len(obs.size()) == 3 else x.repeat(x1, 1).to(self.device)
+        obs = obs.to(self.device)
+        return torch.cat((obs, x), dim=-1)
+        
+
     def _flatten_obs_dict(self, obs):
         obs_tensor = []
         for key in self.input_obs_group_shapes["obs"]:
-            # print(key)
             obs_tensor.append(obs[key])
-        # print(obs_tensor)
-        return torch.cat(obs_tensor, dim=-1)
+        x = torch.cat(obs_tensor, dim=-1)
+        return x
 
 
     def process_batch_for_training(self, batch):
@@ -157,10 +179,9 @@ class BET(PolicyAlgo):
             input_batch (dict): processed and filtered batch that
                 will be used for training 
         """
-        input_batch = batch
         batch["obs"] = self._flatten_obs_dict(batch["obs"])
-        # print(batch["obs"])
-        return TensorUtils.to_device(TensorUtils.to_float(input_batch), self.device)
+        batch["obs"] = self._format_input(batch["obs"]) if self.multi_task else batch["obs"]
+        return TensorUtils.to_device(TensorUtils.to_float(batch), self.device)
 
     def train_on_batch(self, batch, epoch, validate=False):
         """
@@ -235,9 +256,13 @@ class BET(PolicyAlgo):
                 # step
                 self.optim.step()
                 self.mlpoptim.step()
-                
                 step_info["policy_grad_norms"] = grad_norms
                 info.update(step_info)
+
+                if epoch != self.epoch:
+                    self.epoch = epoch
+                    self.mlpscheduler.step()
+                    self.gptscheduler.step()
             return info
     
     def log_info(self, info):
@@ -277,6 +302,7 @@ class BET(PolicyAlgo):
         with TorchUtils.eval_mode(self.action_encoder, self.nets["policy"], self.nets["mlp"], no_grad=True):
             # print("obs dict", obs_dict)
             enc_obs = self._flatten_obs_dict(obs_dict)
+            enc_obs = self._format_input(enc_obs) if self.multi_task else enc_obs
             # print(enc_obs)
             enc_obs = einops.repeat(enc_obs[0], "obs -> batch obs", batch=1)
             self.history.append(enc_obs)

@@ -27,7 +27,7 @@
         "rollout": {
             "enabled": true,
             "n": 20,
-            "horizon": 400,
+            "horizon": 300,
             "rate": 50,
             "warmstart": 0,
             "terminate_on_success": true
@@ -41,7 +41,7 @@
         "hdf5_use_swmr": true,
         "hdf5_normalize_obs": false,
         "hdf5_filter_key": null,
-        "seq_length": 20,
+        "seq_length": 10,
         "dataset_keys": [
             "actions",
             "rewards",
@@ -54,12 +54,12 @@
         "seed": 1
     },
     "algo": {
-        "ae_bins": 256,
+        "ae_bins": 64,
         "ae_latent_dim": 1,
-        "ae_num_latents": 256,
+        "ae_num_latents": 64,
         "optim_params": {
             "lr": 0.0001,
-            "wd": 0.1,
+            "wd": 0.01,
             "betas": [
                 0.9,
                 0.95
@@ -72,14 +72,14 @@
             "l1_weight": 0.2,
             "cos_weight": 0.5
         },
-        "n_layer": 6,
-        "n_head": 6,
-        "n_embd": 120,
-        "window_size": 20,
+        "n_layer": 4,
+        "n_head": 4,
+        "n_embd": 72,
+        "window_size": 10,
         "predict_offsets": true,
-        "offset_loss_scale": 1,
+        "offset_loss_scale": 0.5,
         "focal_loss_gamma": 2.0,
-        "history_size" : 20,
+        "history_size" : 10,
         "discrete_input" : false
     },
     "observation": {

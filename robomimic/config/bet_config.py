@@ -11,7 +11,7 @@ class BETConfig(BaseConfig):
 
     def train_config(self):
         super(BETConfig, self).train_config()
-        self.train.seq_length = 5# length of experience sequence to fetch from the buffer
+        self.train.seq_length = 10# length of experience sequence to fetch from the buffer
         self.train.batch_size = 100
     def algo_config(self):
         """
@@ -21,14 +21,14 @@ class BETConfig(BaseConfig):
         training and test-time behavior should be populated here.
         """
         # Kmeans 
-        self.algo.ae_bins = 32
+        self.algo.ae_bins = 64
         self.algo.ae_latent_dim = 1
         self.algo.ae_num_latents = self.algo.ae_bins 
         # self.algo.vocab_size = 1000 # num latents and bins are the same.
 
         # Optimizer
         self.algo.optim_params.lr = 1e-4
-        self.algo.optim_params.wd = .1
+        self.algo.optim_params.wd = .01
         self.algo.optim_params.betas = (.9, .95)
         self.algo.optim_params.grad_norm_clip = 1
         self.algo.optim_params.seed = 42
@@ -40,12 +40,12 @@ class BETConfig(BaseConfig):
 
         self.algo.window_size = self.train.seq_length
         self.algo.predict_offsets = True
-        self.algo.offset_loss_scale = 100000.0
+        self.algo.offset_loss_scale = 0.5
         self.algo.focal_loss_gamma = 2.0
         self.algo.batch_size = 100
-        self.algo.history_size = 3
+        self.algo.history_size = 10
         self.algo.discrete_input = False
 
-        self.algo.loss.l2_weight = 1.0      # L2 loss weight
+        self.algo.loss.l2_weight = 1.5      # L2 loss weight
         self.algo.loss.l1_weight = 0.2      # L1 loss weight
         self.algo.loss.cos_weight = 0.5     # cosine loss weight

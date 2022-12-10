@@ -1,0 +1,1293 @@
+
+============= Initialized Observation Utils with Obs Spec =============
+
+using obs modality: low_dim with keys: ['robot0_eef_pos', 'robot0_eef_quat', 'robot0_gripper_qpos', 'object']
+using obs modality: rgb with keys: []
+using obs modality: depth with keys: []
+using obs modality: scan with keys: []
+/home/andrew/Desktop/robo_sims/robomimic
+
+============= Loaded Environment Metadata =============
+obs key object with shape (14,)
+obs key robot0_eef_pos with shape (3,)
+obs key robot0_eef_quat with shape (4,)
+obs key robot0_gripper_qpos with shape (2,)
+Created environment with name NutAssemblySquare
+Action size is 7
+NutAssemblySquare
+{
+    "camera_depths": false,
+    "camera_heights": 84,
+    "camera_widths": 84,
+    "control_freq": 20,
+    "controller_configs": {
+        "control_delta": true,
+        "damping": 1,
+        "damping_limits": [
+            0,
+            10
+        ],
+        "impedance_mode": "fixed",
+        "input_max": 1,
+        "input_min": -1,
+        "interpolation": null,
+        "kp": 150,
+        "kp_limits": [
+            0,
+            300
+        ],
+        "orientation_limits": null,
+        "output_max": [
+            0.05,
+            0.05,
+            0.05,
+            0.5,
+            0.5,
+            0.5
+        ],
+        "output_min": [
+            -0.05,
+            -0.05,
+            -0.05,
+            -0.5,
+            -0.5,
+            -0.5
+        ],
+        "position_limits": null,
+        "ramp_ratio": 0.2,
+        "type": "OSC_POSE",
+        "uncouple_pos_ori": true
+    },
+    "has_offscreen_renderer": true,
+    "has_renderer": false,
+    "ignore_done": true,
+    "render_gpu_device_id": 0,
+    "reward_shaping": false,
+    "robots": [
+        "Panda"
+    ],
+    "use_camera_obs": false,
+    "use_object_obs": true
+}
+Created environment with name PickPlaceCan
+Action size is 7
+PickPlaceCan
+{
+    "camera_depths": false,
+    "camera_heights": 84,
+    "camera_widths": 84,
+    "control_freq": 20,
+    "controller_configs": {
+        "control_delta": true,
+        "damping": 1,
+        "damping_limits": [
+            0,
+            10
+        ],
+        "impedance_mode": "fixed",
+        "input_max": 1,
+        "input_min": -1,
+        "interpolation": null,
+        "kp": 150,
+        "kp_limits": [
+            0,
+            300
+        ],
+        "orientation_limits": null,
+        "output_max": [
+            0.05,
+            0.05,
+            0.05,
+            0.5,
+            0.5,
+            0.5
+        ],
+        "output_min": [
+            -0.05,
+            -0.05,
+            -0.05,
+            -0.5,
+            -0.5,
+            -0.5
+        ],
+        "position_limits": null,
+        "ramp_ratio": 0.2,
+        "type": "OSC_POSE",
+        "uncouple_pos_ori": true
+    },
+    "has_offscreen_renderer": true,
+    "has_renderer": false,
+    "ignore_done": true,
+    "render_gpu_device_id": 0,
+    "reward_shaping": false,
+    "robots": [
+        "Panda"
+    ],
+    "use_camera_obs": false,
+    "use_object_obs": true
+}
+Created environment with name Lift
+Action size is 7
+Lift
+{
+    "camera_depths": false,
+    "camera_heights": 84,
+    "camera_widths": 84,
+    "control_freq": 20,
+    "controller_configs": {
+        "control_delta": true,
+        "damping": 1,
+        "damping_limits": [
+            0,
+            10
+        ],
+        "impedance_mode": "fixed",
+        "input_max": 1,
+        "input_min": -1,
+        "interpolation": null,
+        "kp": 150,
+        "kp_limits": [
+            0,
+            300
+        ],
+        "orientation_limits": null,
+        "output_max": [
+            0.05,
+            0.05,
+            0.05,
+            0.5,
+            0.5,
+            0.5
+        ],
+        "output_min": [
+            -0.05,
+            -0.05,
+            -0.05,
+            -0.5,
+            -0.5,
+            -0.5
+        ],
+        "position_limits": null,
+        "ramp_ratio": 0.2,
+        "type": "OSC_POSE",
+        "uncouple_pos_ori": true
+    },
+    "has_offscreen_renderer": true,
+    "has_renderer": false,
+    "ignore_done": true,
+    "render_gpu_device_id": 0,
+    "reward_shaping": false,
+    "robots": [
+        "Panda"
+    ],
+    "use_camera_obs": false,
+    "use_object_obs": true
+}
+
+
+============= Model Summary =============
+BET (
+  ModuleDict(
+    (mlp): MLP(
+        input_dim=7
+        output_dim=7
+        layer_dims=[512, 512]
+        layer_func=Linear
+        dropout=None
+        act=Mish
+        output_act=Tanh
+    )
+    (policy): MinGPT(
+      (model): GPT(
+        (tok_emb): Linear(in_features=26, out_features=120, bias=True)
+        (drop): Dropout(p=0.1, inplace=False)
+        (blocks): Sequential(
+          (0): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (1): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (2): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (3): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (4): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (5): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+        )
+        (ln_f): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+        (head): Linear(in_features=120, out_features=512, bias=False)
+      )
+    )
+  )
+)
+
+SequenceDataset: loading dataset into memory...
+  0%|          | 0/180 [00:00<?, ?it/s] 48%|####8     | 87/180 [00:00<00:00, 860.45it/s] 97%|#########7| 175/180 [00:00<00:00, 866.39it/s]100%|##########| 180/180 [00:00<00:00, 865.23it/s]
+SequenceDataset: loading dataset into memory...
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 900.09it/s]
+SequenceDataset: loading dataset into memory...
+  0%|          | 0/180 [00:00<?, ?it/s] 49%|####9     | 89/180 [00:00<00:00, 886.59it/s] 99%|#########8| 178/180 [00:00<00:00, 882.26it/s]100%|##########| 180/180 [00:00<00:00, 882.19it/s]
+SequenceDataset: loading dataset into memory...
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 901.92it/s]
+SequenceDataset: loading dataset into memory...
+  0%|          | 0/180 [00:00<?, ?it/s] 51%|#####     | 91/180 [00:00<00:00, 900.17it/s]100%|##########| 180/180 [00:00<00:00, 896.40it/s]
+SequenceDataset: loading dataset into memory...
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 917.12it/s]
+
+============= Training Dataset =============
+[SequenceDataset (
+	path=datasets/square/ph/low_dim.hdf5
+	obs_keys=('object', 'robot0_eef_pos', 'robot0_eef_quat', 'robot0_gripper_qpos')
+	seq_length=10
+	filter_key=train
+	frame_stack=1
+	pad_seq_length=True
+	pad_frame_stack=True
+	goal_mode=none
+	cache_mode=low_dim
+	num_demos=180
+	num_sequences=27165
+), SequenceDataset (
+	path=/home/andrew/Desktop/robo_sims/robomimic/datasets/can/ph/low_dim.hdf5
+	obs_keys=('object', 'robot0_eef_pos', 'robot0_eef_quat', 'robot0_gripper_qpos')
+	seq_length=10
+	filter_key=train
+	frame_stack=1
+	pad_seq_length=True
+	pad_frame_stack=True
+	goal_mode=none
+	cache_mode=low_dim
+	num_demos=180
+	num_sequences=20883
+), SequenceDataset (
+	path=/home/andrew/Desktop/robo_sims/robomimic/datasets/lift/ph/low_dim.hdf5
+	obs_keys=('object', 'robot0_eef_pos', 'robot0_eef_quat', 'robot0_gripper_qpos')
+	seq_length=10
+	filter_key=train
+	frame_stack=1
+	pad_seq_length=True
+	pad_frame_stack=True
+	goal_mode=none
+	cache_mode=low_dim
+	num_demos=180
+	num_sequences=8640
+)]
+
+  0%|          | 0/100 [00:00<?, ?it/s]K-means clustering:   0%|          | 0/100 [00:00<?, ?it/s]K-means clustering:   3%|3         | 3/100 [00:00<00:03, 26.42it/s]K-means clustering:   6%|6         | 6/100 [00:00<00:03, 25.56it/s]K-means clustering:   9%|9         | 9/100 [00:00<00:03, 23.68it/s]K-means clustering:  12%|#2        | 12/100 [00:00<00:03, 23.06it/s]K-means clustering:  15%|#5        | 15/100 [00:00<00:03, 23.99it/s]K-means clustering:  18%|#8        | 18/100 [00:00<00:03, 24.75it/s]K-means clustering:  21%|##1       | 21/100 [00:00<00:03, 25.28it/s]K-means clustering:  24%|##4       | 24/100 [00:00<00:02, 25.62it/s]K-means clustering:  27%|##7       | 27/100 [00:01<00:02, 25.82it/s]K-means clustering:  30%|###       | 30/100 [00:01<00:02, 25.98it/s]K-means clustering:  33%|###3      | 33/100 [00:01<00:02, 26.13it/s]K-means clustering:  36%|###6      | 36/100 [00:01<00:02, 26.21it/s]K-means clustering:  39%|###9      | 39/100 [00:01<00:02, 26.19it/s]K-means clustering:  42%|####2     | 42/100 [00:01<00:02, 26.22it/s]K-means clustering:  45%|####5     | 45/100 [00:01<00:02, 26.26it/s]K-means clustering:  48%|####8     | 48/100 [00:01<00:01, 26.25it/s]K-means clustering:  51%|#####1    | 51/100 [00:01<00:01, 26.28it/s]K-means clustering:  54%|#####4    | 54/100 [00:02<00:01, 26.28it/s]K-means clustering:  57%|#####6    | 57/100 [00:02<00:01, 26.28it/s]K-means clustering:  60%|######    | 60/100 [00:02<00:01, 26.31it/s]K-means clustering:  63%|######3   | 63/100 [00:02<00:01, 26.24it/s]K-means clustering:  66%|######6   | 66/100 [00:02<00:01, 26.23it/s]K-means clustering:  69%|######9   | 69/100 [00:02<00:01, 26.22it/s]K-means clustering:  72%|#######2  | 72/100 [00:02<00:01, 26.24it/s]K-means clustering:  75%|#######5  | 75/100 [00:02<00:00, 26.15it/s]K-means clustering:  78%|#######8  | 78/100 [00:03<00:00, 26.12it/s]K-means clustering:  81%|########1 | 81/100 [00:03<00:00, 26.15it/s]K-means clustering:  84%|########4 | 84/100 [00:03<00:00, 26.10it/s]K-means clustering:  87%|########7 | 87/100 [00:03<00:00, 26.08it/s]K-means clustering:  90%|######### | 90/100 [00:03<00:00, 26.06it/s]K-means clustering:  93%|#########3| 93/100 [00:03<00:00, 26.04it/s]K-means clustering:  96%|#########6| 96/100 [00:03<00:00, 26.06it/s]K-means clustering:  99%|#########9| 99/100 [00:03<00:00, 26.07it/s]K-means clustering: 100%|##########| 100/100 [00:03<00:00, 25.87it/s]
+  0%|          | 0/100 [00:00<?, ?it/s]square
+torch.Size([30, 10, 23])
+  1%|1         | 1/100 [00:00<00:44,  2.21it/s]square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+  7%|7         | 7/100 [00:00<00:05, 15.53it/s]square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+ 13%|#3        | 13/100 [00:00<00:03, 25.82it/s]square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+ 19%|#9        | 19/100 [00:00<00:02, 33.10it/s]square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+ 25%|##5       | 25/100 [00:00<00:01, 38.53it/s]square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+ 31%|###1      | 31/100 [00:01<00:01, 43.09it/s]square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+ 37%|###7      | 37/100 [00:01<00:01, 46.34it/s]square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+ 43%|####3     | 43/100 [00:01<00:01, 48.88it/s]square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+ 49%|####9     | 49/100 [00:01<00:01, 50.59it/s]square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+ 55%|#####5    | 55/100 [00:01<00:00, 51.83it/s]square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+ 61%|######1   | 61/100 [00:01<00:00, 52.67it/s]square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+ 67%|######7   | 67/100 [00:01<00:00, 53.13it/s]square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+ 73%|#######3  | 73/100 [00:01<00:00, 53.44it/s]square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+ 79%|#######9  | 79/100 [00:01<00:00, 53.82it/s]square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+ 85%|########5 | 85/100 [00:02<00:00, 53.13it/s]square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+ 91%|#########1| 91/100 [00:02<00:00, 53.51it/s]square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+ 97%|#########7| 97/100 [00:02<00:00, 53.84it/s]square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+100%|##########| 100/100 [00:02<00:00, 43.64it/s]
+  0%|          | 0/100 [00:00<?, ?it/s]can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+  6%|6         | 6/100 [00:00<00:01, 54.55it/s]can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+ 12%|#2        | 12/100 [00:00<00:01, 53.96it/s]can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+ 18%|#8        | 18/100 [00:00<00:01, 52.32it/s]can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+ 24%|##4       | 24/100 [00:00<00:01, 53.00it/s]can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+ 30%|###       | 30/100 [00:00<00:01, 53.38it/s]can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+ 36%|###6      | 36/100 [00:00<00:01, 53.80it/s]can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+ 42%|####2     | 42/100 [00:00<00:01, 53.78it/s]can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+ 48%|####8     | 48/100 [00:00<00:00, 52.63it/s]can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+ 54%|#####4    | 54/100 [00:01<00:00, 51.84it/s]can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+ 60%|######    | 60/100 [00:01<00:00, 52.11it/s]can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+ 66%|######6   | 66/100 [00:01<00:00, 52.45it/s]can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+ 72%|#######2  | 72/100 [00:01<00:00, 52.77it/s]can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+ 78%|#######8  | 78/100 [00:01<00:00, 53.46it/s]can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+ 84%|########4 | 84/100 [00:01<00:00, 53.71it/s]can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+ 90%|######### | 90/100 [00:01<00:00, 53.91it/s]can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+ 96%|#########6| 96/100 [00:01<00:00, 53.80it/s]can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+100%|##########| 100/100 [00:01<00:00, 53.24it/s]
+  0%|          | 0/100 [00:00<?, ?it/s]lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+  6%|6         | 6/100 [00:00<00:01, 54.23it/s]lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+ 12%|#2        | 12/100 [00:00<00:01, 53.12it/s]lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+ 18%|#8        | 18/100 [00:00<00:01, 53.15it/s]lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+ 24%|##4       | 24/100 [00:00<00:01, 52.90it/s]lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+ 30%|###       | 30/100 [00:00<00:01, 52.36it/s]lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+ 36%|###6      | 36/100 [00:00<00:01, 52.81it/s]lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+ 42%|####2     | 42/100 [00:00<00:01, 53.19it/s]lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+ 48%|####8     | 48/100 [00:00<00:00, 53.21it/s]lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+ 54%|#####4    | 54/100 [00:01<00:00, 53.56it/s]lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+ 60%|######    | 60/100 [00:01<00:00, 53.68it/s]lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+ 66%|######6   | 66/100 [00:01<00:00, 53.74it/s]lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+ 72%|#######2  | 72/100 [00:01<00:00, 53.75it/s]lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+ 78%|#######8  | 78/100 [00:01<00:00, 53.78it/s]lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+ 84%|########4 | 84/100 [00:01<00:00, 53.65it/s]lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+ 90%|######### | 90/100 [00:01<00:00, 53.63it/s]lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+ 96%|#########6| 96/100 [00:01<00:00, 53.61it/s]lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+100%|##########| 100/100 [00:01<00:00, 53.42it/s]
+Train Epoch 1
+{
+    "Cosine_Loss": 0.6393036643664042,
+    "L1_Loss": 0.09860896805301309,
+    "L2_Loss": 0.20218651389082273,
+    "Loss": 4.040816536744436,
+    "Policy_Grad_Norms": 0.9999996216838993,
+    "Time_Data_Loading": 0.014668246110280355,
+    "Time_Epoch": 0.10073032776514688,
+    "Time_Log_Info": 0.00023241440455118816,
+    "Time_Process_Batch": 0.0015382846196492514,
+    "Time_Train_Batch": 0.08410687446594238
+}
+  0%|          | 0/20 [00:00<?, ?it/s]square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+ 85%|########5 | 17/20 [00:00<00:00, 165.79it/s]square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+square
+torch.Size([30, 10, 23])
+100%|##########| 20/20 [00:00<00:00, 166.65it/s]
+  0%|          | 0/20 [00:00<?, ?it/s]can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+ 85%|########5 | 17/20 [00:00<00:00, 166.38it/s]can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+can
+torch.Size([30, 10, 23])
+100%|##########| 20/20 [00:00<00:00, 166.80it/s]
+  0%|          | 0/20 [00:00<?, ?it/s]lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+ 85%|########5 | 17/20 [00:00<00:00, 165.50it/s]lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+lift
+torch.Size([30, 10, 19])
+100%|##########| 20/20 [00:00<00:00, 164.89it/s]
+Validation Epoch 1
+{
+    "Cosine_Loss": 0.751221752166748,
+    "L1_Loss": 0.10060184293737014,
+    "L2_Loss": 0.22511862789591153,
+    "Loss": 4.297973370552063,
+    "Time_Data_Loading": 0.0027686874071757,
+    "Time_Epoch": 0.00604021151860555,
+    "Time_Log_Info": 3.484090169270833e-05,
+    "Time_Process_Batch": 0.00026336908340454104,
+    "Time_Train_Batch": 0.002943980693817139
+}
+video writes to /home/andrew/Desktop/robo_sims/robomimic/robomimic/../bet_trained_models/test/20221209033748/videos/NutAssemblySquare_epoch_1.mp4
+rollout: env=NutAssemblySquare, horizon=300, use_goals=False, num_episodes=20
+  0%|          | 0/20 [00:00<?, ?it/s]NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+NutAssemblySquare
+torch.Size([1, 23])
+  0%|          | 0/20 [00:02<?, ?it/s]
+Traceback (most recent call last):
+  File "robomimic/scripts/multitask_train.py", line 425, in <module>
+    main(args)
+  File "robomimic/scripts/multitask_train.py", line 376, in main
+    train(config, device=device)
+  File "robomimic/scripts/multitask_train.py", line 260, in train
+    all_rollout_logs, video_paths = TrainUtils.rollout_with_stats(
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/utils/train_utils.py", line 351, in rollout_with_stats
+    rollout_info = run_rollout(
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/utils/train_utils.py", line 217, in run_rollout
+    ob_dict, r, done, _ = env.step(ac)
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/envs/env_robosuite.py", line 104, in step
+    obs, r, done, info = self.env.step(action)
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/robosuite/environments/base.py", line 407, in step
+    self.sim.step()
+KeyboardInterrupt

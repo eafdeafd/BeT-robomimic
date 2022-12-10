@@ -12,7 +12,7 @@ class BETConfig(BaseConfig):
     def train_config(self):
         super(BETConfig, self).train_config()
         self.train.seq_length = 10# length of experience sequence to fetch from the buffer
-        self.train.batch_size = 100
+        self.train.batch_size = 30
     def algo_config(self):
         """
         This function populates the `config.algo` attribute of the config, and is given to the 
@@ -42,7 +42,7 @@ class BETConfig(BaseConfig):
         self.algo.predict_offsets = True
         self.algo.offset_loss_scale = 0.5
         self.algo.focal_loss_gamma = 2.0
-        self.algo.batch_size = 100
+        self.algo.batch_size = 30
         self.algo.history_size = 10
         self.algo.discrete_input = False
 

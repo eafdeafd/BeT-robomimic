@@ -23,6 +23,7 @@ import robomimic.utils.log_utils as LogUtils
 from robomimic.utils.dataset import SequenceDataset
 from robomimic.envs.env_base import EnvBase
 from robomimic.algo import RolloutPolicy
+from robomimic.algo.bet import BET
 
 
 def get_exp_dir(config, auto_remove_exp_dir=False):
@@ -340,6 +341,10 @@ def rollout_with_stats(
         if not verbose:
             iterator = LogUtils.custom_tqdm(iterator, total=num_episodes)
 
+        # for BET, 
+        if isinstance(policy.policy, BET):
+            policy.policy.set_env_name(env_name)
+
         num_success = 0
         for ep_i in iterator:
             rollout_timestamp = time.time()
@@ -564,6 +569,87 @@ def run_epoch(model, data_loader, epoch, validate=False, num_steps=None):
 
     return step_log_all
 
+
+def run_multi_epoch(model, data_loader, epoch, validate=False, num_steps=None):
+    """
+    Run an epoch of training or validation.
+
+    Args:
+        model (Algo instance): model to train
+
+        data_loader (DataLoader instance): data loader that will be used to serve batches of data
+            to the model
+
+        epoch (int): epoch number
+
+        validate (bool): whether this is a training epoch or validation epoch. This tells the model
+            whether to do gradient steps or purely do forward passes.
+
+        num_steps (int): if provided, this epoch lasts for a fixed number of batches (gradient steps),
+            otherwise the epoch is a complete pass through the training dataset
+
+    Returns:
+        step_log_all (dict): dictionary of logged training metrics averaged across all batches
+    """
+    epoch_timestamp = time.time()
+    if validate:
+        model.set_eval()
+    else:
+        model.set_train()
+
+
+    step_log_all = []
+    timing_stats = dict(Data_Loading=[], Process_Batch=[], Train_Batch=[], Log_Info=[])
+    start_time = time.time()
+    for loader, name in data_loader:
+        data_loader_iter = iter(loader)
+        if num_steps is None:
+            num_steps = len(loader)
+        for _ in LogUtils.custom_tqdm(range(num_steps)):
+
+            # load next batch from data loader
+            try:
+                t = time.time()
+                batch = next(data_loader_iter)
+            except StopIteration:
+                # reset for next dataset pass
+                data_loader_iter = iter(loader)
+                t = time.time()
+                batch = next(data_loader_iter)
+            timing_stats["Data_Loading"].append(time.time() - t)
+
+            # process batch for training
+            t = time.time()
+            input_batch = model.process_batch_for_training(batch, name, multitask=True)
+            timing_stats["Process_Batch"].append(time.time() - t)
+
+            # forward and backward pass
+            t = time.time()
+            info = model.train_on_batch(input_batch, epoch, validate=validate)
+            timing_stats["Train_Batch"].append(time.time() - t)
+
+            # tensorboard logging
+            t = time.time()
+            step_log = model.log_info(info)
+            step_log_all.append(step_log)
+            timing_stats["Log_Info"].append(time.time() - t)
+
+    # flatten and take the mean of the metrics
+    step_log_dict = {}
+    for i in range(len(step_log_all)):
+        for k in step_log_all[i]:
+            if k not in step_log_dict:
+                step_log_dict[k] = []
+            step_log_dict[k].append(step_log_all[i][k])
+    step_log_all = dict((k, float(np.mean(v))) for k, v in step_log_dict.items())
+
+    # add in timing stats
+    for k in timing_stats:
+        # sum across all training steps, and convert from seconds to minutes
+        step_log_all["Time_{}".format(k)] = np.sum(timing_stats[k]) / 60.
+    step_log_all["Time_Epoch"] = (time.time() - epoch_timestamp) / 60.
+
+    return step_log_all
 
 def is_every_n_steps(interval, current_step, skip_zero=False):
     """

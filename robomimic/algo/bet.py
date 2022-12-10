@@ -23,7 +23,7 @@ from robomimic.algo.bet_models.generators import MinGPT
 from robomimic.config import config_factory
 import einops
 from collections import deque
-
+import re
 
 @register_algo_factory_func("bet")
 def algo_config_to_class(algo_config):
@@ -99,7 +99,7 @@ class BET(PolicyAlgo):
         # Encoder for all observation groups.
         # For low_dim, does nothing.
         # flat encoder output dimension
-        self.multi_task = True
+        self.multi_task = False
         mlp_input_dim = obs_dim if not self.multi_task else 26
 
         self.nets["mlp"] = BaseNets.MLP(
@@ -136,19 +136,18 @@ class BET(PolicyAlgo):
         self.action_encoder = torch.nn.Identity(self.ac_dim)
         self.window_size = self.algo_config.window_size
         self.history = deque(maxlen=self.algo_config.history_size)
+        self.env_name = ""
 
-    def _format_input(self, obs):
+    def _format_input(self, obs, name):
         x = None
-        if "lift" in self.global_config.train.data:
+        # TODO: make regex
+        name = name.lower()
+        if re.search("lift", name):
             x = [0,0,0,0,1,0,0]
-        elif "can" in self.global_config.train.data:
+        elif re.search("can", name):
             x = [0,1,0]
-        elif "square" in self.global_config.train.data:
+        elif re.search("square", name):
             x = [0, 0, 1]
-
-        #for i in range(obs.size()[0]):
-        #    for j in range(obs.size()[1]):
-        #        obs[i][j] = torch.cat((obs[i][j], torch.tensor(np.array(x))))
         x = torch.tensor(np.array(x))
         x1 = obs.size()[0]
         x2 = obs.size()[1]
@@ -165,7 +164,7 @@ class BET(PolicyAlgo):
         return x
 
 
-    def process_batch_for_training(self, batch):
+    def process_batch_for_training(self, batch, name=None, multitask=False):
         """
         Processes input batch from a data loader to filter out
         relevant information and prepare the batch for training.
@@ -180,7 +179,7 @@ class BET(PolicyAlgo):
                 will be used for training 
         """
         batch["obs"] = self._flatten_obs_dict(batch["obs"])
-        batch["obs"] = self._format_input(batch["obs"]) if self.multi_task else batch["obs"]
+        batch["obs"] = self._format_input(batch["obs"], name) if multitask else batch["obs"]
         return TensorUtils.to_device(TensorUtils.to_float(batch), self.device)
 
     def train_on_batch(self, batch, epoch, validate=False):
@@ -288,6 +287,9 @@ class BET(PolicyAlgo):
             log["Policy_Grad_Norms"] = info["policy_grad_norms"]
         return log
 
+    def set_env_name(self, name):
+        self.env_name = name
+
     def get_action(self, obs_dict, goal_dict=None):
 
         """
@@ -300,25 +302,18 @@ class BET(PolicyAlgo):
             action (torch.Tensor): action tensor
         """
         with TorchUtils.eval_mode(self.action_encoder, self.nets["policy"], self.nets["mlp"], no_grad=True):
-            # print("obs dict", obs_dict)
             enc_obs = self._flatten_obs_dict(obs_dict)
-            enc_obs = self._format_input(enc_obs) if self.multi_task else enc_obs
-            # print(enc_obs)
+            enc_obs = self._format_input(enc_obs, self.env_name) if self.multi_task else enc_obs
             enc_obs = einops.repeat(enc_obs[0], "obs -> batch obs", batch=1)
             self.history.append(enc_obs)
             enc_obs_seq = torch.stack(tuple(self.history), dim=0)
-            # print("enc obs seq", enc_obs_seq)
             latents, offsets = self.nets["policy"].generate_latents(enc_obs_seq)
             action_latents = (latents[:, -1:, :], offsets[:, -1:, :])  # current obs is last obs
-            # print("action latents", action_latents)
             actions = self.discretizer.decode_actions(latent_action_batch=action_latents)
-            # print("action", actions)
-
             sampled_action = np.random.randint(len(actions))
             actions = actions[sampled_action]
             actions = einops.rearrange(actions, "1 action_dim -> 1 1 action_dim")
             actions = self.nets["mlp"](actions)
-            # print("mlp out actions", actions)
             actions = einops.rearrange(actions, "1 1 action_dim -> action_dim")
             return [actions]
         

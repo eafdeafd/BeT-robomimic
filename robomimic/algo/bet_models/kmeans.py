@@ -17,10 +17,17 @@ class KmeansDiscretizer():
 
     def load(self, train_loader):
         all_actions = []
-        for d in train_loader:
-            action = d["actions"]
-            for a in action:
-                all_actions.append(a[0])
+        if type(train_loader) == list:
+            for loader in train_loader:
+                for d in loader:
+                    action = d["actions"]
+                    for a in action:
+                        all_actions.append(a[0])
+        else:
+            for d in train_loader:
+                action = d["actions"]
+                for a in action:
+                    all_actions.append(a[0])
         self.all_actions = torch.stack(all_actions)
 
     def fit(self, niter: int = 100, ncluster: int = 512) -> any:

@@ -1,0 +1,68 @@
+
+============= Initialized Observation Utils with Obs Spec =============
+
+using obs modality: low_dim with keys: ['object', 'robot0_eef_pos', 'robot0_gripper_qpos', 'robot0_eef_quat']
+using obs modality: rgb with keys: []
+using obs modality: depth with keys: []
+using obs modality: scan with keys: []
+/home/andrew/Desktop/robo_sims/robomimic
+
+============= Loaded Environment Metadata =============
+obs key object with shape (14,)
+obs key robot0_eef_pos with shape (3,)
+obs key robot0_eef_quat with shape (4,)
+obs key robot0_gripper_qpos with shape (2,)
+Traceback (most recent call last):
+  File "robomimic/scripts/multitask_train.py", line 425, in <module>
+    main(args)
+  File "robomimic/scripts/multitask_train.py", line 376, in main
+    train(config, device=device)
+  File "robomimic/scripts/multitask_train.py", line 98, in train
+    env = EnvUtils.create_env_from_metadata(
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/utils/env_utils.py", line 184, in create_env_from_metadata
+    env = create_env(
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/utils/env_utils.py", line 135, in create_env
+    env = env_class(
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/envs/env_robosuite.py", line 83, in __init__
+    self.env = robosuite.make(self._env_name, **kwargs)
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/robosuite/environments/base.py", line 38, in make
+    return REGISTERED_ENVS[env_name](*args, **kwargs)
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/robosuite/environments/manipulation/nut_assembly.py", line 698, in __init__
+    super().__init__(single_object_mode=2, nut_type="square", **kwargs)
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/robosuite/environments/manipulation/nut_assembly.py", line 213, in __init__
+    super().__init__(
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/robosuite/environments/manipulation/manipulation_env.py", line 162, in __init__
+    super().__init__(
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/robosuite/environments/robot_env.py", line 214, in __init__
+    super().__init__(
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/robosuite/environments/base.py", line 143, in __init__
+    self._reset_internal()
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/robosuite/environments/manipulation/nut_assembly.py", line 592, in _reset_internal
+    super()._reset_internal()
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/robosuite/environments/robot_env.py", line 520, in _reset_internal
+    robot.reset(deterministic=self.deterministic_reset)
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/robosuite/robots/single_arm.py", line 176, in reset
+    super().reset(deterministic)
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/robosuite/robots/robot.py", line 147, in reset
+    self.base_ori = T.mat2quat(self.sim.data.get_body_xmat(self.robot_model.root_body).reshape((3, 3)))
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/numba/core/dispatcher.py", line 372, in _compile_for_args
+    return_val = self.compile(tuple(argtypes))
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/numba/core/dispatcher.py", line 891, in compile
+    cres = self._cache.load_overload(sig, self.targetctx)
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/numba/core/caching.py", line 642, in load_overload
+    target_context.refresh()
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/numba/core/base.py", line 277, in refresh
+    from numba.np import linalg, polynomial, arraymath
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/numba/np/arraymath.py", line 41, in <module>
+    _HAVE_BLAS = _check_blas()
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/numba/np/arraymath.py", line 35, in _check_blas
+    ensure_blas()
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/numba/np/linalg.py", line 55, in ensure_blas
+    import scipy.linalg.cython_blas
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/scipy/linalg/__init__.py", line 209, in <module>
+    from ._matfuncs import *
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/scipy/linalg/_matfuncs.py", line 20, in <module>
+    from ._matfuncs_expm import pick_pade_structure, pade_UV_calc
+  File "scipy/linalg/_matfuncs_expm.pyx", line 1, in init scipy.linalg._matfuncs_expm
+  File "<frozen importlib._bootstrap>", line 389, in parent
+KeyboardInterrupt

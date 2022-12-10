@@ -1,0 +1,429 @@
+
+============= Initialized Observation Utils with Obs Spec =============
+
+using obs modality: low_dim with keys: ['object', 'robot0_eef_pos', 'robot0_gripper_qpos', 'robot0_eef_quat']
+using obs modality: rgb with keys: []
+using obs modality: depth with keys: []
+using obs modality: scan with keys: []
+/home/andrew/Desktop/robo_sims/robomimic
+
+============= Loaded Environment Metadata =============
+obs key object with shape (14,)
+obs key robot0_eef_pos with shape (3,)
+obs key robot0_eef_quat with shape (4,)
+obs key robot0_gripper_qpos with shape (2,)
+Created environment with name NutAssemblySquare
+Action size is 7
+NutAssemblySquare
+{
+    "camera_depths": false,
+    "camera_heights": 84,
+    "camera_widths": 84,
+    "control_freq": 20,
+    "controller_configs": {
+        "control_delta": true,
+        "damping": 1,
+        "damping_limits": [
+            0,
+            10
+        ],
+        "impedance_mode": "fixed",
+        "input_max": 1,
+        "input_min": -1,
+        "interpolation": null,
+        "kp": 150,
+        "kp_limits": [
+            0,
+            300
+        ],
+        "orientation_limits": null,
+        "output_max": [
+            0.05,
+            0.05,
+            0.05,
+            0.5,
+            0.5,
+            0.5
+        ],
+        "output_min": [
+            -0.05,
+            -0.05,
+            -0.05,
+            -0.5,
+            -0.5,
+            -0.5
+        ],
+        "position_limits": null,
+        "ramp_ratio": 0.2,
+        "type": "OSC_POSE",
+        "uncouple_pos_ori": true
+    },
+    "has_offscreen_renderer": true,
+    "has_renderer": false,
+    "ignore_done": true,
+    "render_gpu_device_id": 0,
+    "reward_shaping": false,
+    "robots": [
+        "Panda"
+    ],
+    "use_camera_obs": false,
+    "use_object_obs": true
+}
+Created environment with name PickPlaceCan
+Action size is 7
+PickPlaceCan
+{
+    "camera_depths": false,
+    "camera_heights": 84,
+    "camera_widths": 84,
+    "control_freq": 20,
+    "controller_configs": {
+        "control_delta": true,
+        "damping": 1,
+        "damping_limits": [
+            0,
+            10
+        ],
+        "impedance_mode": "fixed",
+        "input_max": 1,
+        "input_min": -1,
+        "interpolation": null,
+        "kp": 150,
+        "kp_limits": [
+            0,
+            300
+        ],
+        "orientation_limits": null,
+        "output_max": [
+            0.05,
+            0.05,
+            0.05,
+            0.5,
+            0.5,
+            0.5
+        ],
+        "output_min": [
+            -0.05,
+            -0.05,
+            -0.05,
+            -0.5,
+            -0.5,
+            -0.5
+        ],
+        "position_limits": null,
+        "ramp_ratio": 0.2,
+        "type": "OSC_POSE",
+        "uncouple_pos_ori": true
+    },
+    "has_offscreen_renderer": true,
+    "has_renderer": false,
+    "ignore_done": true,
+    "render_gpu_device_id": 0,
+    "reward_shaping": false,
+    "robots": [
+        "Panda"
+    ],
+    "use_camera_obs": false,
+    "use_object_obs": true
+}
+Created environment with name Lift
+Action size is 7
+Lift
+{
+    "camera_depths": false,
+    "camera_heights": 84,
+    "camera_widths": 84,
+    "control_freq": 20,
+    "controller_configs": {
+        "control_delta": true,
+        "damping": 1,
+        "damping_limits": [
+            0,
+            10
+        ],
+        "impedance_mode": "fixed",
+        "input_max": 1,
+        "input_min": -1,
+        "interpolation": null,
+        "kp": 150,
+        "kp_limits": [
+            0,
+            300
+        ],
+        "orientation_limits": null,
+        "output_max": [
+            0.05,
+            0.05,
+            0.05,
+            0.5,
+            0.5,
+            0.5
+        ],
+        "output_min": [
+            -0.05,
+            -0.05,
+            -0.05,
+            -0.5,
+            -0.5,
+            -0.5
+        ],
+        "position_limits": null,
+        "ramp_ratio": 0.2,
+        "type": "OSC_POSE",
+        "uncouple_pos_ori": true
+    },
+    "has_offscreen_renderer": true,
+    "has_renderer": false,
+    "ignore_done": true,
+    "render_gpu_device_id": 0,
+    "reward_shaping": false,
+    "robots": [
+        "Panda"
+    ],
+    "use_camera_obs": false,
+    "use_object_obs": true
+}
+
+
+============= Model Summary =============
+BET (
+  ModuleDict(
+    (mlp): MLP(
+        input_dim=7
+        output_dim=7
+        layer_dims=[512, 512]
+        layer_func=Linear
+        dropout=None
+        act=Mish
+        output_act=Tanh
+    )
+    (policy): MinGPT(
+      (model): GPT(
+        (tok_emb): Linear(in_features=26, out_features=120, bias=True)
+        (drop): Dropout(p=0.1, inplace=False)
+        (blocks): Sequential(
+          (0): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (1): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (2): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (3): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (4): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (5): Block(
+            (ln1): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (ln2): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+            (attn): CausalSelfAttention(
+              (key): Linear(in_features=120, out_features=120, bias=True)
+              (query): Linear(in_features=120, out_features=120, bias=True)
+              (value): Linear(in_features=120, out_features=120, bias=True)
+              (attn_drop): Dropout(p=0.1, inplace=False)
+              (resid_drop): Dropout(p=0.1, inplace=False)
+              (proj): Linear(in_features=120, out_features=120, bias=True)
+            )
+            (mlp): Sequential(
+              (0): Linear(in_features=120, out_features=480, bias=True)
+              (1): GELU()
+              (2): Linear(in_features=480, out_features=120, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+          )
+        )
+        (ln_f): LayerNorm((120,), eps=1e-05, elementwise_affine=True)
+        (head): Linear(in_features=120, out_features=512, bias=False)
+      )
+    )
+  )
+)
+
+SequenceDataset: loading dataset into memory...
+  0%|          | 0/180 [00:00<?, ?it/s] 47%|####7     | 85/180 [00:00<00:00, 847.53it/s] 97%|#########6| 174/180 [00:00<00:00, 868.66it/s]100%|##########| 180/180 [00:00<00:00, 861.14it/s]
+SequenceDataset: loading dataset into memory...
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 781.83it/s]
+SequenceDataset: loading dataset into memory...
+  0%|          | 0/180 [00:00<?, ?it/s] 49%|####9     | 89/180 [00:00<00:00, 885.14it/s] 99%|#########8| 178/180 [00:00<00:00, 884.96it/s]100%|##########| 180/180 [00:00<00:00, 884.38it/s]
+SequenceDataset: loading dataset into memory...
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 877.92it/s]
+SequenceDataset: loading dataset into memory...
+  0%|          | 0/180 [00:00<?, ?it/s] 51%|#####     | 91/180 [00:00<00:00, 901.31it/s]100%|##########| 180/180 [00:00<00:00, 898.40it/s]
+SequenceDataset: loading dataset into memory...
+  0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 889.80it/s]
+
+============= Training Dataset =============
+[SequenceDataset (
+	path=datasets/square/ph/low_dim.hdf5
+	obs_keys=('object', 'robot0_eef_pos', 'robot0_eef_quat', 'robot0_gripper_qpos')
+	seq_length=10
+	filter_key=train
+	frame_stack=1
+	pad_seq_length=True
+	pad_frame_stack=True
+	goal_mode=none
+	cache_mode=low_dim
+	num_demos=180
+	num_sequences=27165
+), SequenceDataset (
+	path=/home/andrew/Desktop/robo_sims/robomimic/datasets/can/ph/low_dim.hdf5
+	obs_keys=('object', 'robot0_eef_pos', 'robot0_eef_quat', 'robot0_gripper_qpos')
+	seq_length=10
+	filter_key=train
+	frame_stack=1
+	pad_seq_length=True
+	pad_frame_stack=True
+	goal_mode=none
+	cache_mode=low_dim
+	num_demos=180
+	num_sequences=20883
+), SequenceDataset (
+	path=/home/andrew/Desktop/robo_sims/robomimic/datasets/lift/ph/low_dim.hdf5
+	obs_keys=('object', 'robot0_eef_pos', 'robot0_eef_quat', 'robot0_gripper_qpos')
+	seq_length=10
+	filter_key=train
+	frame_stack=1
+	pad_seq_length=True
+	pad_frame_stack=True
+	goal_mode=none
+	cache_mode=low_dim
+	num_demos=180
+	num_sequences=8640
+)]
+
+  0%|          | 0/100 [00:00<?, ?it/s]K-means clustering:   0%|          | 0/100 [00:00<?, ?it/s]K-means clustering:   3%|3         | 3/100 [00:00<00:03, 26.45it/s]K-means clustering:   6%|6         | 6/100 [00:00<00:03, 26.47it/s]K-means clustering:   9%|9         | 9/100 [00:00<00:03, 26.53it/s]K-means clustering:  12%|#2        | 12/100 [00:00<00:03, 26.59it/s]K-means clustering:  15%|#5        | 15/100 [00:00<00:03, 26.62it/s]K-means clustering:  18%|#8        | 18/100 [00:00<00:03, 26.62it/s]K-means clustering:  21%|##1       | 21/100 [00:00<00:02, 26.64it/s]K-means clustering:  24%|##4       | 24/100 [00:00<00:02, 26.65it/s]K-means clustering:  27%|##7       | 27/100 [00:01<00:02, 26.66it/s]K-means clustering:  30%|###       | 30/100 [00:01<00:02, 26.58it/s]K-means clustering:  33%|###3      | 33/100 [00:01<00:02, 26.57it/s]K-means clustering:  36%|###6      | 36/100 [00:01<00:02, 26.56it/s]K-means clustering:  39%|###9      | 39/100 [00:01<00:02, 26.57it/s]K-means clustering:  42%|####2     | 42/100 [00:01<00:02, 26.55it/s]K-means clustering:  45%|####5     | 45/100 [00:01<00:02, 26.56it/s]K-means clustering:  48%|####8     | 48/100 [00:01<00:01, 26.57it/s]K-means clustering:  51%|#####1    | 51/100 [00:01<00:01, 25.70it/s]K-means clustering:  54%|#####4    | 54/100 [00:02<00:01, 25.89it/s]K-means clustering:  57%|#####6    | 57/100 [00:02<00:01, 26.04it/s]K-means clustering:  60%|######    | 60/100 [00:02<00:01, 26.19it/s]K-means clustering:  63%|######3   | 63/100 [00:02<00:01, 26.26it/s]K-means clustering:  66%|######6   | 66/100 [00:02<00:01, 26.37it/s]K-means clustering:  69%|######9   | 69/100 [00:02<00:01, 26.41it/s]K-means clustering:  72%|#######2  | 72/100 [00:02<00:01, 26.44it/s]K-means clustering:  75%|#######5  | 75/100 [00:02<00:00, 26.45it/s]K-means clustering:  78%|#######8  | 78/100 [00:02<00:00, 26.47it/s]K-means clustering:  81%|########1 | 81/100 [00:03<00:00, 26.31it/s]K-means clustering:  84%|########4 | 84/100 [00:03<00:00, 26.25it/s]K-means clustering:  87%|########7 | 87/100 [00:03<00:00, 26.29it/s]K-means clustering:  90%|######### | 90/100 [00:03<00:00, 26.32it/s]K-means clustering:  93%|#########3| 93/100 [00:03<00:00, 26.32it/s]K-means clustering:  96%|#########6| 96/100 [00:03<00:00, 26.24it/s]K-means clustering:  99%|#########9| 99/100 [00:03<00:00, 26.29it/s]K-means clustering: 100%|##########| 100/100 [00:03<00:00, 26.39it/s]
+  0%|          | 0/100 [00:00<?, ?it/s]  1%|1         | 1/100 [00:00<00:17,  5.64it/s]  7%|7         | 7/100 [00:00<00:03, 28.57it/s] 13%|#3        | 13/100 [00:00<00:02, 38.70it/s] 19%|#9        | 19/100 [00:00<00:01, 44.63it/s] 25%|##5       | 25/100 [00:00<00:01, 48.39it/s] 31%|###1      | 31/100 [00:00<00:01, 50.85it/s] 37%|###7      | 37/100 [00:00<00:01, 52.42it/s] 43%|####3     | 43/100 [00:00<00:01, 53.33it/s] 49%|####9     | 49/100 [00:01<00:00, 53.86it/s] 55%|#####5    | 55/100 [00:01<00:00, 54.31it/s] 61%|######1   | 61/100 [00:01<00:00, 54.56it/s] 67%|######7   | 67/100 [00:01<00:00, 54.38it/s] 73%|#######3  | 73/100 [00:01<00:00, 54.51it/s] 79%|#######9  | 79/100 [00:01<00:00, 54.58it/s] 85%|########5 | 85/100 [00:01<00:00, 54.78it/s] 91%|#########1| 91/100 [00:01<00:00, 54.64it/s] 97%|#########7| 97/100 [00:01<00:00, 54.50it/s]100%|##########| 100/100 [00:01<00:00, 50.43it/s]
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 52.57it/s] 12%|#2        | 12/100 [00:00<00:01, 53.80it/s] 18%|#8        | 18/100 [00:00<00:01, 53.70it/s] 24%|##4       | 24/100 [00:00<00:01, 52.78it/s] 30%|###       | 30/100 [00:00<00:01, 53.27it/s] 36%|###6      | 36/100 [00:00<00:01, 53.89it/s] 42%|####2     | 42/100 [00:00<00:01, 54.06it/s] 48%|####8     | 48/100 [00:00<00:00, 54.31it/s] 54%|#####4    | 54/100 [00:01<00:00, 54.54it/s] 60%|######    | 60/100 [00:01<00:00, 54.72it/s] 66%|######6   | 66/100 [00:01<00:00, 54.93it/s] 72%|#######2  | 72/100 [00:01<00:00, 54.42it/s] 78%|#######8  | 78/100 [00:01<00:00, 54.54it/s] 84%|########4 | 84/100 [00:01<00:00, 54.61it/s] 90%|######### | 90/100 [00:01<00:00, 54.83it/s] 96%|#########6| 96/100 [00:01<00:00, 54.86it/s]100%|##########| 100/100 [00:01<00:00, 54.35it/s]
+  0%|          | 0/100 [00:00<?, ?it/s]  6%|6         | 6/100 [00:00<00:01, 53.34it/s] 12%|#2        | 12/100 [00:00<00:01, 53.74it/s] 18%|#8        | 18/100 [00:00<00:01, 54.15it/s] 24%|##4       | 24/100 [00:00<00:01, 54.33it/s] 30%|###       | 30/100 [00:00<00:01, 54.24it/s] 36%|###6      | 36/100 [00:00<00:01, 53.97it/s] 42%|####2     | 42/100 [00:00<00:01, 54.01it/s] 48%|####8     | 48/100 [00:00<00:00, 53.73it/s] 54%|#####4    | 54/100 [00:01<00:00, 53.63it/s] 60%|######    | 60/100 [00:01<00:00, 53.84it/s] 66%|######6   | 66/100 [00:01<00:00, 54.02it/s] 72%|#######2  | 72/100 [00:01<00:00, 54.17it/s] 78%|#######8  | 78/100 [00:01<00:00, 54.26it/s] 84%|########4 | 84/100 [00:01<00:00, 54.17it/s] 90%|######### | 90/100 [00:01<00:00, 54.30it/s] 96%|#########6| 96/100 [00:01<00:00, 54.27it/s]100%|##########| 100/100 [00:01<00:00, 54.07it/s]
+Train Epoch 1
+{
+    "Cosine_Loss": 0.6393036643664042,
+    "L1_Loss": 0.09860896805301309,
+    "L2_Loss": 0.20218651389082273,
+    "Loss": 4.040816536744436,
+    "Policy_Grad_Norms": 0.9999996216838993,
+    "Time_Data_Loading": 0.014202853043874105,
+    "Time_Epoch": 0.09456686973571778,
+    "Time_Log_Info": 0.00019873778025309246,
+    "Time_Process_Batch": 0.0010800997416178385,
+    "Time_Train_Batch": 0.07891207933425903
+}
+  0%|          | 0/20 [00:00<?, ?it/s] 90%|######### | 18/20 [00:00<00:00, 170.36it/s]100%|##########| 20/20 [00:00<00:00, 170.04it/s]
+  0%|          | 0/20 [00:00<?, ?it/s] 90%|######### | 18/20 [00:00<00:00, 170.74it/s]100%|##########| 20/20 [00:00<00:00, 170.75it/s]
+  0%|          | 0/20 [00:00<?, ?it/s] 85%|########5 | 17/20 [00:00<00:00, 167.44it/s]100%|##########| 20/20 [00:00<00:00, 167.06it/s]
+Validation Epoch 1
+{
+    "Cosine_Loss": 0.751221752166748,
+    "L1_Loss": 0.10060184293737014,
+    "L2_Loss": 0.22511862789591153,
+    "Loss": 4.297973370552063,
+    "Time_Data_Loading": 0.002718218167622884,
+    "Time_Epoch": 0.005931675434112549,
+    "Time_Log_Info": 3.523826599121094e-05,
+    "Time_Process_Batch": 0.0002111951510111491,
+    "Time_Train_Batch": 0.0029338796933492026
+}
+video writes to /home/andrew/Desktop/robo_sims/robomimic/robomimic/../bet_trained_models/test/20221209033817/videos/NutAssemblySquare_epoch_1.mp4
+rollout: env=NutAssemblySquare, horizon=300, use_goals=False, num_episodes=20
+  0%|          | 0/20 [00:00<?, ?it/s]  5%|5         | 1/20 [00:06<02:12,  7.00s/it] 10%|#         | 2/20 [00:13<02:01,  6.77s/it] 15%|#5        | 3/20 [00:20<01:53,  6.69s/it] 20%|##        | 4/20 [00:26<01:45,  6.60s/it] 25%|##5       | 5/20 [00:33<01:39,  6.66s/it] 30%|###       | 6/20 [00:40<01:33,  6.64s/it] 30%|###       | 6/20 [00:44<01:43,  7.43s/it]
+Traceback (most recent call last):
+  File "robomimic/scripts/multitask_train.py", line 425, in <module>
+    main(args)
+  File "robomimic/scripts/multitask_train.py", line 376, in main
+    train(config, device=device)
+  File "robomimic/scripts/multitask_train.py", line 260, in train
+    all_rollout_logs, video_paths = TrainUtils.rollout_with_stats(
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/utils/train_utils.py", line 351, in rollout_with_stats
+    rollout_info = run_rollout(
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/utils/train_utils.py", line 217, in run_rollout
+    ob_dict, r, done, _ = env.step(ac)
+  File "/home/andrew/Desktop/robo_sims/robomimic/robomimic/envs/env_robosuite.py", line 104, in step
+    obs, r, done, info = self.env.step(action)
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/robosuite/environments/base.py", line 406, in step
+    self._pre_action(action, policy_step)
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/robosuite/environments/robot_env.py", line 583, in _pre_action
+    robot.control(robot_action, policy_step=policy_step)
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/robosuite/robots/single_arm.py", line 256, in control
+    self.grip_action(gripper=self.gripper, gripper_action=gripper_action)
+  File "/home/andrew/anaconda3/envs/behavior-transformer/lib/python3.8/site-packages/robosuite/robots/manipulator.py", line 28, in grip_action
+    bias = 0.5 * (ctrl_range[:, 1] + ctrl_range[:, 0])
+KeyboardInterrupt

@@ -8,5 +8,5 @@
 
 Current multi-task functionality trains on Lift, PickPlaceCan, and NutAssemblySquare Multi-Human datasets. 
 
-Credit to https://github.com/notmahi/bet and https://github.com/ARISE-Initiative/robomimic for foundational code.
+Credit to https://github.com/notmahi/bet and https://github.com/ARISE-Initiative/robomimic for foundational code.\
 **SEE CS391R_FINAL.PDF FOR WRITEUP**

@@ -6,6 +6,7 @@
 *To enable multi-task, make sure the variable self.multi_task inside bet.py is set to True! \
 *It is a very hacky job currently, but perhaps better robomimic support could be made so that this doesn't have to be the case! 
 
-*Current multi-task functionality trains on Lift, PickPlaceCan, and NutAssemblySquare Multi-Human datasets. 
+Current multi-task functionality trains on Lift, PickPlaceCan, and NutAssemblySquare Multi-Human datasets. 
 
-Credit to https://github.com/notmahi/bet and https://github.com/ARISE-Initiative/robomimic for foundational code. 
+Credit to https://github.com/notmahi/bet and https://github.com/ARISE-Initiative/robomimic for foundational code.
+**SEE CS391R_FINAL.PDF FOR WRITEUP**
